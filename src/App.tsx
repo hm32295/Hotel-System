@@ -1,12 +1,12 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route, createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { Button } from '@mui/material';
-import { ToastContainer, toast } from 'react-toastify';
-import axios from 'axios';  
-import { useForm } from 'react-hook-form';
+// import { Button } from '@mui/material';
+// import { ToastContainer, toast } from 'react-toastify';
+// import axios from 'axios';  
+// import { useForm } from 'react-hook-form';
 import 'react-pro-sidebar/dist/css/styles.css';
-import { ClipLoader } from 'react-spinners';
-import 'antd/dist/reset.css';      
+// import { ClipLoader } from 'react-spinners';
+import 'antd/dist/reset.css';   
 import 'react-toastify/dist/ReactToastify.css';
 import { Login,Register,Reset,Change_pass,Forget,Verifi,Home,Favorits,Explore,Details,MasterUser,MasterAdmin,HomeAdmin,Ads,Facilites } from './pages/index';
 const App = () => {
