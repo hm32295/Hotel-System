@@ -1,0 +1,60 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+.reset{
+    padding: 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.reset form{
+    width: 50%;
+    padding: 100px;
+}
+.reset form label{
+    text-transform: capitalize;
+}
+.reset .MuiFormControl-root,
+.reset .MuiButtonBase-root{
+    margin: 0;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.reset .img {
+    width: 50%;
+    border-radius: 1rem;
+    background-image: url('../../../assets//images/reset-password.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    align-self: stretch;
+    position: relative;
+}
+@media (max-width : 991px) {
+    .reset .img{
+        display: none;
+    }
+    .reset form{
+        width: 100%;
+       
+    }
+    
+}
+@media (max-width : 768px) {
+    .reset form{
+        padding: 40px;
+    }
+}
+@media (max-width : 480px) {
+    .reset form{
+        padding: 10px;
+    }
+}
+.reset .img .MuiTypography-root{
+    position: absolute;
+    left: 98px;
+    bottom: 96px;
+}

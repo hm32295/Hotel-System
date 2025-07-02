@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, createBrowserRouter, RouterProv
 // import { ToastContainer, toast } from 'react-toastify';
 // import axios from 'axios';  
 // import { useForm } from 'react-hook-form';
+
 import 'react-pro-sidebar/dist/css/styles.css';
 // import { ClipLoader } from 'react-spinners';
 import 'antd/dist/reset.css';   
@@ -19,7 +20,7 @@ const App = () => {
           {index:true,element:<Login/>},
           {path:'login',element:<Login/>},
           {path:'Register',element:<Register/>},
-          {path:'Reset',element:<Reset/>},
+          {path:'reset',element:<Reset/>},
           {path:'Change_pass',element:<Change_pass/>},
           {path:'Forget',element:<Forget/>},
           {path:'Verifi',element:<Verifi/>},
