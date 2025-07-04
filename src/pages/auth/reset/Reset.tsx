@@ -6,15 +6,51 @@ import '@fontsource/roboto/700.css';
 
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { Button, FormControl, IconButton, Input, InputAdornment, InputLabel, TextField, Typography } from '@mui/material';
+import { Box, Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 import './reset.css';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import {useForm} from 'react-hook-form';
+import { Link } from '@mui/material';
+import { EMAIL_VALIDATION } from '../../../services/Validation';
+import { ADMIN_URL, axiosInstance } from '../../../services/Url';
 export default  function Reset(){
+
+  const navigation = useNavigate();
+  const {register, formState:{errors}, handleSubmit, watch ,reset} =  useForm();
+  const sendData = async(data)=>{
+    
+    try {
+        const response = await axiosInstance(ADMIN_URL.RESET_PASSWORD,data);
+        console.log(response)
+    } catch (error) {
+        console.log(error);
+        
+    }finally{
+      console.log('success');
+      
+    }
+    
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /// Handel Show Password And Hide
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-
-
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -35,99 +71,117 @@ export default  function Reset(){
     event.preventDefault();
   };
   return (
-    <div className="reset">
+    <Box className="reset">
       
-        <form action="">
-          <div className='details'>
+        <Box component="form"  onSubmit={handleSubmit(sendData)} sx={{display:'flex',gap:"1rem", flexDirection:'column'}}>
+          <Box className='details'>
             <Typography sx={{mb:3, fontSize:30}} >Reset Password </Typography>
             <Typography sx={{fontSize:16, mb:1}}>If you already have an account register </Typography>
-            <Typography sx={{fontSize:16, mb:9}}>You can   Login here !</Typography>
-          </div>
+            <Typography sx={{fontSize:16, mb:9}}>
+              You can  
+              <Link sx={{color:'red' ,cursor:'pointer', textDecoration:'none'}} component={RouterLink} to='/login'> Login here !</Link>
+            </Typography>
+          </Box>
+
+            <Box>
+                <TextField
+                    id="outlined-multiline-flexible"
+                    label="Email"
+                    multiline
+                    maxRows={4}
+                    {...register("email",EMAIL_VALIDATION)}
+
+                  />
+                  {errors.email&&<Typography sx={{color:'red',textTransform:'capitalize'}}>{errors?.email?.message}</Typography>}
+
+            </Box>
+
+            <Box>
+
+                  <TextField
+                      id="outlined-multiline-flexible"
+                      label="OTP"
+                      multiline
+                      maxRows={4}
+                      {...register('seed' ,{required:'The field Is Required'})}
+                    />
+                    {errors.seed&&<Typography sx={{color:'red',textTransform:'capitalize'}}>{errors?.seed?.message}</Typography>}
+            </Box>
 
 
-          <TextField id="standard-basic" label="email" variant="standard" />
-          <TextField id="standard-basic" label="otp" variant="standard" />
-          {/* <FormControl fullWidth sx={{border:0, m: 1 }} >
-          <InputLabel sx={{color:'#000',border:0}} htmlFor="standard-basic">Email</InputLabel>
+            <Box>
 
-          
-          <Input
-          placeholder='Please type here '
-            sx={{backgroundColor:'#F5F6F8' , p:1,border:0, }}
-            id="standard-adornment-amount"
-            startAdornment={<InputAdornment position="start"></InputAdornment>}
-          />
-        </FormControl> */}
+                  <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                  <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                  <OutlinedInput
+                              id="outlined-adornment-password"
+                              type={showPassword ? 'text' : 'password'}
+                              endAdornment={
+                                <InputAdornment position="end">
+                                  <IconButton
+                                    aria-label={
+                                      showPassword ? 'hide the password' : 'display the password'
+                                    }
+                                    sx={{display:'flex', alignItems:'center'}}
+                                    onClick={handleClickShowPassword}
+                                    onMouseDown={handleMouseDownPassword}
+                                    onMouseUp={handleMouseUpPassword}
+                                    edge="end"
+                                  >
+                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                  </IconButton>
+                                </InputAdornment>
+                              }
 
-          {/* <FormControl fullWidth sx={{border:0, m: 1 }} >
-          <InputLabel sx={{color:'#000',border:0}} htmlFor="standard-adornment-amount">otp</InputLabel>
-          <Input
-          placeholder='Please type here '
-            sx={{backgroundColor:'#F5F6F8' , p:1,border:0, }}
-            id="standard-adornment-amount"
-            startAdornment={<InputAdornment position="start"></InputAdornment>}
-          />
-        </FormControl> */}
+                              label="Password"
+                              {...register('password' , {required:'The field Is Required'})}
+                            />
+                  </FormControl>
+                  {errors.password&&<Typography sx={{color:'red',textTransform:'capitalize'}}>{errors?.password?.message}</Typography>}
+            </Box>
 
+        
 
-        <FormControl sx={{ m: 1, width: '25ch' }} variant="standard">
-          <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
-          <Input
-            // sx={{backgroundColor:'#F5F6F8'}}
-            id="standard-adornment-password"
-            type={showPassword ? 'text' : 'password'}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label={
-                    showPassword ? 'hide the password' : 'display the password'
-                  }
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  onMouseUp={handleMouseUpPassword}
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            }
-          />
-        </FormControl>
+            <Box>
+              <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+              <InputLabel htmlFor="outlined-adornment-password">Confirm Password</InputLabel>
+              <OutlinedInput
+                          id="outlined-adornment-password"
+                          type={showConfirmPassword ? 'text' : 'password'}
+                          endAdornment={
+                            <InputAdornment position="end">
+                              <IconButton
+                                aria-label={
+                                  showConfirmPassword ? 'hide the password' : 'display the password'
+                                }
+                                sx={{display:'flex', alignItems:'center'}}
+                                onClick={handleClickShowConfirmPassword}
+                                onMouseDown={handleMouseDownConfirmPassword}
+                                onMouseUp={handleMouseUpConfirmPassword}
+                                edge="end"
+                              >
+                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                              </IconButton>
+                            </InputAdornment>
+                          }
+                          label="Password"
+                          {...register('confirmPassword' , {required:'The field Is Required'})}
+                        />
+              </FormControl>
+              {errors.confirmPassword&&<Typography sx={{color:'red',textTransform:'capitalize'}}>{errors?.confirmPassword?.message}</Typography>}
+            </Box>
+        
 
-        <FormControl sx={{ m: 1, width: '25ch' }} variant="standard">
-          <InputLabel htmlFor="standard-adornment-password">Confirm Password</InputLabel>
-          <Input
-          // sx={{backgroundColor:'#F5F6F8'}}
-            id="standard-adornment-password"
-            type={showConfirmPassword ? 'text' : 'password'}
-            
-            endAdornment={
-              <InputAdornment position="end" >
-                <IconButton
-                  aria-label={
-                    showPassword ? 'hide the password' : 'display the password'
-                  }
-                  onClick={handleClickShowConfirmPassword}
-                  onMouseDown={handleMouseDownConfirmPassword}
-                  onMouseUp={handleMouseUpConfirmPassword}
-                >
-                  {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            }
-          />
-        </FormControl>
-
-
-        <Button sx={{background:"#3252DF", color:"#fff"}} variant="contained">send</Button>
-        </form>
-        <div className="img">
+        <Button type='submit' sx={{background:"#3252DF", color:"#fff"}} variant="contained">send</Button>
+        </Box>
+        <Box className="img">
 
           <Typography sx={{mb:.5, fontSize:40,color:'#fff', fontWeight:'bold',lineHeight:3}} > Forgot password</Typography>
           <Typography sx={{ fontSize:20,color:'#fff'}} >Homes as unique as you.</Typography>
          
-        </div>
+        </Box>
 
-    </div>
+    </Box>
   )
 }
 
