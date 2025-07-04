@@ -12,8 +12,7 @@ export const axiosInstance = axios.create({
         Authorization: localStorage.getItem('token'),
     }
 });
-const tokenTest = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODY1Njc1MWNjYzQ0OGVmODU5ZDQwZGYiLCJyb2xlIjoiYWRtaW4iLCJ2ZXJpZmllZCI6ZmFsc2UsImlhdCI6MTc1MTU1ODA1OCwiZXhwIjoxNzUyNzY3NjU4fQ.t4JJm2HkiXfz1Hs44TsYiy8-2_JC4kN55pkifOO-50c'
- 
+const tokenTest = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODY1Njc1MWNjYzQ0OGVmODU5ZDQwZGYiLCJyb2xlIjoiYWRtaW4iLCJ2ZXJpZmllZCI6ZmFsc2UsImlhdCI6MTc1MTY0MTMxMywiZXhwIjoxNzUyODUwOTEzfQ.ytN3chDu9gM8Yr1kbbjst81y5jV33ZbbGp2ySWyZZJQ'
 // chat
 axiosInstance.interceptors.request.use((config) => {
     const token = tokenTest;
@@ -26,4 +25,9 @@ axiosInstance.interceptors.request.use((config) => {
 // /admin/users/reset-password
 export const ADMIN_URL ={
     RESET_PASSWORD : '/admin/users/reset-password',
+    FORGET_PASSWORD: '/admin/users/forgot-password'
+}
+export const USERS_URL ={
+    RESET_PASSWORD : '/portal/users/reset-password',
+    FORGET_PASSWORD: '/portal/users/forgot-password',
 }

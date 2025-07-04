@@ -13,37 +13,39 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import {useForm} from 'react-hook-form';
 import { Link } from '@mui/material';
 import { EMAIL_VALIDATION } from '../../../services/Validation';
-import { ADMIN_URL, axiosInstance } from '../../../services/Url';
+import { ADMIN_URL, axiosInstance, USERS_URL } from '../../../services/Url';
+import type { resetPassword } from '../../../services/interface';
 export default  function Reset(){
 
   const navigation = useNavigate();
-  const {register, formState:{errors}, handleSubmit, watch ,reset} =  useForm();
-  const sendData = async(data)=>{
-    
+  const {register, formState:{errors}, handleSubmit, watch ,reset} =  useForm<resetPassword>();
+  const sendData = async(data:resetPassword)=>{
+    const loginData = 'admin';
+   
     try {
-        const response = await axiosInstance(ADMIN_URL.RESET_PASSWORD,data);
-        console.log(response)
+      let response;
+      if(loginData === 'admin'){
+        response = await axiosInstance.post(ADMIN_URL.RESET_PASSWORD,data);
+      }else if(loginData === 'portal'){
+
+        response = await axiosInstance.post(USERS_URL.RESET_PASSWORD,data);
+      }
+      reset(
+       { email: "",
+        seed:'',
+        password:'',
+        confirmPassword: ''}
+      )
+      navigation('/login')
     } catch (error) {
         console.log(error);
         
     }finally{
-      console.log('success');
+      // console.log('success');
       
     }
     
   }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -85,7 +87,7 @@ export default  function Reset(){
 
             <Box>
                 <TextField
-                    id="outlined-multiline-flexible"
+                    // id="outlined-multiline-flexible"
                     label="Email"
                     multiline
                     maxRows={4}
@@ -99,7 +101,7 @@ export default  function Reset(){
             <Box>
 
                   <TextField
-                      id="outlined-multiline-flexible"
+                      // id="outlined-multiline-flexible"
                       label="OTP"
                       multiline
                       maxRows={4}
@@ -114,7 +116,7 @@ export default  function Reset(){
                   <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                   <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                   <OutlinedInput
-                              id="outlined-adornment-password"
+                              // id="outlined-adornment-password"
                               type={showPassword ? 'text' : 'password'}
                               endAdornment={
                                 <InputAdornment position="end">
@@ -146,7 +148,7 @@ export default  function Reset(){
               <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
               <InputLabel htmlFor="outlined-adornment-password">Confirm Password</InputLabel>
               <OutlinedInput
-                          id="outlined-adornment-password"
+                          // id="outlined-adornment-password"
                           type={showConfirmPassword ? 'text' : 'password'}
                           endAdornment={
                             <InputAdornment position="end">
@@ -165,7 +167,12 @@ export default  function Reset(){
                             </InputAdornment>
                           }
                           label="Password"
-                          {...register('confirmPassword' , {required:'The field Is Required'})}
+                          {...register('confirmPassword' , 
+                            {required:'The field Is Required',
+                              validate: (value) => value === watch("password") || "Passwords do not match"
+
+                            }
+                          )}
                         />
               </FormControl>
               {errors.confirmPassword&&<Typography sx={{color:'red',textTransform:'capitalize'}}>{errors?.confirmPassword?.message}</Typography>}
