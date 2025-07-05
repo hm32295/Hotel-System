@@ -19,26 +19,28 @@ export default  function Login(){
   const navigation = useNavigate();
   const {register, formState:{errors}, handleSubmit,reset} =  useForm<resetPassword>();
   const sendData = async(data:resetPassword)=>{
-    const loginData = 'admin';
+   
    
     try {
-      let response;
-      if(loginData === 'admin'){
-        response = await axiosInstance.post(ADMIN_URL.LOGIN,data);
-      }else if(loginData === 'portal'){
-
-        response = await axiosInstance.post(USERS_URL.LOGIN,data);
-      }
-      console.log(response);
+      const response= await axiosInstance.post(ADMIN_URL.LOGIN,data) 
+      localStorage.setItem('token', response?.data?.data?.token)
+      localStorage.setItem('role',  response?.data?.data?.user?.role)
+      
       
       reset(
        { email: "",
         password:'',
         }
       )
-      navigation('/')
+      if(response?.data?.data?.user?.role === 'admin'){
+
+        navigation('/MasterAdmin')
+      }else if(response?.data?.data?.user?.role === 'user'){
+        navigation('/MasterUser')
+
+      }
     } catch (error) {
-        console.log(error);
+        console.log(error?.response?.data?.message);
         
     }finally{
       // console.log('success');
@@ -64,6 +66,7 @@ export default  function Login(){
   };
 
   return (
+    <>
     <Box className="reset">
       
         <Box component="form"  onSubmit={handleSubmit(sendData)} sx={{display:'flex',gap:"1rem", flexDirection:'column'}}>
@@ -136,6 +139,7 @@ export default  function Login(){
         </Box>
 
     </Box>
+    </>
   )
 }
 

@@ -14,7 +14,7 @@ import {
   FormHelperText,
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import { ADMIN_URL, axiosInstance, USERS_URL } from '../../../services/Url';
 import { EMAIL_VALIDATION } from '../../../services/Validation';
@@ -22,7 +22,7 @@ import { EMAIL_VALIDATION } from '../../../services/Validation';
 export default function Register() {
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirm, setShowConfirm] = React.useState(false);
-
+  const navigation = useNavigate()
   const {
     register,
     handleSubmit,
@@ -49,21 +49,21 @@ export default function Register() {
 
 
   const onSubmit =async (data : any) => {
-    console.log(data);
+   
     
     const handelData = handelDataToForm(data);
-    const loginData = 'admin'
+    
     try {
       let response;
-      if(loginData === 'admin'){
+      if(data.role === 'admin'){
         response = await axiosInstance.post(ADMIN_URL.CREATE_USER,handelData)
-      }else if(loginData === 'prt'){
+      }else if(data.role === 'user'){
         response = await axiosInstance.post(USERS_URL.CREATE_USER,handelData)
       }
-      console.log(response);
-      
+      console.log(response?.data?.data?.message);
+      navigation('/login')
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data.message);
       
     }finally{
       console.log('hee');
