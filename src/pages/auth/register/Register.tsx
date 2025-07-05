@@ -7,10 +7,17 @@ import {
   IconButton,
   InputAdornment,
   Typography,
+  FormControl,
+  Select,
+  InputLabel,
+  MenuItem,
+  FormHelperText,
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
+import { ADMIN_URL, axiosInstance, USERS_URL } from '../../../services/Url';
+import { EMAIL_VALIDATION } from '../../../services/Validation';
 
 export default function Register() {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -21,10 +28,47 @@ export default function Register() {
     handleSubmit,
     formState: { errors },
     watch,
+    control
   } = useForm();
 
-  const onSubmit = (data: any) => {
-    console.log('Form Data:', data);
+  const handelDataToForm = (data:any) =>{
+  
+    const registerForm = new FormData();
+    registerForm.append('userName', data.userName)
+    registerForm.append('email', data.email)
+    registerForm.append('country', data.country)
+    registerForm.append('confirmPassword', data.confirmPassword)
+    registerForm.append('password', data.password)
+    registerForm.append('phoneNumber', data.phoneNumber)
+    registerForm.append('profileImage', data.profileImage[0])
+    registerForm.append('role' ,data.role)
+   
+    return registerForm
+  
+  }
+
+
+  const onSubmit =async (data : any) => {
+    console.log(data);
+    
+    const handelData = handelDataToForm(data);
+    const loginData = 'admin'
+    try {
+      let response;
+      if(loginData === 'admin'){
+        response = await axiosInstance.post(ADMIN_URL.CREATE_USER,handelData)
+      }else if(loginData === 'prt'){
+        response = await axiosInstance.post(USERS_URL.CREATE_USER,handelData)
+      }
+      console.log(response);
+      
+    } catch (error) {
+      console.log(error);
+      
+    }finally{
+      console.log('hee');
+      
+    }
   };
 
   const password = watch('password');
@@ -66,17 +110,17 @@ export default function Register() {
             <TextField
               label="User Name"
               fullWidth
-              {...register('username', { required: 'Username is required' })}
-              error={!!errors.username}
-              helperText={errors.username?.message}
+              {...register('userName', { required: 'Username is required' })}
+              error={!!errors.userName}
+              helperText={errors.userName?.message}
             />
             <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', sm: 'row' } }}>
               <TextField
                 label="Phone Number"
                 fullWidth
-                {...register('phone', { required: 'Phone is required' })}
-                error={!!errors.phone}
-                helperText={errors.phone?.message}
+                {...register('phoneNumber', { required: 'Phone is required' })}
+                error={!!errors.phoneNumber}
+                helperText={errors.phoneNumber?.message}
               />
               <TextField
                 label="Country"
@@ -86,17 +130,33 @@ export default function Register() {
                 helperText={errors.country?.message}
               />
             </Box>
+           
+            <FormControl fullWidth error={!!errors.role}>
+            <InputLabel id="role-label">Type User</InputLabel>
+            <Controller
+              name="role"
+              control={control}
+              rules={{ required: 'User type is required' }}
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  labelId="role-label"
+                  label="Type User"
+                >
+                  <MenuItem value="admin">Admin</MenuItem>
+                  <MenuItem value="user">User</MenuItem>
+                </Select>
+              )}
+            />
+            <FormHelperText>{errors.role?.message}</FormHelperText>
+          </FormControl>
+           
+
             <TextField
               label="Email Address"
               type="email"
               fullWidth
-              {...register('email', {
-                required: 'Email is required',
-                pattern: {
-                  value: /^\S+@\S+$/i,
-                  message: 'Invalid email address',
-                },
-              })}
+              {...register('email', EMAIL_VALIDATION)}
               error={!!errors.email}
               helperText={errors.email?.message}
             />
@@ -139,6 +199,17 @@ export default function Register() {
                   </InputAdornment>
                 ),
               }}
+            />
+            <TextField
+              label="Profile Image"
+              type={'file'}
+              fullWidth
+              {...register('profileImage', {
+                required: 'Please add profile image',
+               
+              })}
+              error={!!errors.profileImage}
+              helperText={errors.profileImage?.message}
             />
             <Button
               type="submit"

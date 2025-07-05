@@ -1,129 +1,90 @@
-import * as React from "react";
-import { Grid, Box, TextField, Button, Typography } from "@mui/material";
 
-import { Link } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
 
-export default function Forget() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { Box, Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField, Typography } from '@mui/material';
+import { useState } from 'react';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import {useForm} from 'react-hook-form';
+import { Link } from '@mui/material';
+import { EMAIL_VALIDATION } from '../../../services/Validation';
+import { ADMIN_URL, axiosInstance, USERS_URL } from '../../../services/Url';
+import type { resetPassword } from '../../../services/interface';
+export default  function Forget(){
 
-  const onSubmit = (data: any) => {
-    console.log("Form Data:", data);
-  };
+  const navigation = useNavigate();
+  const {register, formState:{errors}, handleSubmit,reset} =  useForm<resetPassword>();
+  const sendData = async(data:resetPassword)=>{
+    const loginData = 'admin';
+   
+    try {
+      let response;
+      if(loginData === 'admin'){
+        response = await axiosInstance.post(ADMIN_URL.FORGET_PASSWORD,data);
+      }else if(loginData === 'portal'){
+
+        response = await axiosInstance.post(USERS_URL.FORGET_PASSWORD,data);
+      }
+      console.log(response);
+      
+      reset(
+       { email: "",
+        password:'',
+        }
+      )
+      navigation('/reset')
+    } catch (error) {
+        console.log(error);
+        
+    }finally{
+      // console.log('success');
+      
+    }
+    
+  }
 
   return (
-    <Grid
-      container
-      sx={{ minHeight: "100vh" }}
-      alignItems="center"
-      justifyContent="center"
-    >
-      {/*  Left Side (Form) */}
-      <Grid
-        item
-        xs={12}
-        md={6}
-        sx={{
-          display: "grid",
-          gridTemplateRows: "auto 1fr auto",
-          minHeight: "100vh",
-          px: { xs: 2, md: 4 },
-          py: { xs: 4, md: 0 },
-        }}
-      >
-        <Box sx={{ justifySelf: "start", alignSelf: "start" }}>
-          <Typography
-            variant="h4"
-            fontWeight="bold"
-            sx={{
-              mt: { xs: 2, md: 10 },
-              ml: { xs: 0, md: -7 },
-            }}
-          >
-            <span style={{ color: "#3f51b5" }}>Stay</span>cation.
-          </Typography>
+    <Box className="reset">
+      
+        <Box component="form"  onSubmit={handleSubmit(sendData)} sx={{display:'flex',gap:"1rem", flexDirection:'column'}}>
+          <Box className='details'>
+            <Typography sx={{mb:3, fontSize:30}} >Login</Typography>
+            <Typography sx={{fontSize:16, mb:1}}>If you already have an account register </Typography>
+            <Typography sx={{fontSize:16, mb:9}}>
+              You can  
+              <Link sx={{color:'red' ,cursor:'pointer', textDecoration:'none'}} component={RouterLink} to='/register'> register here !</Link>
+            </Typography>
+          </Box>
+
+            <Box>
+                <TextField
+                    // id="outlined-multiline-flexible"
+                    label="Email"
+                    multiline
+                    maxRows={4}
+                    {...register("email",EMAIL_VALIDATION)}
+
+                  />
+                  {errors.email&&<Typography sx={{color:'red',textTransform:'capitalize'}}>{errors?.email?.message}</Typography>}
+
+            </Box> 
+
+         
+
+        <Button type='submit' sx={{background:"#3252DF", color:"#fff"}} variant="contained">send</Button>
+        </Box>
+        <Box className="img">
+
+          <Typography sx={{mb:.5, fontSize:40,color:'#fff', fontWeight:'bold',lineHeight:3}} >Forget Password</Typography>
+          <Typography sx={{ fontSize:20,color:'#fff'}} >Homes as unique as you.</Typography>
+         
         </Box>
 
-        <Box
-          sx={{
-            width: "100%",
-            maxWidth: 500,
-            justifySelf: "start",
-            alignSelf: "center",
-          }}
-        >
-          <Typography variant="h5" fontWeight="bold" sx={{ mt: 3, mb: 3 }}>
-            Forget Password
-          </Typography>
-          <Typography variant="body2" sx={{ mb: 3 }}>
-            If you already have an account login
-            <br />
-            You can{" "}
-            <Link to="/login" style={{ color: "red", fontWeight: 600 }}>
-              Login here !
-            </Link>
-          </Typography>
-
-          <TextField
-            label="Email Address"
-            type="email"
-            fullWidth
-            {...register("email", {
-              required: "Email is required",
-              pattern: {
-                value: /^\S+@\S+$/i,
-                message: "Invalid email address",
-              },
-            })}
-            error={!!errors.email}
-            helperText={errors.email?.message}
-          />
-
-          <Button
-            type="submit"
-            variant="contained"
-            fullWidth
-            sx={{
-              py: 1.5,
-              mt: 5,
-              backgroundColor: "#3f51b5",
-              boxShadow: 2,
-            }}
-          >
-            Send Mail
-          </Button>
-        </Box>
-      </Grid>
-
-      {/* Right Side  */}
-      <Grid
-        item
-        xs={12}
-        md={6}
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          px: 2,
-        }}
-      >
-        <Box sx={{ width: "100%", maxWidth: 600, mt: { xs: 2, md: 2 } }}>
-          <img
-            src="/src/assets/images/SignUp.png"
-            alt="signup"
-            style={{
-              width: "100%",
-              height: "auto",
-              objectFit: "cover",
-              borderRadius: "16px",
-            }}
-          />
-        </Box>
-      </Grid>
-    </Grid>
-  );
+    </Box>
+  )
 }
+

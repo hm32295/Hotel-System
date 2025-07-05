@@ -25,9 +25,17 @@ axiosInstance.interceptors.request.use((config) => {
 // /admin/users/reset-password
 export const ADMIN_URL ={
     RESET_PASSWORD : '/admin/users/reset-password',
-    FORGET_PASSWORD: '/admin/users/forgot-password'
+    FORGET_PASSWORD: '/admin/users/forgot-password',
+    CREATE_USER : '/admin/users',
+    LOGIN : '/admin/users/login',
+    CHANGE_PASSWORD : '/admin/users/change-password'
 }
 export const USERS_URL ={
     RESET_PASSWORD : '/portal/users/reset-password',
     FORGET_PASSWORD: '/portal/users/forgot-password',
+    CREATE_USER : '/portal/users',
+    LOGIN : '/portal/users/login',
+    CHANGE_PASSWORD : '/portal/users/change-password',
+    LOGIN_GOOGLE : '/portal/users/auth/google',
+    LOGIN_FACEBOOK : '/portal/users/auth/facebook'
 }
