@@ -35,28 +35,15 @@ export default function Register() {
       <Grid
         item
         xs={12}
+        sm={6}
         md={6}
         sx={{
         display: 'grid',
-          gridTemplateRows: 'auto 1fr auto',
           minHeight: '100vh',
           px: { xs: 2, md: 4 },
           py: { xs: 4, md: 0 },
         }}
       >
-        <Box sx={{ justifySelf: 'start', alignSelf: 'start' }}>
-          <Typography
-            variant="h4"
-            fontWeight="bold"
-            sx={{
-              mt: { xs: 2, md: 10 },
-              ml: { xs: 0, md: -7 }
-            }}
-          >
-            <span style={{ color: '#3f51b5' }}>Stay</span>cation.
-          </Typography>
-        </Box>
-
         <Box sx={{
           width: '100%', maxWidth: 500,
           justifySelf: 'start',
@@ -160,8 +147,8 @@ export default function Register() {
               sx={{
                 py: 1.5,
                 mt: 1,
-                backgroundColor: '#3f51b5',
-                boxShadow: 2,
+                backgroundColor: '#3252DF',
+                boxShadow: '0 8px 15px 0 rgba(50, 82, 223, 0.3)',
               }}
             >
               Sign up
@@ -174,9 +161,10 @@ export default function Register() {
       <Grid
         item
         xs={12}
+        sm={6}
         md={6}
         sx={{
-          display: 'flex',
+          display: { xs: 'none', sm: 'flex' },
           alignItems: 'center',
           justifyContent: 'center',
           px: 2,
