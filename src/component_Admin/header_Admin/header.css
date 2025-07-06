@@ -1,0 +1,23 @@
+.Header_Left h4,
+.Header_Left h3 {
+  margin: 0;
+}
+.Header{
+    margin-top: 30px;
+      width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+
+}
+
+.Header_Right button{
+    background-color:#1976d2;
+    color: white;
+    padding: 10px 10px;
+    font-weight: 700;
+    border-radius: 3px;
+    border: none;
+    outline: none;
+}
