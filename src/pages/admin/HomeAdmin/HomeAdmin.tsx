@@ -1,7 +1,10 @@
 
+
 const HomeAdmin = () => {
   return (
-    <div>HomeAdmin</div>
+    <div>HomeAdmin
+       
+    </div>
   )
 }
 

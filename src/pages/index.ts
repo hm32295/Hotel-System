@@ -13,6 +13,7 @@ export {default as MasterAdmin  }from './admin/masteradmin/MasterAdmin'
 export {default as HomeAdmin  }from './admin/HomeAdmin/HomeAdmin'
 export {default as Ads  }from './admin/Ads/Ads'
 export {default as Facilities  }from './admin/Facilities/Facilities'
+export {default as DeleteConfirmation  }from '../component_Admin/deleteConfirmation/deleteConfirmation'
 
 
 
