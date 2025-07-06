@@ -1,0 +1,52 @@
+.GenericTable 
+.MuiToolbar-root.MuiToolbar-gutters.MuiToolbar-regular.MuiTablePagination-toolbar.css-1gak8h1-MuiToolbar-root-MuiTablePagination-toolbar 
+p{
+    margin-bottom:  0;  
+}
+.GenericTable .Actions{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* flex-direction: column; */
+    gap: .5rem;
+    position: relative;
+}
+.GenericTable .Actions button{
+    padding: 0;
+    
+}
+
+.GenericTable .Actions .list{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: -43%;
+    right: 0;
+    display: none;
+    flex-direction: column;
+    background: #eee;
+    border-radius: .5rem;
+    z-index: 2;
+}
+.GenericTable .Actions .list::after{
+    content: '';
+    border: 1rem solid;
+    border-color: transparent #e3eefa transparent transparent;
+    width: 0;
+    height: 0;
+    top: 50%;
+    position: absolute;
+    left: -2rem;
+}
+.GenericTable .Actions:hover  .list{
+    display: flex;
+}
+.GenericTable .Actions .list div{
+    /* padding: .25rem 2rem; */
+    padding: .5rem 2.5rem;
+    transition: .3s ease;
+}
+.GenericTable .Actions .list  div:hover{
+    background-color: #fff;
+}
