@@ -9,10 +9,16 @@ export {default as Favorites  }from './user/Favorites/Favorites'
 export {default as Explore  }from './user/Explore/Explore'
 export {default as Details  }from './user/Details/Details'
 export {default as MasterUser  }from './user/MasterUser/MasterUser'
-export {default as MasterAdmin  }from './admin/MasterAdmin/MasterAdmin'
+export {default as MasterAdmin  }from './admin/masteradmin/MasterAdmin'
 export {default as HomeAdmin  }from './admin/HomeAdmin/HomeAdmin'
 export {default as Ads  }from './admin/Ads/Ads'
 export {default as Facilities  }from './admin/Facilities/Facilities'
+export {default as Dashboard  }from './admin/dashboard/Dashboard'
+
+export {default as UsersList  }from './admin/usersList/usersList'
+
+export {default as DeleteConfirmation  }from '../component_Admin/deleteConfirmation/DeleteConfirmation'
+
 
 
 

@@ -7,24 +7,68 @@ import {
   IconButton,
   InputAdornment,
   Typography,
+  FormControl,
+  Select,
+  InputLabel,
+  MenuItem,
+  FormHelperText,
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router-dom';
+import { Controller, useForm } from 'react-hook-form';
+import { ADMIN_URL, axiosInstance, USERS_URL } from '../../../services/Url';
+import { EMAIL_VALIDATION } from '../../../services/Validation';
 
 export default function Register() {
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirm, setShowConfirm] = React.useState(false);
-
+  const navigation = useNavigate()
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
+    control
   } = useForm();
 
-  const onSubmit = (data: any) => {
-    console.log('Form Data:', data);
+  const handelDataToForm = (data:any) =>{
+  
+    const registerForm = new FormData();
+    registerForm.append('userName', data.userName)
+    registerForm.append('email', data.email)
+    registerForm.append('country', data.country)
+    registerForm.append('confirmPassword', data.confirmPassword)
+    registerForm.append('password', data.password)
+    registerForm.append('phoneNumber', data.phoneNumber)
+    registerForm.append('profileImage', data.profileImage[0])
+    registerForm.append('role' ,data.role)
+   
+    return registerForm
+  
+  }
+
+
+  const onSubmit =async (data : any) => {
+   
+    
+    const handelData = handelDataToForm(data);
+    
+    try {
+      let response;
+      if(data.role === 'admin'){
+        response = await axiosInstance.post(ADMIN_URL.CREATE_USER,handelData)
+      }else if(data.role === 'user'){
+        response = await axiosInstance.post(USERS_URL.CREATE_USER,handelData)
+      }
+      console.log(response?.data?.data?.message);
+      navigation('/login')
+    } catch (error) {
+      console.log(error.response.data.message);
+      
+    }finally{
+      console.log('hee');
+      
+    }
   };
 
   const password = watch('password');
@@ -35,28 +79,15 @@ export default function Register() {
       <Grid
         item
         xs={12}
+        sm={6}
         md={6}
         sx={{
         display: 'grid',
-          gridTemplateRows: 'auto 1fr auto',
           minHeight: '100vh',
           px: { xs: 2, md: 4 },
           py: { xs: 4, md: 0 },
         }}
       >
-        <Box sx={{ justifySelf: 'start', alignSelf: 'start' }}>
-          <Typography
-            variant="h4"
-            fontWeight="bold"
-            sx={{
-              mt: { xs: 2, md: 10 },
-              ml: { xs: 0, md: -7 }
-            }}
-          >
-            <span style={{ color: '#3f51b5' }}>Stay</span>cation.
-          </Typography>
-        </Box>
-
         <Box sx={{
           width: '100%', maxWidth: 500,
           justifySelf: 'start',
@@ -79,17 +110,17 @@ export default function Register() {
             <TextField
               label="User Name"
               fullWidth
-              {...register('username', { required: 'Username is required' })}
-              error={!!errors.username}
-              helperText={errors.username?.message}
+              {...register('userName', { required: 'Username is required' })}
+              error={!!errors.userName}
+              helperText={errors.userName?.message}
             />
             <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', sm: 'row' } }}>
               <TextField
                 label="Phone Number"
                 fullWidth
-                {...register('phone', { required: 'Phone is required' })}
-                error={!!errors.phone}
-                helperText={errors.phone?.message}
+                {...register('phoneNumber', { required: 'Phone is required' })}
+                error={!!errors.phoneNumber}
+                helperText={errors.phoneNumber?.message}
               />
               <TextField
                 label="Country"
@@ -99,17 +130,33 @@ export default function Register() {
                 helperText={errors.country?.message}
               />
             </Box>
+           
+            <FormControl fullWidth error={!!errors.role}>
+            <InputLabel id="role-label">Type User</InputLabel>
+            <Controller
+              name="role"
+              control={control}
+              rules={{ required: 'User type is required' }}
+              render={({ field }) => (
+                <Select
+                  {...field}
+                  labelId="role-label"
+                  label="Type User"
+                >
+                  <MenuItem value="admin">Admin</MenuItem>
+                  <MenuItem value="user">User</MenuItem>
+                </Select>
+              )}
+            />
+            <FormHelperText>{errors.role?.message}</FormHelperText>
+          </FormControl>
+           
+
             <TextField
               label="Email Address"
               type="email"
               fullWidth
-              {...register('email', {
-                required: 'Email is required',
-                pattern: {
-                  value: /^\S+@\S+$/i,
-                  message: 'Invalid email address',
-                },
-              })}
+              {...register('email', EMAIL_VALIDATION)}
               error={!!errors.email}
               helperText={errors.email?.message}
             />
@@ -153,6 +200,17 @@ export default function Register() {
                 ),
               }}
             />
+            <TextField
+              label="Profile Image"
+              type={'file'}
+              fullWidth
+              {...register('profileImage', {
+                required: 'Please add profile image',
+               
+              })}
+              error={!!errors.profileImage}
+              helperText={errors.profileImage?.message}
+            />
             <Button
               type="submit"
               variant="contained"
@@ -160,8 +218,8 @@ export default function Register() {
               sx={{
                 py: 1.5,
                 mt: 1,
-                backgroundColor: '#3f51b5',
-                boxShadow: 2,
+                backgroundColor: '#3252DF',
+                boxShadow: '0 8px 15px 0 rgba(50, 82, 223, 0.3)',
               }}
             >
               Sign up
@@ -174,9 +232,10 @@ export default function Register() {
       <Grid
         item
         xs={12}
+        sm={6}
         md={6}
         sx={{
-          display: 'flex',
+          display: { xs: 'none', sm: 'flex' },
           alignItems: 'center',
           justifyContent: 'center',
           px: 2,
