@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route, createBrowserRouter, RouterProv
 import 'react-pro-sidebar/dist/css/styles.css';
 import 'antd/dist/reset.css';   
 import 'react-toastify/dist/ReactToastify.css';
-import { Login,Register,Reset,Change_pass,Forget,Verify,Home,Favorites,Explore,Details,MasterUser,MasterAdmin,HomeAdmin,Ads,Facilities, UsersList } from './pages/index';
+import { Login,Register,Reset,Change_pass,Forget,Verify,Home,Favorites,Explore,Details,MasterUser,MasterAdmin,HomeAdmin,Ads,Facilities, UsersList, Dashboard } from './pages/index';
 const App = () => {
   const routes=createBrowserRouter(
     [
@@ -36,6 +36,7 @@ const App = () => {
         children:[
           {index:true,element:<HomeAdmin/>},
           {path:'HomeAdmin',element:<HomeAdmin/>},
+          {path:'dashboard',element:<Dashboard/>},
           {path:'Ads',element:<Ads/>},
           {path:'users-list',element:<UsersList/>},
           {path:'Facilities',element:<Facilities/>},

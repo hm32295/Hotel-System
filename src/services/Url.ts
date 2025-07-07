@@ -39,3 +39,7 @@ export const USERS_URL ={
     LOGIN_GOOGLE : '/portal/users/auth/google',
     LOGIN_FACEBOOK : '/portal/users/auth/facebook'
 }
+
+export const DASHBOARD_URL ={
+    CHARTS : '/admin/dashboard'
+}

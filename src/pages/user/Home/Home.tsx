@@ -1,6 +1,6 @@
 
 const Home = () => {
-  console.log(loginData);
+  
   
   return (
     <div>
