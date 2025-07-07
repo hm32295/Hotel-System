@@ -8,6 +8,8 @@ import 'react-pro-sidebar/dist/css/styles.css';
 import { ClipLoader } from 'react-spinners';
 import 'react-toastify/dist/ReactToastify.css';
 import { Login,Register,Reset,Change_pass,Forget,Verify,Home,Favorites,Explore,Details,MasterUser,MasterAdmin,HomeAdmin,Ads,Facilities } from './pages/index';
+import ListBooking from './pages/admin/ListBooking/ListBooking';
+import Rooms from './pages/admin/Rooms/Rooms';
 const App = () => {
 const routes = createBrowserRouter([
   { path: '/', element: <Login /> },
@@ -39,6 +41,9 @@ const routes = createBrowserRouter([
       { path: 'Ads', element: <Ads /> },
       { path: 'Facilities', element: <Facilities /> },
       { path: 'Explore', element: <Explore /> },
+      
+       { path: 'ListBooking', element: <ListBooking /> },
+        { path: 'Rooms', element: <Rooms/> },
     ],
   },
 ]);

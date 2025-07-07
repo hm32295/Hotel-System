@@ -87,9 +87,14 @@ function CustomToolbarActions() {
 }
 
 function DemoPageContent() {
+  let LOCATION=window.location.pathname
   return (
     <>
+{LOCATION!='/MasterAdmin/HomeAdmin'? <Header/>:null}
+    
+
      <Outlet/>
+    
   
     </>
    
