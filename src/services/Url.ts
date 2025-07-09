@@ -43,3 +43,6 @@ export const USERS_URL ={
 export const DASHBOARD_URL ={
     CHARTS : '/admin/dashboard'
 }
+export const FacilitesUrls={
+    Get_All_Data:'/admin/room-facilities'
+}
