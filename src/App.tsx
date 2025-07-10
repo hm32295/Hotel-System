@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Login,Register,Reset,Change_pass,Forget,Verify,Home,Favorites,Explore,Details,MasterUser,MasterAdmin,HomeAdmin,Ads,Facilities } from './pages/index';
 import ListBooking from './pages/admin/ListBooking/ListBooking';
 import Rooms from './pages/admin/Rooms/Rooms';
+import { ToastContainer } from 'react-toastify';
 const App = () => {
 const routes = createBrowserRouter([
   { path: '/', element: <Login /> },
@@ -47,6 +48,7 @@ const routes = createBrowserRouter([
 
   return (
     <React.Fragment>
+       <ToastContainer/>
       <RouterProvider router={routes}>
       </RouterProvider>
     </React.Fragment>

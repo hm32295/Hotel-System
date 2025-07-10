@@ -1,8 +1,100 @@
+import { toast } from 'react-toastify';
 import './header.css'
+import { axiosInstance, FacilitesUrls } from '../../services/Url';
+import { useState } from 'react';
+import { Box, Button, Fade, IconButton, Modal, TextField } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import Backdrop from '@mui/material/Backdrop';
+
 const Header = () => {
     let  location=window.location.pathname
+    // Start With Add Facilites
+  const [itemToUpdate, setItemToUpdate] = useState(null);
+const [openUpdate, setOpenUpdate] = useState(false);
+  const [value, setValue] = useState('');
+//  Modal Edit 
+  const handleOpenUpdate = (row) => {
+    setItemToUpdate(row);
+    setValue(row.name);
+    console.log(row)
+    setOpenUpdate(true);
+    
+  };
+
+  const handleCloseUpdate = () => {
+    setOpenUpdate(false);
+    setItemToUpdate(null);
+    setValue('');
+  };
+  const handleConfirmAdd = async () => {
+    if (itemToUpdate) {
+      try {
+        await axiosInstance.post(`${FacilitesUrls.Delete_Data}`, { name: value });
+         toast.success(`Update ${itemToUpdate.name} successfully.`)
+         
+      } catch (error) {
+        console.error('Delete Error:', error);
+        
+      }
+    }
+    handleCloseUpdate();
+  };
+  
+
+
+
+
+    // End With Add Facilites
+
+
+
+
   return (
     <div className="Header" >
+         <Modal
+              open={openUpdate}
+              onClose={handleCloseUpdate}
+              closeAfterTransition
+              slots={{ backdrop: Backdrop }}
+              slotProps={{ backdrop: { timeout: 500 } }}
+            >
+              <Fade in={openUpdate}>
+                <Box sx={{ 
+                  position: 'absolute', 
+                  top: '50%', 
+                  left: '50%', 
+                  transform: 'translate(-50%, -50%)', 
+                  bgcolor: 'background.paper', 
+                  boxShadow: 24, 
+                  p: 4, 
+                  width: 400 
+                }}>
+                  <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+                    <h2 style={{ margin: 0 }}>Edit Facility</h2>
+                    <IconButton size="small" onClick={handleCloseUpdate}>
+                      <CloseIcon />
+                    </IconButton>
+                  </Box>
+                  
+                  <TextField
+                    fullWidth
+                    variant="outlined"
+                    label="Name"
+                    value={value}
+                    onChange={(e) => setValue(e.target.value)}
+                  />
+                  <Box mt={3} display="flex" justifyContent="flex-end">
+                    <Button onClick={handleCloseUpdate} sx={{ mr: 1 }}>
+                     Cancel
+                    </Button>
+                    <Button variant="contained" onClick={handleConfirmAdd} >
+                     Save
+                    </Button>
+                  </Box>
+                </Box>
+              </Fade>
+            </Modal>
+            {/* End Mofal Add Facilites */}
         <div className="Header_Container " style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
             <div className="Header_Left" style={{display: 'flex', alignItems: 'center',flexDirection: 'column'}}>
               {location==='/MasterAdmin/Facilities'?
@@ -19,8 +111,8 @@ const Header = () => {
             </div>
              <div className="Header_Right">
                 {location==='/MasterAdmin/Facilities'?
-             <button>Add New Facility</button>: location==='/MasterAdmin/Ads'
-              ?<button>Add New Ads</button>:location==='/MasterAdmin/Explore'?<button>Add New Explore</button>
+             <button onClick={handleOpenUpdate}>Add New Facility</button>: location==='/MasterAdmin/Ads'
+              ?<button onClick={handleOpenUpdate}>Add New Ads</button>:location==='/MasterAdmin/Explore'?<button>Add New Explore</button>
               :location==='/MasterAdmin/ListBooking'?null
               :location==='/MasterAdmin/Rooms'?<button>Add New Room</button>:null
 

@@ -44,5 +44,10 @@ export const DASHBOARD_URL ={
     CHARTS : '/admin/dashboard'
 }
 export const FacilitesUrls={
-    Get_All_Data:'/admin/room-facilities'
+    Get_All_Data:'/admin/room-facilities',
+    Delete_Data:'/admin/room-facilities'
+}
+export const ADS_Urls={
+    Get_All_Data:'/admin/ads',
+    Delete_Data:'/admin/ads'
 }

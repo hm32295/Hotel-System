@@ -17,6 +17,8 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Box } from "@mui/material";
 import { useForm } from "react-hook-form";
+import { toast, ToastContainer } from "react-toastify";
+import App from "../../../App";
 
 // Define the type for headCells
 type HeadCell = {
@@ -55,18 +57,12 @@ const Facilities = () => {
   const [rows, setRows] = useState<any[]>([]);
   const [headCells, setHeadCells] = useState<HeadCell[]>([]);
   const [loading, setLoading] = useState(true);
-
-  const [openUpdate, setOpenUpdate] = useState(false);
-  const [value, setValue] = useState('');
-  const [itemToUpdate, setItemToUpdate] = useState(null);
   const [openDelete, setOpenDelete] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState(null);
-
   const fetchFacilities = async () => {
     try {
       const res = await axiosInstance(FacilitesUrls.Get_All_Data);
       const facilitiesData = res.data.data.facilities.map(facility => ({
-        id: facility.id, 
+        id: facility._id, 
         name: facility.name,
         createdByUserName: facility.createdBy.userName,
         createdAt: facility.createdAt,
@@ -85,24 +81,12 @@ const Facilities = () => {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     fetchFacilities();
-  }, []);
-// Handle Form 
- const { register, formState: { errors }, handleSubmit } = useForm();
-let SureEdit=(data)=>{
-  
-console.log(data)
-}
-
-
-
-
-
-
-
-let [num,setnum_id]=useState([])
+  }, [fetchFacilities]);
+  const [itemToUpdate, setItemToUpdate] = useState(null);
+const [openUpdate, setOpenUpdate] = useState(false);
+  const [value, setValue] = useState('');
 //  Modal Edit 
   const handleOpenUpdate = (row) => {
     setItemToUpdate(row);
@@ -117,13 +101,28 @@ let [num,setnum_id]=useState([])
     setItemToUpdate(null);
     setValue('');
   };
-
+  const handleConfirmUpdate = async () => {
+    if (itemToUpdate) {
+      try {
+        await axiosInstance.put(`${FacilitesUrls.Delete_Data}/${itemToUpdate.id}`,  { name: value });
+         toast.success(`Update ${itemToUpdate.name} successfully.`)
+        fetchFacilities(); 
+      
+       
+      } catch (error) {
+        console.error('Delete Error:', error);
+        
+      }
+    }
+    handleCloseUpdate();
+  };
   
 
-
-  const handleOpenDelete = (row) => {
+ const [itemToDelete, setItemToDelete] = useState(null);
+  const handleOpenDelete = (row:any) => {
     setItemToDelete(row);
     setOpenDelete(true);
+    console.log(row)
   };
 
   const handleCloseDelete = () => {
@@ -135,14 +134,17 @@ let [num,setnum_id]=useState([])
     if (itemToDelete) {
       try {
         await axiosInstance.delete(`${FacilitesUrls.Delete_Data}/${itemToDelete.id}`);
+         toast.error(`Deleted ${itemToDelete.name} successfully.`)
         fetchFacilities(); 
+      
+       
       } catch (error) {
         console.error('Delete Error:', error);
+        
       }
     }
     handleCloseDelete();
   };
-
   return (
     <>
       {/* Modal Update*/}
@@ -181,22 +183,19 @@ let [num,setnum_id]=useState([])
               <Button onClick={handleCloseUpdate} sx={{ mr: 1 }}>
                Cancel
               </Button>
-              <Button variant="contained" onClick={SureEdit()}>
+              <Button variant="contained" onClick={handleConfirmUpdate} >
                Save
               </Button>
             </Box>
           </Box>
         </Fade>
-      </Modal>
-
-    
+      </Modal> 
       <DeleteConfirmation
         open={openDelete}
         onClose={handleCloseDelete}
         onConfirm={handleConfirmDelete}
         name={itemToDelete ? itemToDelete.name : ''}
       />
-
       {loading ? (
         <div>Loading…</div>
       ) : (
@@ -214,5 +213,4 @@ let [num,setnum_id]=useState([])
     </>
   );
 };
-
 export default Facilities;
