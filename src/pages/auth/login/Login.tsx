@@ -12,7 +12,7 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import {useForm} from 'react-hook-form';
 import { Link } from '@mui/material';
 import { EMAIL_VALIDATION } from '../../../services/Validation';
-import { ADMIN_URL, axiosInstance, USERS_URL } from '../../../services/Url';
+import { ADMIN_URL, axiosInstance } from '../../../services/Url';
 import type { resetPassword } from '../../../services/interface';
 export default  function Login(){
 
