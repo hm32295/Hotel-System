@@ -16,7 +16,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { AppProvider } from '@toolpad/core/AppProvider';
 import GroupIcon from '@mui/icons-material/Group';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import Picture_Profile from '../../../assets/images/Ellipse 234.svg'
+import Picture_Profile from '../../../assets/images/Ellipse 234.svg';
 import {
   DashboardLayout,
   ThemeSwitcher,
@@ -29,22 +29,23 @@ import {
 } from '@toolpad/core/Account';
 import type { Navigation, Router, Session } from '@toolpad/core/AppProvider';
 import { DemoProvider } from '@toolpad/core/internal';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import HotTubIcon from '@mui/icons-material/HotTub';
 import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Header from '../../../component_Admin/header_Admin/Header';
+import ExploreIcon from '@mui/icons-material/Explore';
+
 const NAVIGATION: Navigation = [
   { kind: 'header', title: 'Main items' },
-  { segment: 'dashboard', title: 'Home', icon: <AddHomeWorkIcon /> },
-  { segment: 'ListUsers', title: 'Users', icon: <GroupIcon /> },
+  { segment: 'HomeAdmin', title: 'Home', icon: <AddHomeWorkIcon /> },
+ 
   { segment: 'Rooms', title: 'Rooms', icon: <WidgetsIcon /> },
-    { segment: 'Ads', title: 'Ads', icon: <CalendarMonthIcon /> },
-   { segment: 'Bookings', title: 'Bookings', icon: <HotTubIcon /> },
- { segment: 'ChangePW', title: 'ٌReset PW', icon: <ChangeCircleIcon /> },
- { segment: 'ٌLogout', title: 'ٌLogout', icon: <LogoutIcon /> },
-    
-
+  { segment: 'Ads', title: 'Ads', icon: <CalendarMonthIcon /> },
+  { segment: 'Facilities', title: 'Facilities', icon: <HotTubIcon /> },
+  { segment: 'ListBooking', title: 'Bookings', icon: <ShoppingCartIcon /> },
+  { segment: 'ChangePW', title: 'Reset PW', icon: <ChangeCircleIcon /> },
+  { segment: 'Logout', title: 'Logout', icon: <LogoutIcon /> },
 ];
 
 const demoTheme = createTheme({
@@ -55,53 +56,28 @@ const demoTheme = createTheme({
 
 function CustomToolbarActions() {
   return (
-       <Stack
-      direction="row"
-      justifyContent="space-between"  
-      alignItems="center"
-    >
-      <Box
-        display="flex"               
-        flexDirection="row"
-        alignItems="center"
-        gap={1}                        
-        mr={2}                        
-      >
-        <Avatar
-          src={Picture_Profile}       
-          alt="Upskilling"
-        />
-        <Typography
-          variant="h6"             
-          fontWeight={600}
-          fontSize={14}
-        >
+    <Stack direction="row" justifyContent="space-between" alignItems="center">
+      <Box display="flex" flexDirection="row" alignItems="center" gap={1} mr={2}>
+        <Avatar src={Picture_Profile} alt="Upskilling" />
+        <Typography variant="h6" fontWeight={600} fontSize={14}>
           Upskilling
         </Typography>
       </Box>
-
-      <ThemeSwitcher />              
+      <ThemeSwitcher />
     </Stack>
-
   );
 }
 
 function DemoPageContent() {
-  let LOCATION=window.location.pathname
+  const LOCATION = window.location.pathname;
   return (
     <>
-{LOCATION!='/MasterAdmin/HomeAdmin'? <Header/>:null}
-    
-
-     <Outlet/>
-    
-  
+      {LOCATION !== '/MasterAdmin/HomeAdmin' && LOCATION !== '/MasterAdmin' ? <Header /> : null}
+      <Outlet />
     </>
-   
   );
 }
 
-// Props for AccountSidebarPreview
 interface AccountSidebarPreviewProps {
   handleClick: () => void;
   open: boolean;
@@ -112,11 +88,7 @@ function AccountSidebarPreview({ handleClick, open, mini }: AccountSidebarPrevie
   return (
     <Stack direction="column" p={0}>
       <Divider />
-      <AccountPreview
-        variant={mini ? 'condensed' : 'expanded'}
-        handleClick={handleClick}
-        open={open}
-      />
+      <AccountPreview variant={mini ? 'condensed' : 'expanded'} handleClick={handleClick} open={open} />
     </Stack>
   );
 }
@@ -138,7 +110,12 @@ function SidebarFooterAccountPopover() {
                 {account.name[0]}
               </Avatar>
             </ListItemIcon>
-            <ListItemText primary={account.name} secondary={account.email} primaryTypographyProps={{ variant: 'body2' }} secondaryTypographyProps={{ variant: 'caption' }} />
+            <ListItemText
+              primary={account.name}
+              secondary={account.email}
+              primaryTypographyProps={{ variant: 'body2' }}
+              secondaryTypographyProps={{ variant: 'caption' }}
+            />
           </MenuItem>
         ))}
       </MenuList>
@@ -150,7 +127,6 @@ function SidebarFooterAccountPopover() {
   );
 }
 
-// Sidebar footer component
 type SidebarFooterAccountProps = { mini: boolean };
 function SidebarFooterAccount({ mini }: SidebarFooterAccountProps) {
   const PreviewComponent = React.useMemo(
@@ -173,9 +149,25 @@ function SidebarFooterAccount({ mini }: SidebarFooterAccountProps) {
               elevation: 0,
               sx: {
                 overflow: 'visible',
-                filter: theme => `drop-shadow(0px 2px 8px ${theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.10)' : 'rgba(0,0,0,0.32)'})`,
+                filter: (theme) =>
+                  `drop-shadow(0px 2px 8px ${
+                    theme.palette.mode === 'dark'
+                      ? 'rgba(255,255,255,0.10)'
+                      : 'rgba(0,0,0,0.32)'
+                  })`,
                 mt: 1,
-                '&::before': { content: '""', display: 'block', position: 'absolute', bottom: 10, left: 0, width: 10, height: 10, bgcolor: 'background.paper', transform: 'translate(-50%, -50%) rotate(45deg)', zIndex: 0 },
+                '&::before': {
+                  content: '""',
+                  display: 'block',
+                  position: 'absolute',
+                  bottom: 10,
+                  left: 0,
+                  width: 10,
+                  height: 10,
+                  bgcolor: 'background.paper',
+                  transform: 'translate(-50%, -50%) rotate(45deg)',
+                  zIndex: 0,
+                },
               },
             },
           },
@@ -186,21 +178,46 @@ function SidebarFooterAccount({ mini }: SidebarFooterAccountProps) {
 }
 
 const demoSession: Session = {
-  user: { name: 'Bharat Kashyap', email: 'bharatkashyap@outlook.com', image: 'https://avatars.githubusercontent.com/u/19550456' },
+  user: {
+    name: 'Bharat Kashyap',
+    email: 'bharatkashyap@outlook.com',
+    image: 'https://avatars.githubusercontent.com/u/19550456',
+  },
 };
 
 export default function Sidepar_Admin(props: { window?: () => Window }) {
   const { window } = props;
-  const [pathname, setPathname] = React.useState('/dashboard');
+  const navigate = useNavigate();
+  const initialPathname =
+    typeof window === 'function'
+      ? window()?.location.pathname ?? ''
+      : typeof window !== 'undefined' && window?.location
+      ? (window as Window).location.pathname
+      : '';
+  const [pathname, setPathname] = React.useState(initialPathname);
 
   const router = React.useMemo<Router>(
-    () => ({ pathname, searchParams: new URLSearchParams(), navigate: path => setPathname(String(path)) }),
-    [pathname]
+    () => ({
+      pathname,
+      searchParams: new URLSearchParams(),
+      navigate: (path) => {
+        const fullPath = `/MasterAdmin${String(path)}`;
+        navigate(fullPath);
+        setPathname(fullPath);
+      },
+    }),
+    [pathname, navigate]
   );
 
   const demoWindow = window ? window() : undefined;
   const [session, setSession] = React.useState<Session | null>(demoSession);
-  const authentication = React.useMemo(() => ({ signIn: () => setSession(demoSession), signOut: () => setSession(null) }), []);
+  const authentication = React.useMemo(
+    () => ({
+      signIn: () => setSession(demoSession),
+      signOut: () => setSession(null),
+    }),
+    []
+  );
 
   return (
     <DemoProvider window={demoWindow}>
@@ -212,8 +229,16 @@ export default function Sidepar_Admin(props: { window?: () => Window }) {
         authentication={authentication}
         session={session}
       >
-        <DashboardLayout slots={{ toolbarActions: CustomToolbarActions, sidebarFooter: SidebarFooterAccount }}>
-          <DemoPageContent pathname={pathname} />
+        <DashboardLayout
+          defaultSidebarCollapsed          // ← هنا علشان يبتدي مقفول
+          sx={{
+            '& .MuiDrawer-root .MuiDrawer-paper': {
+              overflow: 'hidden',         // ← كدا مش هيظهر overflow ولا scrollbar
+            },
+          }}
+          slots={{ toolbarActions: CustomToolbarActions, sidebarFooter: SidebarFooterAccount }}
+        >
+          <DemoPageContent />
         </DashboardLayout>
       </AppProvider>
     </DemoProvider>
