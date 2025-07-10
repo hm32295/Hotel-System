@@ -13,6 +13,7 @@ export interface HeadCell<T> {
   label: string;
   numeric: boolean;
   disablePadding: boolean;
+  renderCell?: (value: T[keyof T], row: T) => React.ReactNode;
 }
 
 interface GenericTableProps<T> {
@@ -22,7 +23,7 @@ interface GenericTableProps<T> {
   renderActions?: (row: T) => React.ReactNode;
 }
 
-export default function GenericTable<T extends { id: number }>({
+export default function GenericTable<T extends { id: string | number }>({
   rows,
   headCells,
   title = "Table",
@@ -30,7 +31,7 @@ export default function GenericTable<T extends { id: number }>({
 }: GenericTableProps<T>) {
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof T>(headCells[0].id);
-  const [selected, setSelected] = React.useState<readonly number[]>([]);
+  const [selected, setSelected] = React.useState<readonly (string | number)[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -40,9 +41,9 @@ export default function GenericTable<T extends { id: number }>({
     setOrderBy(property);
   };
 
-  const handleClick = (id: number) => {
+  const handleClick = (id: string | number) => {
     const selectedIndex = selected.indexOf(id);
-    let newSelected: readonly number[] = [];
+    let newSelected: readonly (string | number)[] = [];
 
     if (selectedIndex === -1) {
       newSelected = selected.concat(id);
@@ -84,11 +85,10 @@ export default function GenericTable<T extends { id: number }>({
           </Typography>
         </Toolbar>
 
-        <TableContainer  sx={{paddingBottom:'1.5rem'}}>
+        <TableContainer sx={{ paddingBottom: '1.5rem' }}>
           <Table>
             <TableHead>
               <TableRow>
-                
                 {headCells.map((headCell) => (
                   <TableCell
                     key={String(headCell.id)}
@@ -117,7 +117,7 @@ export default function GenericTable<T extends { id: number }>({
                     <TableRow
                       hover
                       onClick={() => handleClick(row.id)}
-                      key={row.id}
+                      key={String(row.id)}
                       selected={isItemSelected}
                       sx={{ cursor: 'pointer' }}
                     >
@@ -126,7 +126,9 @@ export default function GenericTable<T extends { id: number }>({
                           key={String(headCell.id)}
                           align={headCell.numeric ? 'right' : 'left'}
                         >
-                          {row[headCell.id]}
+                          {headCell.renderCell
+                            ? headCell.renderCell(row[headCell.id], row)
+                            : String(row[headCell.id])}
                         </TableCell>
                       ))}
 
@@ -138,7 +140,7 @@ export default function GenericTable<T extends { id: number }>({
                 })
               ) : (
                 <TableRow>
-                  <TableCell colSpan={headCells.length + 2} align="center">
+                  <TableCell colSpan={headCells.length + 1} align="center">
                     <NoData />
                   </TableCell>
                 </TableRow>
@@ -160,6 +162,7 @@ export default function GenericTable<T extends { id: number }>({
     </Box>
   );
 }
+
 
 // used in any component
 // import MoreVertIcon from '@mui/icons-material/MoreVert';

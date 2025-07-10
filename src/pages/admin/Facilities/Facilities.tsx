@@ -16,11 +16,14 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Box } from "@mui/material";
+<<<<<<< HEAD
 import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
 import App from "../../../App";
+=======
+>>>>>>> 7895b678a468ac0e64a54efab8fe85ac36790245
 
-// Define the type for headCells
+// HeadCell Type
 type HeadCell = {
   id: string;
   label: string;
@@ -28,26 +31,19 @@ type HeadCell = {
   disablePadding: boolean;
 };
 
-// مكون مودال تأكيد الحذف
+// Delete Modal
 function DeleteConfirmation({ open, onClose, onConfirm, name }) {
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
-    >
-      <DialogTitle id="alert-dialog-title">{"Delete Confirmation"}</DialogTitle>
+    <Dialog open={open} onClose={onClose}>
+      <DialogTitle>Delete Confirmation</DialogTitle>
       <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-         Are you sure you want to delete?{name}؟
+        <DialogContentText>
+          Are you sure you want to delete {name}?
         </DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
-        <Button onClick={onConfirm} autoFocus>
-         Delete
-        </Button>
+        <Button onClick={onConfirm} autoFocus>Delete</Button>
       </DialogActions>
     </Dialog>
   );
@@ -57,14 +53,28 @@ const Facilities = () => {
   const [rows, setRows] = useState<any[]>([]);
   const [headCells, setHeadCells] = useState<HeadCell[]>([]);
   const [loading, setLoading] = useState(true);
+<<<<<<< HEAD
   const [openDelete, setOpenDelete] = useState(false);
+=======
+
+  const [openUpdate, setOpenUpdate] = useState(false);
+  const [value, setValue] = useState('');
+  const [itemToUpdate, setItemToUpdate] = useState<any>(null);
+  const [openDelete, setOpenDelete] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<any>(null);
+
+>>>>>>> 7895b678a468ac0e64a54efab8fe85ac36790245
   const fetchFacilities = async () => {
     try {
-      const res = await axiosInstance(FacilitesUrls.Get_All_Data);
+      const res = await axiosInstance.get(FacilitesUrls.GET_ALL);
       const facilitiesData = res.data.data.facilities.map(facility => ({
+<<<<<<< HEAD
         id: facility._id, 
+=======
+        id: facility._id,
+>>>>>>> 7895b678a468ac0e64a54efab8fe85ac36790245
         name: facility.name,
-        createdByUserName: facility.createdBy.userName,
+        createdByUserName: facility.createdBy?.userName ?? 'N/A',
         createdAt: facility.createdAt,
         updatedAt: facility.updatedAt,
       }));
@@ -83,17 +93,20 @@ const Facilities = () => {
   };
   useEffect(() => {
     fetchFacilities();
+<<<<<<< HEAD
   }, [fetchFacilities]);
   const [itemToUpdate, setItemToUpdate] = useState(null);
 const [openUpdate, setOpenUpdate] = useState(false);
   const [value, setValue] = useState('');
 //  Modal Edit 
+=======
+  }, []);
+
+>>>>>>> 7895b678a468ac0e64a54efab8fe85ac36790245
   const handleOpenUpdate = (row) => {
     setItemToUpdate(row);
     setValue(row.name);
-    console.log(row)
     setOpenUpdate(true);
-    setnum_id(row)
   };
 
   const handleCloseUpdate = () => {
@@ -101,6 +114,7 @@ const [openUpdate, setOpenUpdate] = useState(false);
     setItemToUpdate(null);
     setValue('');
   };
+<<<<<<< HEAD
   const handleConfirmUpdate = async () => {
     if (itemToUpdate) {
       try {
@@ -120,6 +134,21 @@ const [openUpdate, setOpenUpdate] = useState(false);
 
  const [itemToDelete, setItemToDelete] = useState(null);
   const handleOpenDelete = (row:any) => {
+=======
+
+  const handleUpdate = async () => {
+    if (!itemToUpdate) return;
+    try {
+      await axiosInstance.put(FacilitesUrls.UPDATE(itemToUpdate.id), { name: value });
+      fetchFacilities();
+      handleCloseUpdate();
+    } catch (error) {
+      console.error("Update Error:", error);
+    }
+  };
+
+  const handleOpenDelete = (row) => {
+>>>>>>> 7895b678a468ac0e64a54efab8fe85ac36790245
     setItemToDelete(row);
     setOpenDelete(true);
     console.log(row)
@@ -133,11 +162,16 @@ const [openUpdate, setOpenUpdate] = useState(false);
   const handleConfirmDelete = async () => {
     if (itemToDelete) {
       try {
+<<<<<<< HEAD
         await axiosInstance.delete(`${FacilitesUrls.Delete_Data}/${itemToDelete.id}`);
          toast.error(`Deleted ${itemToDelete.name} successfully.`)
         fetchFacilities(); 
       
        
+=======
+        await axiosInstance.delete(FacilitesUrls.DELETE(itemToDelete.id));
+        fetchFacilities();
+>>>>>>> 7895b678a468ac0e64a54efab8fe85ac36790245
       } catch (error) {
         console.error('Delete Error:', error);
         
@@ -147,7 +181,7 @@ const [openUpdate, setOpenUpdate] = useState(false);
   };
   return (
     <>
-      {/* Modal Update*/}
+      {/* Modal Update */}
       <Modal
         open={openUpdate}
         onClose={handleCloseUpdate}
@@ -180,6 +214,7 @@ const [openUpdate, setOpenUpdate] = useState(false);
               onChange={(e) => setValue(e.target.value)}
             />
             <Box mt={3} display="flex" justifyContent="flex-end">
+<<<<<<< HEAD
               <Button onClick={handleCloseUpdate} sx={{ mr: 1 }}>
                Cancel
               </Button>
@@ -190,6 +225,15 @@ const [openUpdate, setOpenUpdate] = useState(false);
           </Box>
         </Fade>
       </Modal> 
+=======
+              <Button onClick={handleCloseUpdate} sx={{ mr: 1 }}>Cancel</Button>
+              <Button variant="contained" onClick={handleUpdate}>Save</Button>
+            </Box>
+          </Box>
+        </Fade>
+      </Modal>
+
+>>>>>>> 7895b678a468ac0e64a54efab8fe85ac36790245
       <DeleteConfirmation
         open={openDelete}
         onClose={handleCloseDelete}
@@ -213,4 +257,9 @@ const [openUpdate, setOpenUpdate] = useState(false);
     </>
   );
 };
+<<<<<<< HEAD
 export default Facilities;
+=======
+
+export default Facilities;
+>>>>>>> 7895b678a468ac0e64a54efab8fe85ac36790245

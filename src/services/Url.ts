@@ -43,6 +43,7 @@ export const USERS_URL ={
 export const DASHBOARD_URL ={
     CHARTS : '/admin/dashboard'
 }
+<<<<<<< HEAD
 export const FacilitesUrls={
     Get_All_Data:'/admin/room-facilities',
     Delete_Data:'/admin/room-facilities'
@@ -51,3 +52,15 @@ export const ADS_Urls={
     Get_All_Data:'/admin/ads',
     Delete_Data:'/admin/ads'
 }
+=======
+export const listBooking = {
+    LIST_BOOKING: '/admin/booking?page=1&size=10',
+}
+export const FacilitesUrls = {
+  CREATE: '/admin/room-facilities',
+  GET_ALL: '/admin/room-facilities',
+  GET_DETAILS: (id: string) => `/admin/room-facilities/${id}`,
+  DELETE: (id: string) => `/admin/room-facilities/${id}`,
+  UPDATE: (id: string) => `/admin/room-facilities/${id}`,
+};
+>>>>>>> 7895b678a468ac0e64a54efab8fe85ac36790245
