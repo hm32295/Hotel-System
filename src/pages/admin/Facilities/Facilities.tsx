@@ -185,6 +185,7 @@ const Facilities = () => {
       ) : (
         <GenericTable
           headCells={headCells}
+          title="Facilities"
           rows={rows}
           renderActions={(row) => (
             <>

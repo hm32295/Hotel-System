@@ -1,0 +1,6 @@
+.rooms td {
+    display: table-cell !important;
+}
+.rooms .GenericTable p{
+    margin: 0;
+}

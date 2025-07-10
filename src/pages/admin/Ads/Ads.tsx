@@ -60,7 +60,6 @@ export default function Ads() {
 
   const deleteAds = async(ads)=>{
     const id =ads.id
-    
         try {
           const response =await axiosInstance.delete(ADS_URL.DELETE(id))
           console.log(response);
@@ -73,6 +72,7 @@ export default function Ads() {
         getAds()
     
   }
+
   useEffect(()=>{
     getAds()
     
@@ -85,7 +85,7 @@ export default function Ads() {
     <>
       <Box component={'button'}><Model icon={false} getAds={getAds}/></Box>
       <GenericTable
-      rows={product}
+        rows={product}
         headCells={productHeadCells}
         title=""
         renderActions={(row) => (

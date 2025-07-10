@@ -39,15 +39,7 @@ const [openUpdate, setOpenUpdate] = useState(false);
     }
     handleCloseUpdate();
   };
-  
-
-
-
-
     // End With Add Facilites
-
-
-
 
   return (
     <div className="Header" >

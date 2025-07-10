@@ -65,5 +65,7 @@ export const ADS_URL = {
 export const ROOMS_URL ={
     GET : '/admin/rooms',
     CREATE : '/admin/rooms',
+    UPDATE: (id:string)=> `/admin/rooms/${id}`,
+    DELETE: (id:string)=> `/admin/rooms/${id}`,
+    DETAILS: (id:string)=> `/admin/rooms/${id}`,
 }
-
