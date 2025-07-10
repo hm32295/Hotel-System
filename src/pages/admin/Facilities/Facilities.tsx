@@ -16,12 +16,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Box } from "@mui/material";
-<<<<<<< HEAD
-import { useForm } from "react-hook-form";
-import { toast, ToastContainer } from "react-toastify";
-import App from "../../../App";
-=======
->>>>>>> 7895b678a468ac0e64a54efab8fe85ac36790245
+import { toast } from "react-toastify";
 
 // HeadCell Type
 type HeadCell = {
@@ -53,26 +48,19 @@ const Facilities = () => {
   const [rows, setRows] = useState<any[]>([]);
   const [headCells, setHeadCells] = useState<HeadCell[]>([]);
   const [loading, setLoading] = useState(true);
-<<<<<<< HEAD
-  const [openDelete, setOpenDelete] = useState(false);
-=======
 
   const [openUpdate, setOpenUpdate] = useState(false);
   const [value, setValue] = useState('');
   const [itemToUpdate, setItemToUpdate] = useState<any>(null);
+
   const [openDelete, setOpenDelete] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<any>(null);
 
->>>>>>> 7895b678a468ac0e64a54efab8fe85ac36790245
   const fetchFacilities = async () => {
     try {
       const res = await axiosInstance.get(FacilitesUrls.GET_ALL);
       const facilitiesData = res.data.data.facilities.map(facility => ({
-<<<<<<< HEAD
-        id: facility._id, 
-=======
         id: facility._id,
->>>>>>> 7895b678a468ac0e64a54efab8fe85ac36790245
         name: facility.name,
         createdByUserName: facility.createdBy?.userName ?? 'N/A',
         createdAt: facility.createdAt,
@@ -81,8 +69,8 @@ const Facilities = () => {
       setRows(facilitiesData);
       setHeadCells([
         { id: "name", label: 'Facility Name', numeric: false, disablePadding: false },
-        { id: "createdByUserName", label:"Created By", numeric: false, disablePadding: false },
-        { id: "createdAt", label:"Creation Date", numeric: false, disablePadding: false },
+        { id: "createdByUserName", label: "Created By", numeric: false, disablePadding: false },
+        { id: "createdAt", label: "Creation Date", numeric: false, disablePadding: false },
         { id: "updatedAt", label: "Update Date", numeric: false, disablePadding: false },
       ]);
     } catch (error) {
@@ -91,18 +79,11 @@ const Facilities = () => {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     fetchFacilities();
-<<<<<<< HEAD
-  }, [fetchFacilities]);
-  const [itemToUpdate, setItemToUpdate] = useState(null);
-const [openUpdate, setOpenUpdate] = useState(false);
-  const [value, setValue] = useState('');
-//  Modal Edit 
-=======
   }, []);
 
->>>>>>> 7895b678a468ac0e64a54efab8fe85ac36790245
   const handleOpenUpdate = (row) => {
     setItemToUpdate(row);
     setValue(row.name);
@@ -114,44 +95,23 @@ const [openUpdate, setOpenUpdate] = useState(false);
     setItemToUpdate(null);
     setValue('');
   };
-<<<<<<< HEAD
+
   const handleConfirmUpdate = async () => {
     if (itemToUpdate) {
       try {
-        await axiosInstance.put(`${FacilitesUrls.Delete_Data}/${itemToUpdate.id}`,  { name: value });
-         toast.success(`Update ${itemToUpdate.name} successfully.`)
-        fetchFacilities(); 
-      
-       
+        await axiosInstance.put(FacilitesUrls.UPDATE(itemToUpdate.id), { name: value });
+        toast.success(`Updated ${itemToUpdate.name} successfully.`);
+        fetchFacilities();
       } catch (error) {
-        console.error('Delete Error:', error);
-        
+        console.error("Update Error:", error);
       }
     }
     handleCloseUpdate();
   };
-  
-
- const [itemToDelete, setItemToDelete] = useState(null);
-  const handleOpenDelete = (row:any) => {
-=======
-
-  const handleUpdate = async () => {
-    if (!itemToUpdate) return;
-    try {
-      await axiosInstance.put(FacilitesUrls.UPDATE(itemToUpdate.id), { name: value });
-      fetchFacilities();
-      handleCloseUpdate();
-    } catch (error) {
-      console.error("Update Error:", error);
-    }
-  };
 
   const handleOpenDelete = (row) => {
->>>>>>> 7895b678a468ac0e64a54efab8fe85ac36790245
     setItemToDelete(row);
     setOpenDelete(true);
-    console.log(row)
   };
 
   const handleCloseDelete = () => {
@@ -162,26 +122,18 @@ const [openUpdate, setOpenUpdate] = useState(false);
   const handleConfirmDelete = async () => {
     if (itemToDelete) {
       try {
-<<<<<<< HEAD
-        await axiosInstance.delete(`${FacilitesUrls.Delete_Data}/${itemToDelete.id}`);
-         toast.error(`Deleted ${itemToDelete.name} successfully.`)
-        fetchFacilities(); 
-      
-       
-=======
         await axiosInstance.delete(FacilitesUrls.DELETE(itemToDelete.id));
+        toast.error(`Deleted ${itemToDelete.name} successfully.`);
         fetchFacilities();
->>>>>>> 7895b678a468ac0e64a54efab8fe85ac36790245
       } catch (error) {
-        console.error('Delete Error:', error);
-        
+        console.error("Delete Error:", error);
       }
     }
     handleCloseDelete();
   };
+
   return (
     <>
-      {/* Modal Update */}
       <Modal
         open={openUpdate}
         onClose={handleCloseUpdate}
@@ -190,15 +142,15 @@ const [openUpdate, setOpenUpdate] = useState(false);
         slotProps={{ backdrop: { timeout: 500 } }}
       >
         <Fade in={openUpdate}>
-          <Box sx={{ 
-            position: 'absolute', 
-            top: '50%', 
-            left: '50%', 
-            transform: 'translate(-50%, -50%)', 
-            bgcolor: 'background.paper', 
-            boxShadow: 24, 
-            p: 4, 
-            width: 400 
+          <Box sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            p: 4,
+            width: 400
           }}>
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
               <h2 style={{ margin: 0 }}>Edit Facility</h2>
@@ -214,32 +166,20 @@ const [openUpdate, setOpenUpdate] = useState(false);
               onChange={(e) => setValue(e.target.value)}
             />
             <Box mt={3} display="flex" justifyContent="flex-end">
-<<<<<<< HEAD
-              <Button onClick={handleCloseUpdate} sx={{ mr: 1 }}>
-               Cancel
-              </Button>
-              <Button variant="contained" onClick={handleConfirmUpdate} >
-               Save
-              </Button>
-            </Box>
-          </Box>
-        </Fade>
-      </Modal> 
-=======
               <Button onClick={handleCloseUpdate} sx={{ mr: 1 }}>Cancel</Button>
-              <Button variant="contained" onClick={handleUpdate}>Save</Button>
+              <Button variant="contained" onClick={handleConfirmUpdate}>Save</Button>
             </Box>
           </Box>
         </Fade>
       </Modal>
 
->>>>>>> 7895b678a468ac0e64a54efab8fe85ac36790245
       <DeleteConfirmation
         open={openDelete}
         onClose={handleCloseDelete}
         onConfirm={handleConfirmDelete}
         name={itemToDelete ? itemToDelete.name : ''}
       />
+
       {loading ? (
         <div>Loading…</div>
       ) : (
@@ -257,9 +197,5 @@ const [openUpdate, setOpenUpdate] = useState(false);
     </>
   );
 };
-<<<<<<< HEAD
-export default Facilities;
-=======
 
 export default Facilities;
->>>>>>> 7895b678a468ac0e64a54efab8fe85ac36790245

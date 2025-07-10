@@ -6,11 +6,9 @@ import 'antd/dist/antd.css';
 import 'react-toastify/dist/ReactToastify.css';
 import { Login,Register,Reset,Change_pass,Forget,Verify,Home,Favorites,Explore,Details,MasterUser,MasterAdmin,HomeAdmin,Ads,Facilities, UsersList, Dashboard } from './pages/index';
 import ListBooking from './pages/admin/ListBooking/ListBooking';
-<<<<<<< HEAD
+import 'antd/dist/antd.css';
 import Rooms from './pages/admin/Rooms/Rooms';
 import { ToastContainer } from 'react-toastify';
-=======
->>>>>>> 7895b678a468ac0e64a54efab8fe85ac36790245
 const App = () => {
   const routes=createBrowserRouter(
     [
