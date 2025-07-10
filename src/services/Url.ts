@@ -22,7 +22,7 @@ axiosInstance.interceptors.request.use((config) => {
     return config;
 });
 
-// /admin/users/reset-password
+
 export const ADMIN_URL ={
     RESET_PASSWORD : '/admin/users/reset-password',
     FORGET_PASSWORD: '/admin/users/forgot-password',
@@ -42,4 +42,16 @@ export const USERS_URL ={
 
 export const DASHBOARD_URL ={
     CHARTS : '/admin/dashboard'
+}
+
+export const ADS_URL = {
+    GET : '/admin/ads',
+    CREATE : '/admin/ads',
+    DELETE : (id:string)=> `/admin/ads/${id}`,
+    VIEW : (id:string)=> `/admin/ads/${id}`,
+    UPDATE : (id:string)=> `/admin/ads/${id}`,
+}
+export const ROOMS_URL ={
+    GET : '/admin/rooms',
+    CREATE : '/admin/rooms',
 }
