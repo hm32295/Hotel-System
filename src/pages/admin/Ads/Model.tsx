@@ -133,9 +133,9 @@ export default function Model({ getAds, icon, row }: { row: any, getAds: any, ic
 
   if(loader) return <Box sx={{width:'100%', display:'flex', justifyContent:'stretch' ,alignItems:'stretch'}}> <Variants /></Box>
   return (
-    <Box sx={{ width: '100%' }} onClick={handleClickOpen}>
+    <Box onClick={handleClickOpen}>
       
-      {icon ? <EditNoteIcon /> : 'add ads'}
+      {icon ? <EditNoteIcon sx={{display:'flex' , justifyContent:'center',alignItems:'center'}} /> : 'add ads'}
       <BootstrapDialog
         onClick={e => e.stopPropagation()}
         onClose={handleClose}
@@ -143,7 +143,7 @@ export default function Model({ getAds, icon, row }: { row: any, getAds: any, ic
         open={open}
       >
         <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-          Add Ads
+         {icon? 'Edit Ads' : 'Add Ads'}
         </DialogTitle>
         <IconButton
           aria-label="close"

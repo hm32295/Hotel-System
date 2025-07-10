@@ -1,7 +1,7 @@
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+// import MoreVertIcon from '@mui/icons-material/MoreVert';
 import GenericTable , { type HeadCell } from "../../../component_Admin/GenericTable/GenericTable";
 
-import DeleteIcon from '@mui/icons-material/Delete';
+// import DeleteIcon from '@mui/icons-material/Delete';
 
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { Box } from '@mui/material';
@@ -90,22 +90,13 @@ export default function Ads() {
         title=""
         renderActions={(row) => (
             <>
-              <MoreVertIcon className='showList'/>
-              <Box className='list'>
+              {/* <MoreVertIcon className='showList'/> */}
+              <Box sx={{display:'flex' ,justifyContent:'center',alignItems:'center'}}>
 
-                <Fragment>
                   <Model getAds={getAds} icon={true} row={row}/>
-                </Fragment>
-                <Fragment>
                   <DeleteConfirmation data={row} deleteFun={deleteAds}/>
-                </Fragment>
-                <Fragment >
-                    <Box onClick={() => console.log("view", row)}>
-                      <VisibilityIcon />
-                    </Box>
-                </Fragment>
+                  <VisibilityIcon />
               </Box>
-              
             </>
     )}
   />
@@ -115,4 +106,17 @@ export default function Ads() {
 
 
 
+{/* <Box className='list'>
 
+<Fragment>
+  <Model getAds={getAds} icon={true} row={row}/>
+</Fragment>
+<Fragment>
+  <DeleteConfirmation data={row} deleteFun={deleteAds}/>
+</Fragment>
+<Fragment >
+    <Box onClick={() => console.log("view", row)}>
+      <VisibilityIcon />
+    </Box>
+</Fragment>
+</Box> */}
