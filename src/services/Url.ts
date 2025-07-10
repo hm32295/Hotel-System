@@ -43,6 +43,13 @@ export const USERS_URL ={
 export const DASHBOARD_URL ={
     CHARTS : '/admin/dashboard'
 }
-export const FacilitesUrls={
-    Get_All_Data:'/admin/room-facilities'
+export const listBooking = {
+    LIST_BOOKING: '/admin/booking?page=1&size=10',
 }
+export const FacilitesUrls = {
+  CREATE: '/admin/room-facilities',
+  GET_ALL: '/admin/room-facilities',
+  GET_DETAILS: (id: string) => `/admin/room-facilities/${id}`,
+  DELETE: (id: string) => `/admin/room-facilities/${id}`,
+  UPDATE: (id: string) => `/admin/room-facilities/${id}`,
+};

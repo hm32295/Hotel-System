@@ -16,9 +16,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Box } from "@mui/material";
-import { useForm } from "react-hook-form";
 
-// Define the type for headCells
+// HeadCell Type
 type HeadCell = {
   id: string;
   label: string;
@@ -26,26 +25,19 @@ type HeadCell = {
   disablePadding: boolean;
 };
 
-// مكون مودال تأكيد الحذف
+// Delete Modal
 function DeleteConfirmation({ open, onClose, onConfirm, name }) {
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
-    >
-      <DialogTitle id="alert-dialog-title">{"Delete Confirmation"}</DialogTitle>
+    <Dialog open={open} onClose={onClose}>
+      <DialogTitle>Delete Confirmation</DialogTitle>
       <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-         Are you sure you want to delete?{name}؟
+        <DialogContentText>
+          Are you sure you want to delete {name}?
         </DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
-        <Button onClick={onConfirm} autoFocus>
-         Delete
-        </Button>
+        <Button onClick={onConfirm} autoFocus>Delete</Button>
       </DialogActions>
     </Dialog>
   );
@@ -58,17 +50,17 @@ const Facilities = () => {
 
   const [openUpdate, setOpenUpdate] = useState(false);
   const [value, setValue] = useState('');
-  const [itemToUpdate, setItemToUpdate] = useState(null);
+  const [itemToUpdate, setItemToUpdate] = useState<any>(null);
   const [openDelete, setOpenDelete] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState(null);
+  const [itemToDelete, setItemToDelete] = useState<any>(null);
 
   const fetchFacilities = async () => {
     try {
-      const res = await axiosInstance(FacilitesUrls.Get_All_Data);
+      const res = await axiosInstance.get(FacilitesUrls.GET_ALL);
       const facilitiesData = res.data.data.facilities.map(facility => ({
-        id: facility.id, 
+        id: facility._id,
         name: facility.name,
-        createdByUserName: facility.createdBy.userName,
+        createdByUserName: facility.createdBy?.userName ?? 'N/A',
         createdAt: facility.createdAt,
         updatedAt: facility.updatedAt,
       }));
@@ -89,27 +81,11 @@ const Facilities = () => {
   useEffect(() => {
     fetchFacilities();
   }, []);
-// Handle Form 
- const { register, formState: { errors }, handleSubmit } = useForm();
-let SureEdit=(data)=>{
-  
-console.log(data)
-}
 
-
-
-
-
-
-
-let [num,setnum_id]=useState([])
-//  Modal Edit 
   const handleOpenUpdate = (row) => {
     setItemToUpdate(row);
     setValue(row.name);
-    console.log(row)
     setOpenUpdate(true);
-    setnum_id(row)
   };
 
   const handleCloseUpdate = () => {
@@ -118,8 +94,16 @@ let [num,setnum_id]=useState([])
     setValue('');
   };
 
-  
-
+  const handleUpdate = async () => {
+    if (!itemToUpdate) return;
+    try {
+      await axiosInstance.put(FacilitesUrls.UPDATE(itemToUpdate.id), { name: value });
+      fetchFacilities();
+      handleCloseUpdate();
+    } catch (error) {
+      console.error("Update Error:", error);
+    }
+  };
 
   const handleOpenDelete = (row) => {
     setItemToDelete(row);
@@ -134,8 +118,8 @@ let [num,setnum_id]=useState([])
   const handleConfirmDelete = async () => {
     if (itemToDelete) {
       try {
-        await axiosInstance.delete(`${FacilitesUrls.Delete_Data}/${itemToDelete.id}`);
-        fetchFacilities(); 
+        await axiosInstance.delete(FacilitesUrls.DELETE(itemToDelete.id));
+        fetchFacilities();
       } catch (error) {
         console.error('Delete Error:', error);
       }
@@ -145,7 +129,7 @@ let [num,setnum_id]=useState([])
 
   return (
     <>
-      {/* Modal Update*/}
+      {/* Modal Update */}
       <Modal
         open={openUpdate}
         onClose={handleCloseUpdate}
@@ -178,18 +162,13 @@ let [num,setnum_id]=useState([])
               onChange={(e) => setValue(e.target.value)}
             />
             <Box mt={3} display="flex" justifyContent="flex-end">
-              <Button onClick={handleCloseUpdate} sx={{ mr: 1 }}>
-               Cancel
-              </Button>
-              <Button variant="contained" onClick={SureEdit()}>
-               Save
-              </Button>
+              <Button onClick={handleCloseUpdate} sx={{ mr: 1 }}>Cancel</Button>
+              <Button variant="contained" onClick={handleUpdate}>Save</Button>
             </Box>
           </Box>
         </Fade>
       </Modal>
 
-    
       <DeleteConfirmation
         open={openDelete}
         onClose={handleCloseDelete}
