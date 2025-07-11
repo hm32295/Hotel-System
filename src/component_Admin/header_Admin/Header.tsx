@@ -1,12 +1,13 @@
 import { toast } from 'react-toastify';
 import './header.css'
 import { axiosInstance, FacilitesUrls } from '../../services/Url';
-import { useState } from 'react';
-import { Box, Button, Fade, IconButton, Modal, TextField } from '@mui/material';
+import { useContext, useEffect, useState } from 'react';
+import { Box, Button, Fade, IconButton, Modal, TextField, useColorScheme} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import Backdrop from '@mui/material/Backdrop';
 
-const Header = () => {
+
+const Header = ({fetchFacilities,setRefresh}) => {
     let  location=window.location.pathname
     // Start With Add Facilites
   const [itemToUpdate, setItemToUpdate] = useState(null);
@@ -26,11 +27,18 @@ const [openUpdate, setOpenUpdate] = useState(false);
     setItemToUpdate(null);
     setValue('');
   };
+ 
   const handleConfirmAdd = async () => {
     if (itemToUpdate) {
       try {
-        await axiosInstance.post(`${FacilitesUrls.Delete_Data}`, { name: value });
-         toast.success(`Update ${itemToUpdate.name} successfully.`)
+       
+        await axiosInstance.post(`${FacilitesUrls.CREATE}`, { name: value });
+         toast.success(`Added   successfully.`)
+        
+        window.location.reload()
+        fetchFacilities()
+      
+        setRefresh(vl=>vl+1)
          
       } catch (error) {
         console.error('Delete Error:', error);
@@ -39,7 +47,6 @@ const [openUpdate, setOpenUpdate] = useState(false);
     }
     handleCloseUpdate();
   };
-  
 
 
 
@@ -47,7 +54,8 @@ const [openUpdate, setOpenUpdate] = useState(false);
     // End With Add Facilites
 
 
-
+ const { mode } = useColorScheme();
+  const isDarkMode = mode === 'dark';
 
   return (
     <div className="Header" >
@@ -95,17 +103,18 @@ const [openUpdate, setOpenUpdate] = useState(false);
               </Fade>
             </Modal>
             {/* End Mofal Add Facilites */}
-        <div className="Header_Container " style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-            <div className="Header_Left" style={{display: 'flex', alignItems: 'center',flexDirection: 'column'}}>
+            <div className="Header_Container " style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center',color:'#fff'}}>
+            <div className={isDarkMode?'indark' :'Header_Left'} style={{display: 'flex', alignItems: 'center',flexDirection: 'column',color:'#fff'}} >
               {location==='/MasterAdmin/Facilities'?
-              <h3>Facilities Table Details</h3> : location==='/MasterAdmin/Ads'
+              <h3 >Facilities Table Details</h3> : location==='/MasterAdmin/Ads'
               ? <h3>ADS Table Details </h3> :location==='/MasterAdmin/Explore'?<h3>Explore Table Details</h3>
               :location==='/MasterAdmin/ListBooking'?<h3>Booking Table Details </h3>
               :location==='/MasterAdmin/Rooms'?<h3>Rooms Table Details </h3>:null
 
               
           }
-          {location!='/MasterAdmin/HomeAdmin' ?  <h4>You can check all details</h4>:null}
+
+          {location!='/MasterAdmin/HomeAdmin' ?  <h4 className={isDarkMode?"dark_WE":''}>You can check all details</h4>:null}
         
 
             </div>
@@ -120,6 +129,7 @@ const [openUpdate, setOpenUpdate] = useState(false);
           }
                 
              </div>
+       
         </div>
 
 

@@ -7,6 +7,7 @@
       width: 100%;
   padding-right: 15px;
   padding-left: 15px;
+ 
   margin-right: auto;
   margin-left: auto;
 
@@ -20,4 +21,8 @@
     border-radius: 3px;
     border: none;
     outline: none;
+}
+.indark h3,.dark_WE{
+  color: #fff !important;
+   margin: 0;
 }

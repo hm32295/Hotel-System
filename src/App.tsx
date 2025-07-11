@@ -38,13 +38,11 @@ const App = () => {
         path:'/MasterAdmin',
         element:<MasterAdmin/>,
         children:[
-          {index:true,element:<HomeAdmin/>},
-          {path:'HomeAdmin',element:<HomeAdmin/>},
+          {index:true,element:<Dashboard/>},
           {path:'dashboard',element:<Dashboard/>},
           {path:'Ads',element:<Ads/>},
           {path:'users-list',element:<UsersList/>},
           {path:'list-booking',element:<ListBooking/>},
-
           {path:'Facilities',element:<Facilities/>},
           {path:'Explore',element:<Explore/>},
         ]

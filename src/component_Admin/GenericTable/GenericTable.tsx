@@ -77,11 +77,11 @@ export default function GenericTable<T extends { id: string | number }>({
   }, [rows, order, orderBy, page, rowsPerPage]);
 
   return (
-    <Box sx={{ width: '100%' }} className='GenericTable'>
+    <Box sx={{ width: '100%',marginTop:'30px'}} className='GenericTable' >
       <Paper sx={{ width: '100%', mb: 2 }}>
         <Toolbar>
           <Typography variant="h6" sx={{ flex: 1 }}>
-            {title}
+           
           </Typography>
         </Toolbar>
 

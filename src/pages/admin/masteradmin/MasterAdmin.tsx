@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
@@ -8,7 +8,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
-import { createTheme } from '@mui/material/styles';
+import { createTheme, useColorScheme } from '@mui/material/styles';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import WidgetsIcon from '@mui/icons-material/Widgets';
 import AddHomeWorkIcon from '@mui/icons-material/AddHomeWork';
@@ -35,10 +35,11 @@ import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Header from '../../../component_Admin/header_Admin/Header';
 import ExploreIcon from '@mui/icons-material/Explore';
+import { AuthContext } from '../../../context/context';
 
 const NAVIGATION: Navigation = [
   { kind: 'header', title: 'Main items' },
-  { segment: 'HomeAdmin', title: 'Home', icon: <AddHomeWorkIcon /> },
+  { segment: 'dashboard', title: 'Home', icon: <AddHomeWorkIcon /> },
  
   { segment: 'Rooms', title: 'Rooms', icon: <WidgetsIcon /> },
   { segment: 'Ads', title: 'Ads', icon: <CalendarMonthIcon /> },
@@ -55,12 +56,15 @@ const demoTheme = createTheme({
 });
 
 function CustomToolbarActions() {
+  const { mode } = useColorScheme();
+  const isDarkMode = mode === 'dark';
+  let {loginData}=useContext(AuthContext)
   return (
     <Stack direction="row" justifyContent="space-between" alignItems="center">
       <Box display="flex" flexDirection="row" alignItems="center" gap={1} mr={2}>
         <Avatar src={Picture_Profile} alt="Upskilling" />
-        <Typography variant="h6" fontWeight={600} fontSize={14}>
-          Upskilling
+        <Typography variant="h6"color={isDarkMode?'#fff':''} fontWeight={600} fontSize={14}>
+         {loginData?.role}
         </Typography>
       </Box>
       <ThemeSwitcher />
@@ -72,7 +76,10 @@ function DemoPageContent() {
   const LOCATION = window.location.pathname;
   return (
     <>
-      {LOCATION !== '/MasterAdmin/HomeAdmin' && LOCATION !== '/MasterAdmin' ? <Header /> : null}
+    <div className="" style={{marginTop:'10px'}}>
+       {LOCATION !== '/MasterAdmin/HomeAdmin' && LOCATION !== '/MasterAdmin' ? <Header /> : null}
+    </div>
+     
       <Outlet />
     </>
   );
@@ -230,10 +237,10 @@ export default function Sidepar_Admin(props: { window?: () => Window }) {
         session={session}
       >
         <DashboardLayout
-          defaultSidebarCollapsed          // ← هنا علشان يبتدي مقفول
+          defaultSidebarCollapsed       
           sx={{
             '& .MuiDrawer-root .MuiDrawer-paper': {
-              overflow: 'hidden',         // ← كدا مش هيظهر overflow ولا scrollbar
+              overflow: 'hidden',       
             },
           }}
           slots={{ toolbarActions: CustomToolbarActions, sidebarFooter: SidebarFooterAccount }}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import GenericTable from "../../../component_Admin/GenericTable/GenericTable";
 import { axiosInstance, FacilitesUrls } from "../../../services/Url";
 import AutoDeleteIcon from '@mui/icons-material/AutoDelete';
@@ -15,8 +15,13 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { Box } from "@mui/material";
+import { Box, Menu, MenuItem, useTheme } from "@mui/material";
 import { toast } from "react-toastify";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import Header from "../../../component_Admin/header_Admin/Header";
+
+
 
 // HeadCell Type
 type HeadCell = {
@@ -28,6 +33,9 @@ type HeadCell = {
 
 // Delete Modal
 function DeleteConfirmation({ open, onClose, onConfirm, name }) {
+
+
+
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Delete Confirmation</DialogTitle>
@@ -55,14 +63,14 @@ const Facilities = () => {
 
   const [openDelete, setOpenDelete] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<any>(null);
-
-  const fetchFacilities = async () => {
+let [refresh,setRefresh]=useState(0)
+    const fetchFacilities = async() => {
     try {
       const res = await axiosInstance.get(FacilitesUrls.GET_ALL);
       const facilitiesData = res.data.data.facilities.map(facility => ({
         id: facility._id,
         name: facility.name,
-        createdByUserName: facility.createdBy?.userName ?? 'N/A',
+        createdByUserName: facility.createdBy?.userName ?? 'N/f',
         createdAt: facility.createdAt,
         updatedAt: facility.updatedAt,
       }));
@@ -131,6 +139,20 @@ const Facilities = () => {
     }
     handleCloseDelete();
   };
+  // حطّ دي قبل الـ return:
+const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+const [selectedRow, setSelectedRow] = useState<any>(null);
+
+const handleMenuOpen = (e: React.MouseEvent<HTMLElement>, row: any) => {
+  setAnchorEl(e.currentTarget);
+  setSelectedRow(row);
+};
+
+const handleMenuClose = () => {
+  setAnchorEl(null);
+  setSelectedRow(null);
+};
+
 
   return (
     <>
@@ -179,8 +201,12 @@ const Facilities = () => {
         onConfirm={handleConfirmDelete}
         name={itemToDelete ? itemToDelete.name : ''}
       />
+<div style={{display:'none'}}>
+  <Header fetchFacilities={fetchFacilities} setrefresh={setRefresh}   />
+</div>
 
-      {loading ? (
+   {loading ? (
+    
         <div>Loading…</div>
       ) : (
         <GenericTable
@@ -188,8 +214,50 @@ const Facilities = () => {
           rows={rows}
           renderActions={(row) => (
             <>
-              <Button onClick={() => handleOpenUpdate(row)}><EditNoteIcon /></Button>
-              <Button onClick={() => handleOpenDelete(row)}><AutoDeleteIcon /></Button>
+              <IconButton
+                aria-controls="action-menu"
+                aria-haspopup="true"
+                onClick={(e) => handleMenuOpen(e, row)}
+              >
+                <MoreVertIcon />
+              </IconButton>
+
+              <Menu
+                id="action-menu"
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl) && selectedRow === row}
+                onClose={handleMenuClose}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+              >
+                <MenuItem
+                  onClick={() => {
+                    handleOpenView(selectedRow);
+                    handleMenuClose();
+                  }}
+                >
+                  <VisibilityIcon fontSize="small" sx={{ mr: 1 }} />
+                  View
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    handleOpenUpdate(selectedRow);
+                    handleMenuClose();
+                  }}
+                >
+                  <EditNoteIcon fontSize="small" sx={{ mr: 1 }} />
+                  Edit
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    handleOpenDelete(selectedRow);
+                    handleMenuClose();
+                  }}
+                >
+                  <AutoDeleteIcon fontSize="small" sx={{ mr: 1 }} />
+                  Delete
+                </MenuItem>
+              </Menu>
             </>
           )}
         />
