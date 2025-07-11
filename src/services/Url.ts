@@ -28,7 +28,8 @@ export const ADMIN_URL ={
     FORGET_PASSWORD: '/admin/users/forgot-password',
     CREATE_USER : '/admin/users',
     LOGIN : '/admin/users/login',
-    CHANGE_PASSWORD : '/admin/users/change-password'
+    CHANGE_PASSWORD : '/admin/users/change-password',
+    GET_ALL_USER : 'admin/users/',
 }
 export const USERS_URL ={
     RESET_PASSWORD : '/portal/users/reset-password',

@@ -23,11 +23,13 @@ interface ViewDataProps {
     
   };
 }
-export default function ViewData({setShowData ,data}:ViewDataProps) {
-
+export default function ViewData({setShowData ,data,title}:ViewDataProps) {
+  console.log(data);
+  console.log(title);
+  
   return (
     <Card sx={{ maxWidth:345 }} onClick={(e)=>{e.stopPropagation()}}>
-      <CardActionArea>
+      
         <CardMedia
           component="img"
           height="140"
@@ -35,11 +37,16 @@ export default function ViewData({setShowData ,data}:ViewDataProps) {
           alt={data?.image?.props?.alt}
         />
         <CardContent>
+          
+           
+
+               <Typography sx={{gap:'.5rem',textTransform:"capitalize", display:'flex' , justifyContent:'space-between'}} gutterBottom variant="h5" component="div">
+                <Box component={'span'}>{''}</Box> <Box component={'span'}>{data.name}</Box>
+               </Typography>
+            
+          
           <Typography sx={{gap:'.5rem',textTransform:"capitalize", display:'flex' , justifyContent:'space-between'}} gutterBottom variant="h5" component="div">
-            <Box component={'span'}>Room Number</Box> <Box component={'span'}>{data.name}</Box>
-          </Typography>
-          <Typography sx={{gap:'.5rem',textTransform:"capitalize", display:'flex' , justifyContent:'space-between'}} gutterBottom variant="h5" component="div">
-          <Box component={'span'}>price</Box><Box component={'span'}>{data.price}</Box>
+            <Box component={'span'}>price</Box><Box component={'span'}>{data.price}</Box>
           </Typography>
           <Typography sx={{gap:'.5rem',textTransform:"capitalize", display:'flex' , justifyContent:'space-between'}} gutterBottom variant="h5" component="div">
              <Box component={'span'}>discount</Box><Box component={'span'}>{data.discount}</Box>
@@ -52,7 +59,6 @@ export default function ViewData({setShowData ,data}:ViewDataProps) {
         <CardActions>
             <Button onClick={()=> setShowData(false)} size="small">Ok</Button>
         </CardActions>
-      </CardActionArea>
     </Card>
   );
 }

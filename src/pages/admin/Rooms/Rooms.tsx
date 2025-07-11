@@ -1,8 +1,9 @@
-import { Box } from '@mui/material'
+import { Box, IconButton, Menu, MenuItem } from '@mui/material'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import GenericTable , { type HeadCell } from "../../../component_Admin/GenericTable/GenericTable";
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import DeleteIcon from '@mui/icons-material/Delete';
+import AutoDeleteIcon from '@mui/icons-material/AutoDelete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { axiosInstance, ROOMS_URL } from '../../../services/Url';
 import { useEffect, useState, type JSX } from 'react';
@@ -37,7 +38,18 @@ export default function Rooms() {
     const navigation = useNavigate();
     const [loader ,setLoader] = useState(false)
     const [showData , setShowData] = useState(false);
-    const [row , setRow] = useState({})
+    const [row , setRow] = useState({});
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [selectedRow, setSelectedRow] = useState<any>(null);
+    const handleMenuOpen = (e: React.MouseEvent<HTMLElement>, row: any) => {
+        setAnchorEl(e.currentTarget);
+        setSelectedRow(row);
+    };
+
+    const handleMenuClose = () => {
+      setAnchorEl(null);
+      setSelectedRow(null);
+    };
     const getRooms = async () =>{
       setLoader(true)
       try {
@@ -100,7 +112,54 @@ export default function Rooms() {
                 title="Room List"
                 renderActions={(row) => (
                     <>
-                    <Box sx={{display:'flex' ,gap:'.1rem' ,justifyContent:'center',alignItems:'center'}}>
+
+                     <>
+                          <IconButton
+                            aria-controls="action-menu"
+                            aria-haspopup="true"
+                            onClick={(e) => handleMenuOpen(e, row)}
+                          >
+                            <MoreVertIcon />
+                          </IconButton>
+
+                          <Menu
+                            id="action-menu"
+                            anchorEl={anchorEl}
+                            open={Boolean(anchorEl) && selectedRow === row}
+                            onClose={handleMenuClose}
+                            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                          >
+                            <MenuItem
+                              onClick={() => {
+                               setShowData(true); setRow(row);
+                                handleMenuClose();
+                              }}
+                            >
+                              <VisibilityIcon fontSize="small" sx={{ mr: 1 }} />
+                              View
+                            </MenuItem>
+
+                            <MenuItem
+                              onClick={() => {
+                                handleView(row) 
+                                handleMenuClose();
+                              }}
+                            >
+                              <EditNoteIcon fontSize="small" sx={{ mr: 1 }} />
+                              Edit
+                            </MenuItem>
+                            <MenuItem
+                              onClick={() => {
+                                handleMenuClose();
+                              }}
+                            >
+                              <DeleteConfirmation data={row} deleteFun={deleteRoom}/>
+                              Delete
+                            </MenuItem>
+                          </Menu>
+                     </>
+                    {/* <Box sx={{display:'flex' ,gap:'.1rem' ,justifyContent:'center',alignItems:'center'}}>
                         <EditNoteIcon onClick={()=>{
                           handleView(row)}}/>
                         <VisibilityIcon onClick={()=>{setShowData(true); setRow(row)
@@ -110,7 +169,7 @@ export default function Rooms() {
                      
                        
                        
-                    </Box>
+                    </Box> */}
                       
                       
                     </>

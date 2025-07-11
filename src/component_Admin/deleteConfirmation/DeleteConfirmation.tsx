@@ -38,7 +38,7 @@ export default function DeleteConfirmation({data,deleteFun}) {
 
   return (
     <Box>
-      <DeleteIcon sx={{display:'flex' ,justifyContent:'center',alignItems:'center'}}  onClick={handleClickOpen} />
+      <DeleteIcon sx={{display:'flex',mr:1 ,justifyContent:'center',alignItems:'center'}}  onClick={handleClickOpen} />
     
       <Dialog
         open={open}
