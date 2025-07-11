@@ -5,8 +5,6 @@ import { useContext, useEffect, useState } from 'react';
 import { Box, Button, Fade, IconButton, Modal, TextField, useColorScheme} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import Backdrop from '@mui/material/Backdrop';
-
-
 const Header = ({fetchFacilities,setRefresh}) => {
     let  location=window.location.pathname
     // Start With Add Facilites
@@ -34,10 +32,8 @@ const [openUpdate, setOpenUpdate] = useState(false);
        
         await axiosInstance.post(`${FacilitesUrls.CREATE}`, { name: value });
          toast.success(`Added   successfully.`)
-        
         window.location.reload()
         fetchFacilities()
-      
         setRefresh(vl=>vl+1)
          
       } catch (error) {

@@ -34,7 +34,7 @@ const styleBox ={
 
   }
   const styleBoxDetails ={mb:0, display:'flex' , justifyContent:'center', flexDirection:'column', gap:'.2rem', alignItems:'center'}
-  const styleUsers ={background:'#fff',flex:'1',gap:'2rem' ,borderRadius:'.5rem' ,padding:'1rem', minWidth: '200px', display:'flex' , justifyContent:'center', alignItems:'center', flexWrap:'wrap', flexDirection:'column'}
+  const styleUsers ={flex:'1',gap:'2rem' ,borderRadius:'.5rem' ,padding:'1rem', minWidth: '200px', display:'flex' , justifyContent:'center', alignItems:'center', flexWrap:'wrap', flexDirection:'column'}
 export default function Dashboard() {
     const [allData , setAllData] = useState([]);
 
