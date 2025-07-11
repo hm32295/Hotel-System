@@ -1,12 +1,11 @@
 import React from 'react'
 import {createBrowserRouter, RouterProvider } from 'react-router-dom';
+
 import 'react-pro-sidebar/dist/css/styles.css';
-import 'react-toastify/dist/ReactToastify.css';
-import { Login,Register,Reset,Change_pass,Forget,Verify,Home,Favorites,Explore,Details,MasterUser,MasterAdmin,HomeAdmin,Ads,Facilities, UsersList, Dashboard, RoomData } from './pages/index';
-import ListBooking from './pages/admin/ListBooking/ListBooking';
 import 'antd/dist/antd.css';
-import Rooms from './pages/admin/Rooms/Rooms';
-import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Login,Register,Reset,Change_pass,Forget,Verify,Home,Favorites,Explore,Details,MasterUser,MasterAdmin,HomeAdmin,Ads,Facilities, UsersList, Dashboard } from './pages/index';
+import ListBooking from './pages/admin/ListBooking/ListBooking';
 const App = () => {
   const routes=createBrowserRouter(
     [
@@ -36,15 +35,12 @@ const App = () => {
         path:'/MasterAdmin',
         element:<MasterAdmin/>,
         children:[
-          {index:true,element:<Dashboard/>},
-          {index:true,element:<Dashboard/>},
-         
+          {index:true,element:<HomeAdmin/>},
+          {path:'HomeAdmin',element:<HomeAdmin/>},
           {path:'dashboard',element:<Dashboard/>},
           {path:'Ads',element:<Ads/>},
           {path:'users-list',element:<UsersList/>},
           {path:'list-booking',element:<ListBooking/>},
-          {path:'rooms-data',element:<RoomData/>},
-          {path:'rooms',element:<Rooms/>},
 
           {path:'Facilities',element:<Facilities/>},
           {path:'Explore',element:<Explore/>},
@@ -54,7 +50,6 @@ const App = () => {
   )
   return (
     <React.Fragment>
-       <ToastContainer/>
       <RouterProvider router={routes}>
       </RouterProvider>
     </React.Fragment>

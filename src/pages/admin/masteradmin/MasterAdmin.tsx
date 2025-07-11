@@ -36,6 +36,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import Header from '../../../component_Admin/header_Admin/Header';
 import ExploreIcon from '@mui/icons-material/Explore';
 import { AuthContext } from '../../../context/context';
+import { Skeleton } from '@mui/material';
 
 const NAVIGATION: Navigation = [
   { kind: 'header', title: 'Main items' },
@@ -44,7 +45,7 @@ const NAVIGATION: Navigation = [
   { segment: 'Rooms', title: 'Rooms', icon: <WidgetsIcon /> },
   { segment: 'Ads', title: 'Ads', icon: <CalendarMonthIcon /> },
   { segment: 'Facilities', title: 'Facilities', icon: <HotTubIcon /> },
-  { segment: 'ListBooking', title: 'Bookings', icon: <ShoppingCartIcon /> },
+  { segment: 'list-booking', title: 'Bookings', icon: <ShoppingCartIcon /> },
   { segment: 'ChangePW', title: 'Reset PW', icon: <ChangeCircleIcon /> },
   { segment: 'Logout', title: 'Logout', icon: <LogoutIcon /> },
 ];
@@ -55,23 +56,35 @@ const demoTheme = createTheme({
   breakpoints: { values: { xs: 0, sm: 600, md: 600, lg: 1200, xl: 1536 } },
 });
 
-function CustomToolbarActions() {
+export  function CustomToolbarActions() {
   const { mode } = useColorScheme();
   const isDarkMode = mode === 'dark';
-  let {loginData}=useContext(AuthContext)
+
+  const authContext = useContext(AuthContext);
+
+  if (!authContext || authContext.isAuthLoading || !authContext.loginData) {
+    return <Skeleton />;  
+  }
+
+  const { loginData } = authContext;
+
   return (
     <Stack direction="row" justifyContent="space-between" alignItems="center">
       <Box display="flex" flexDirection="row" alignItems="center" gap={1} mr={2}>
-        <Avatar src={Picture_Profile} alt="Upskilling" />
-        <Typography variant="h6"color={isDarkMode?'#fff':''} fontWeight={600} fontSize={14}>
-         {loginData.role}
+        <Avatar src={Picture_Profile} alt="User profile" />
+        <Typography
+          variant="h6"
+          color={isDarkMode ? '#fff' : ''}
+          fontWeight={600}
+          fontSize={14}
+        >
+          {loginData.role || 'No Role'}
         </Typography>
       </Box>
       <ThemeSwitcher />
     </Stack>
   );
 }
-
 function DemoPageContent() {
   const LOCATION = window.location.pathname;
   return (
