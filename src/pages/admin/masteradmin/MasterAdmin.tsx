@@ -64,7 +64,7 @@ function CustomToolbarActions() {
       <Box display="flex" flexDirection="row" alignItems="center" gap={1} mr={2}>
         <Avatar src={Picture_Profile} alt="Upskilling" />
         <Typography variant="h6"color={isDarkMode?'#fff':''} fontWeight={600} fontSize={14}>
-         {loginData.role}
+         {loginData?.role}
         </Typography>
       </Box>
       <ThemeSwitcher />
