@@ -24,6 +24,7 @@ axiosInstance.interceptors.request.use((config) => {
 
 
 export const ADMIN_URL ={
+    GET_ALL_USERS: '/admin/users?page=1&size=10',
     RESET_PASSWORD : '/admin/users/reset-password',
     FORGET_PASSWORD: '/admin/users/forgot-password',
     CREATE_USER : '/admin/users',
@@ -31,6 +32,7 @@ export const ADMIN_URL ={
     CHANGE_PASSWORD : '/admin/users/change-password'
 }
 export const USERS_URL ={
+    
     RESET_PASSWORD : '/portal/users/reset-password',
     FORGET_PASSWORD: '/portal/users/forgot-password',
     CREATE_USER : '/portal/users',
@@ -71,3 +73,4 @@ export const ROOMS_URL ={
     DELETE: (id:string)=> `/admin/rooms/${id}`,
     DETAILS: (id:string)=> `/admin/rooms/${id}`,
 }
+
