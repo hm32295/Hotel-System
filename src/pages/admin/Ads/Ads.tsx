@@ -9,7 +9,7 @@ import { ADS_URL, axiosInstance } from '../../../services/Url';
 import { Fragment, useEffect, useState } from 'react';
 import Model from './Model';
 import DeleteConfirmation from '../../../component_Admin/deleteConfirmation/DeleteConfirmation';
-import { Variants } from '../../../component_Admin/loader/loder';
+import { Skeleton_Loader } from '../../../component_Admin/loader/Skeleton';
 interface Product {
   id: number;
   name: string;
@@ -78,9 +78,7 @@ export default function Ads() {
     
   },[])
  
- 
-
- if(loader) return <Variants />
+  if(loader) return <Skeleton_Loader />
   return (
     <>
       <Box component={'button'}><Model icon={false} getAds={getAds}/></Box>
@@ -95,7 +93,7 @@ export default function Ads() {
 
                   <Model getAds={getAds} icon={true} row={row}/>
                   <DeleteConfirmation data={row} deleteFun={deleteAds}/>
-                  <VisibilityIcon />
+                  <VisibilityIcon onClick={()=>console.log(row)}/>
               </Box>
             </>
     )}

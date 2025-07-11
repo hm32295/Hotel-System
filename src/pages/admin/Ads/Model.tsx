@@ -17,7 +17,7 @@ import type { SelectChangeEvent } from '@mui/material/Select';
 import { Box, TextField } from '@mui/material';
 import { ADS_URL, axiosInstance, ROOMS_URL } from '../../../services/Url';
 import { useForm } from 'react-hook-form';
-import { Variants } from '../../../component_Admin/loader/loder';
+import Progress from '../../../component_Admin/loader/Progress';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -50,7 +50,7 @@ export default function Model({ getAds, icon, row }: { row: any, getAds: any, ic
   const [dataRooms, setDataRooms] = React.useState<string[]>([]);
   const [rooms, setRooms] = React.useState<string>('');
   const [active, setActive] = React.useState<string>('false');
-  const [loader , setLoder] = React.useState(false)
+  const [loader , setLoader] = React.useState(false)
   const getRooms = async (page: number, size: number) => {
     try {
       const response = await axiosInstance(ROOMS_URL.GET, { params: { page, size } });
@@ -100,7 +100,7 @@ export default function Model({ getAds, icon, row }: { row: any, getAds: any, ic
 
   const setData = async (data: any) => {
   
-    
+    setLoader(true)
     try {
       const preparedData = {
         ...data,
@@ -127,11 +127,13 @@ export default function Model({ getAds, icon, row }: { row: any, getAds: any, ic
       setRooms('')
     } catch (error) {
       console.log(error.response?.data);
+    }finally{
+      setLoader(false)
     }
     getAds();
   };
 
-  if(loader) return <Box sx={{width:'100%', display:'flex', justifyContent:'stretch' ,alignItems:'stretch'}}> <Variants /></Box>
+
   return (
     <Box onClick={handleClickOpen}>
       
@@ -228,11 +230,16 @@ export default function Model({ getAds, icon, row }: { row: any, getAds: any, ic
           <DialogActions>
             <Button
               type="submit"
+              disabled={loader}
               autoFocus
               onClick={handleClose}
               sx={{ color: '#fff', background: '#3252DF' }}
             >
-             {icon&& row ? "edit" : 'save'}
+              {loader ? <Progress />:
+              (
+                icon&& row ? "edit" : 'save'
+
+              )}
             </Button>
           </DialogActions>
         </Box>

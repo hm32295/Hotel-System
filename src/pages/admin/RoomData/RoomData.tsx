@@ -16,6 +16,7 @@ import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { useLocation, useNavigate } from "react-router-dom";
+import Progress from "../../../component_Admin/loader/Progress";
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -56,9 +57,23 @@ const RoomData = () => {
     const [personName, setPersonName] = useState<string[]>([]);
     const [facilities, setFacilities] = useState([]);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const[loader ,setLoader] =useState(false)
+    const { register, handleSubmit ,reset,formState: { errors },} = useForm();
     const location = useLocation();
     const projectItem = location.state;
-    const { register, handleSubmit ,reset,formState: { errors },} = useForm();
+    
+    const dataToEdit = (projectItem, reset)=>{
+      
+      if(projectItem){
+        reset({
+          roomNumber:projectItem.name,
+          capacity:projectItem.capacity,
+          discount:projectItem.discount,
+          price:projectItem.price,
+        })
+      }
+    }
+
   
     const handleChange = (event: SelectChangeEvent<typeof personName>) => {
       const {
@@ -79,8 +94,7 @@ const RoomData = () => {
   
     useEffect(() => {
       getFacilities();
-      console.log(projectItem);
-      
+      dataToEdit(projectItem, reset)
     }, []);
   
     const handelDataToForm = (data: any) => {
@@ -102,15 +116,23 @@ const RoomData = () => {
   
     const setRoom = async (data: any) => {
       const handelData = handelDataToForm(data);
-  
+      setLoader(true)
       try {
-        const response = await axiosInstance.post(ROOMS_URL.CREATE, handelData);
+        let response;
+        if(projectItem){
+          
+          response = await axiosInstance.put(ROOMS_URL.UPDATE(projectItem.id), handelData);
+        }else{
+          response = await axiosInstance.post(ROOMS_URL.CREATE, handelData);
+        }
         console.log(response.data);
         reset();
         setPersonName([])
         navigate('/MasterAdmin/rooms')
       } catch (error) {
         console.log(error?.response?.data?.message);
+      }finally{
+        setLoader(false)
       }
     };
   
@@ -136,7 +158,7 @@ const RoomData = () => {
             <Select
               labelId="demo-multiple-name-label"
               multiple
-              {...register('facilities',{required: 'facilities'})}
+              {...register('facilities',{required: 'required'})}
               value={personName}
               onChange={handleChange}
               input={<OutlinedInput label="facilities" />}
@@ -162,7 +184,11 @@ const RoomData = () => {
             }}
           />
         </Button>
-        <Button type='submit' sx={{ background: "#3252DF", color: "#fff" }} variant="contained">Save</Button>
+        <Button disabled={loader} type='submit' sx={{ background: "#3252DF", color: "#fff" }} variant="contained">
+           {loader ? <Progress />:(
+              projectItem? "Edit" :'Save'
+           )}
+        </Button>
         <Button onClick={() => navigate('/MasterAdmin/rooms')} sx={{ background: "#fff", color: "#3252DF" }} variant="contained">Cancel</Button>
       </Box>
     );

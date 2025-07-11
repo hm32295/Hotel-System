@@ -9,6 +9,8 @@ import { useEffect, useState, type JSX } from 'react';
 import './rooms.css'
 import DeleteConfirmation from '../../../component_Admin/deleteConfirmation/DeleteConfirmation';
 import { useNavigate } from 'react-router-dom';
+import { Skeleton_Loader } from '../../../component_Admin/loader/Skeleton';
+import ViewData from '../ViewData/ViewData';
 interface Product {
   id: number;
   name : string;
@@ -32,8 +34,12 @@ const productHeadCells: HeadCell<Product>[] = [
 
 export default function Rooms() {
     const [product,setProduct] =useState<Product[]>([])
-    const navigation = useNavigate()
+    const navigation = useNavigate();
+    const [loader ,setLoader] = useState(false)
+    const [showData , setShowData] = useState(false);
+    const [row , setRow] = useState({})
     const getRooms = async () =>{
+      setLoader(true)
       try {
         const response = await axiosInstance(ROOMS_URL.GET)
         const data = response.data.data.rooms
@@ -56,6 +62,8 @@ export default function Rooms() {
       } catch (error) {
         console.log(error);
         
+      }finally{
+        setLoader(false)
       }
     }
     useEffect(()=>{
@@ -82,6 +90,7 @@ export default function Rooms() {
     const { image, ...cleanRow } = row;
     navigation('/MasterAdmin/rooms-data', { state: cleanRow });
   };
+  if(loader) return <Skeleton_Loader />
   return (
     <Box className='rooms'>
       
@@ -92,16 +101,25 @@ export default function Rooms() {
                 renderActions={(row) => (
                     <>
                     <Box sx={{display:'flex' ,gap:'.1rem' ,justifyContent:'center',alignItems:'center'}}>
-                        <EditNoteIcon onClick={()=>{handleView(row)}}/>
-                        <VisibilityIcon onClick={()=>{console.log(row)}}/>
+                        <EditNoteIcon onClick={()=>{
+                          handleView(row)}}/>
+                        <VisibilityIcon onClick={()=>{setShowData(true); setRow(row)
+                        return 
+                          }}/>
                         <DeleteConfirmation data={row} deleteFun={deleteRoom}/>
+                     
+                       
                        
                     </Box>
                       
                       
                     </>
             )}
-          />
+            />
+            {showData && <Box 
+            onClick={()=>{setShowData(false)}}
+              sx={{position:'fixed' , top:'0' ,left:'0' , width:'100%', height:'100%', background:'#00000042', display:'flex' , justifyContent:'center',alignItems:'center'}}
+            ><ViewData  setShowData={setShowData} data={row}/></Box>}
     </Box>
   )
 }

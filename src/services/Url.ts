@@ -62,6 +62,8 @@ export const ADS_URL = {
     VIEW : (id:string)=> `/admin/ads/${id}`,
     UPDATE : (id:string)=> `/admin/ads/${id}`,
 }
+
+///admin/rooms
 export const ROOMS_URL ={
     GET : '/admin/rooms',
     CREATE : '/admin/rooms',
