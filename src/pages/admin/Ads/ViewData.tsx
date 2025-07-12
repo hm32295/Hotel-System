@@ -9,23 +9,16 @@ import {
 } from '@mui/material';
 
 
-
 interface ViewDataProps {
   setShowData: (value: boolean) => void;
-  showData : boolean;
+  showData: boolean
   data: {
     name: string;
-    price: string;
-    capacity: string;
-    discount: string;
-    
-    image: {
-      props :{
-        src : string | [],
-        alt:string
-      }
-    }; 
-    
+    Active: string;
+    id: string;
+    Price: number;
+    Capacity : number;
+    Discount: number
   };
 }
 const DetailRow = ({ label, value }: { label: string; value: string | number | boolean }) => (
@@ -40,8 +33,6 @@ const DetailRow = ({ label, value }: { label: string; value: string | number | b
 
 export default function ViewData({setShowData,showData ,data}:ViewDataProps) {
   
-  
-
 
   const handleCloseView = () => {
     setShowData(false);
@@ -59,7 +50,7 @@ export default function ViewData({setShowData,showData ,data}:ViewDataProps) {
                 justifyContent: 'space-between',
                 alignItems: 'center',
               }}>
-                <Typography variant="h6" sx={{ fontWeight: 600, color: '#333' }}>Room Details</Typography>
+                <Typography variant="h6" sx={{ fontWeight: 600, color: '#333' }}>Ads Details</Typography>
                 <IconButton onClick={handleCloseView}>
                   <CloseIcon />
                 </IconButton>
@@ -74,19 +65,13 @@ export default function ViewData({setShowData,showData ,data}:ViewDataProps) {
                     border: '1px solid #e0e0e0',
                   }}>
                     <Box display="flex" flexDirection="column" alignItems="center" gap={3}>
-                      {/* image={data?.image?.props?.src || data?.image?.props?.src[0]} */}
-                      {(data?.image?.props?.src || data?.image?.props?.src[0]) && (
-                        <Avatar
-                          src={data?.image?.props?.src || data?.image?.props?.src[0]}
-                          alt={data?.image?.props?.alt}
-                          sx={{ width: 100, height: 100, border: '2px solid #ccc' }}
-                        />
-                      )}
+                     
                       <Box width="100%" display="flex" flexDirection="column" gap={3}>
-                        <DetailRow label="capacity" value={data.capacity} />
-                        <DetailRow label="discount" value={data.discount} />
-                        <DetailRow label="Room Number" value={data.name} />
-                        <DetailRow label="price" value={data.price} />
+                        <DetailRow label="Name" value={data.name} />
+                        <DetailRow label="Active" value={data.Active} />
+                        <DetailRow label="Capacity" value={data.Capacity} />
+                        <DetailRow label="Discount" value={data.Discount} />
+                        <DetailRow label="Price" value={data.Price} />
                   
                       </Box>
                     </Box>

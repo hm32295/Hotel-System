@@ -14,12 +14,13 @@ import { Link } from '@mui/material';
 import { EMAIL_VALIDATION } from '../../../services/Validation';
 import { ADMIN_URL, axiosInstance } from '../../../services/Url';
 import type { resetPassword } from '../../../services/interface';
+import Progress from '../../../component_Admin/loader/Progress';
 export default  function Login(){
-
+  const [loader, setLoader] = useState(false)
   const navigation = useNavigate();
   const {register, formState:{errors}, handleSubmit,reset} =  useForm<resetPassword>();
   const sendData = async(data:resetPassword)=>{
-   
+   setLoader(true)
    
     try {
       const response= await axiosInstance.post(ADMIN_URL.LOGIN,data) 
@@ -43,7 +44,7 @@ export default  function Login(){
         console.log(error?.response?.data?.message);
         
     }finally{
-      // console.log('success');
+      setLoader(false)
       
     }
     
@@ -81,7 +82,6 @@ export default  function Login(){
 
             <Box>
                 <TextField
-                    // id="outlined-multiline-flexible"
                     label="Email"
                     multiline
                     maxRows={4}
@@ -128,8 +128,12 @@ export default  function Login(){
         
 
          
+        <Link sx={{textDecoration:'none' , color:'#3252DF'}} to='/Forget' component={RouterLink}>Forget Password</Link>
 
-        <Button type='submit' sx={{background:"#3252DF", color:"#fff"}} variant="contained">send</Button>
+         <Button type='submit' disabled={loader} sx={{background:"#3252DF", color:"#fff"}} variant="contained">
+                  {loader ?<Progress /> : 'send' }   
+          </Button>
+                              
         </Box>
         <Box className="img">
 

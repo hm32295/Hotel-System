@@ -20,6 +20,7 @@ import { toast } from "react-toastify";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Header from "../../../component_Admin/header_Admin/Header";
+import { Skeleton_Loader } from "../../../component_Admin/loader/Skeleton";
 
 
 
@@ -63,10 +64,15 @@ const Facilities = () => {
 
   const [openDelete, setOpenDelete] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<any>(null);
-let [refresh,setRefresh]=useState(0)
+  const [refresh,setRefresh]=useState(0);
+  const [facilities,setFacilities]=useState(0);
+
     const fetchFacilities = async() => {
     try {
       const res = await axiosInstance.get(FacilitesUrls.GET_ALL);
+
+      setFacilities(res.data.data.totalCount)
+      
       const facilitiesData = res.data.data.facilities.map(facility => ({
         id: facility._id,
         name: facility.name,
@@ -207,11 +213,12 @@ const handleMenuClose = () => {
 
    {loading ? (
     
-        <div>Loading…</div>
+        <Skeleton_Loader />
       ) : (
         <GenericTable
           headCells={headCells}
           title="Facilities"
+          totalData={facilities}
           rows={rows}
           renderActions={(row) => (
             <>

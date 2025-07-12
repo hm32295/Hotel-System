@@ -18,10 +18,44 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form';
 import { ADMIN_URL, axiosInstance, USERS_URL } from '../../../services/Url';
 import { EMAIL_VALIDATION } from '../../../services/Validation';
+import { styled } from '@mui/material/styles';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import Progress from '../../../component_Admin/loader/Progress';
+
+const VisuallyHiddenInput = styled('input')({
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(50%)',
+  height: 1,
+  overflow: 'hidden',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  whiteSpace: 'nowrap',
+  width: 1,
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export default function Register() {
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirm, setShowConfirm] = React.useState(false);
+  const [loader, setLoader] = React.useState(false)
   const navigation = useNavigate()
   const {
     register,
@@ -32,7 +66,7 @@ export default function Register() {
   } = useForm();
 
   const handelDataToForm = (data:any) =>{
-  
+    
     const registerForm = new FormData();
     registerForm.append('userName', data.userName)
     registerForm.append('email', data.email)
@@ -50,7 +84,7 @@ export default function Register() {
 
   const onSubmit =async (data : any) => {
    
-    
+    setLoader(true)
     const handelData = handelDataToForm(data);
     
     try {
@@ -66,7 +100,7 @@ export default function Register() {
       console.log(error.response.data.message);
       
     }finally{
-      console.log('hee');
+      setLoader(false)
       
     }
   };
@@ -200,29 +234,29 @@ export default function Register() {
                 ),
               }}
             />
-            <TextField
-              label="Profile Image"
-              type={'file'}
-              fullWidth
-              {...register('profileImage', {
-                required: 'Please add profile image',
-               
-              })}
-              error={!!errors.profileImage}
-              helperText={errors.profileImage?.message}
-            />
-            <Button
-              type="submit"
-              variant="contained"
-              fullWidth
-              sx={{
-                py: 1.5,
-                mt: 1,
-                backgroundColor: '#3252DF',
-                boxShadow: '0 8px 15px 0 rgba(50, 82, 223, 0.3)',
-              }}
-            >
-              Sign up
+
+              <Button
+                  component="label"
+                  
+                  role={undefined}
+                  variant="contained"
+                  tabIndex={-1}
+                  startIcon={<CloudUploadIcon />}
+                >
+                  Upload files
+                  <VisuallyHiddenInput
+                    type="file"
+                    {...register('profileImage', {
+                      required: 'Please add profile image',
+                    
+                    })}
+                    onChange={(event) => console.log(event.target.files)}
+                    multiple
+                  />
+                </Button>
+            
+            <Button type='submit' disabled={loader} sx={{background:"#3252DF", color:"#fff"}} variant="contained">
+                    {loader ?<Progress /> : 'send' }   
             </Button>
           </Box>
         </Box>
