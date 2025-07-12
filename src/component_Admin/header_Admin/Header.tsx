@@ -5,7 +5,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Box, Button, Fade, IconButton, Modal, TextField, useColorScheme} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import Backdrop from '@mui/material/Backdrop';
-const Header = ({fetchFacilities,setRefresh}) => {
+const Header = () => {
     let  location=window.location.pathname
     // Start With Add Facilites
   const [itemToUpdate, setItemToUpdate] = useState(null);
@@ -31,11 +31,8 @@ const [openUpdate, setOpenUpdate] = useState(false);
       try {
        
         await axiosInstance.post(`${FacilitesUrls.CREATE}`, { name: value });
-         toast.success(`Added   successfully.`)
+         toast.success(`Added  successfully.`)
         window.location.reload()
-        fetchFacilities()
-        setRefresh(vl=>vl+1)
-         
       } catch (error) {
         console.error('Delete Error:', error);
         
@@ -43,13 +40,7 @@ const [openUpdate, setOpenUpdate] = useState(false);
     }
     handleCloseUpdate();
   };
-
-
-
-
     // End With Add Facilites
-
-
  const { mode } = useColorScheme();
   const isDarkMode = mode === 'dark';
 
