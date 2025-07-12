@@ -41,6 +41,7 @@ export default function ListBooking() {
   const [openView, setOpenView] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
   const [loading, setLoading] = useState(true);
+
   const [totalBooking, setTotalBooking] = useState(0);
 
   useEffect(() => {

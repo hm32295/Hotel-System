@@ -44,7 +44,9 @@ export default function UserList() {
   const [openView, setOpenView] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+
   const [totalUsers,setTotalUsers] = useState(0)
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {

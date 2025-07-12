@@ -35,7 +35,6 @@ import Header from '../../../component_Admin/header_Admin/Header';
 import { AuthContext } from '../../../context/context';
 import { Skeleton } from '@mui/material';
 
-
 const NAVIGATION: Navigation = [
   { kind: 'header', title: 'Main items' },
   { segment: 'dashboard', title: 'Dashboard', icon: <AddHomeWorkIcon /> },
@@ -44,11 +43,11 @@ const NAVIGATION: Navigation = [
   { segment: 'Ads', title: 'Ads', icon: <CalendarMonthIcon /> },
   { segment: 'Facilities', title: 'Facilities', icon: <HotTubIcon /> },
   { segment: 'list-booking', title: 'Bookings', icon: <ShoppingCartIcon /> },
+
   { segment: 'users-list', title: 'Users', icon: <PeopleIcon /> },
   { segment: 'change-password', title: 'change password', icon: <ChangeCircleIcon /> },
   
 ];
-
 const demoTheme = createTheme({
   cssVariables: { colorSchemeSelector: 'data-toolpad-color-scheme' },
   colorSchemes: { light: true, dark: true },
@@ -79,6 +78,7 @@ export  function CustomToolbarActions() {
           fontSize={14}
         >
           {loginData?.role || 'No Role'}
+
         </Typography>
       </Box>
       <ThemeSwitcher />

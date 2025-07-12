@@ -4,8 +4,10 @@ import {createBrowserRouter, RouterProvider } from 'react-router-dom';
 import 'react-pro-sidebar/dist/css/styles.css';
 import 'antd/dist/antd.css';
 import 'react-toastify/dist/ReactToastify.css';
+
 import { SnackbarProvider } from 'notistack';
 import { Login,Register,Reset,Forget,Verify,Home,Favorites,Explore,Details,MasterUser,MasterAdmin,Ads,Facilities, UsersList, Dashboard, RoomData, Rooms, ChangePassword } from './pages/index';
+
 import ListBooking from './pages/admin/ListBooking/ListBooking';
 const App = () => {
   const routes=createBrowserRouter(
@@ -35,7 +37,9 @@ const App = () => {
         path:'/MasterAdmin',
         element:<MasterAdmin/>,
         children:[
+
           {index:true,element:<Dashboard/>},
+
           {path:'dashboard',element:<Dashboard/>},
           {path:'change-password',element:<ChangePassword/>},
           {path:'Ads',element:<Ads/>},
@@ -58,6 +62,7 @@ const App = () => {
           </RouterProvider>
         </React.Fragment>
     </SnackbarProvider>
+
   )
 }
 export default App
