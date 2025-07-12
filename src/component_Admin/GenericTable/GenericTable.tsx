@@ -20,15 +20,18 @@ interface GenericTableProps<T> {
   rows: T[];
   headCells: HeadCell<T>[];
   title?: string;
+  totalData?: number
   renderActions?: (row: T) => React.ReactNode;
 }
 
 export default function GenericTable<T extends { id: string | number }>({
   rows,
   headCells,
-  title = "Table",
+  totalData,
+  title,
   renderActions,
 }: GenericTableProps<T>) {
+  
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof T>(headCells[0].id);
   const [selected, setSelected] = React.useState<readonly (string | number)[]>([]);
@@ -152,7 +155,7 @@ export default function GenericTable<T extends { id: string | number }>({
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={totalData || rows.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

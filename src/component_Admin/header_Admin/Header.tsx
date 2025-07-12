@@ -1,11 +1,13 @@
 import { toast } from 'react-toastify';
 import './header.css'
 import { axiosInstance, FacilitesUrls } from '../../services/Url';
-import { useContext, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Box, Button, Fade, IconButton, Modal, TextField, useColorScheme} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import Backdrop from '@mui/material/Backdrop';
+import { useNavigate } from 'react-router-dom';
 const Header = ({fetchFacilities,setRefresh}) => {
+  const navigation = useNavigate()
     let  location=window.location.pathname
     // Start With Add Facilites
   const [itemToUpdate, setItemToUpdate] = useState(null);
@@ -103,9 +105,9 @@ const [openUpdate, setOpenUpdate] = useState(false);
             <div className={isDarkMode?'indark' :'Header_Left'} style={{display: 'flex', alignItems: 'center',flexDirection: 'column',color:'#fff'}} >
               {location==='/MasterAdmin/Facilities'?
               <h3 >Facilities Table Details</h3> : location==='/MasterAdmin/Ads'
-              ? <h3>ADS Table Details </h3> :location==='/MasterAdmin/Explore'?<h3>Explore Table Details</h3>
+              ? <h3 >ADS Table Details </h3> :location==='/MasterAdmin/Explore'?<h3>Explore Table Details</h3>
               :location==='/MasterAdmin/ListBooking'?<h3>Booking Table Details </h3>
-              :location==='/MasterAdmin/Rooms'?<h3>Rooms Table Details </h3>:null
+              :location==='/MasterAdmin/Rooms'?<h3 >Rooms Table Details </h3>:null
 
               
           }
@@ -117,9 +119,9 @@ const [openUpdate, setOpenUpdate] = useState(false);
              <div className="Header_Right">
                 {location==='/MasterAdmin/Facilities'?
              <button onClick={handleOpenUpdate}>Add New Facility</button>: location==='/MasterAdmin/Ads'
-              ?<button onClick={handleOpenUpdate}>Add New Ads</button>:location==='/MasterAdmin/Explore'?<button>Add New Explore</button>
+              ?<Button >Add New Ads</Button>:location==='/MasterAdmin/Explore'?<button>Add New Explore</button>
               :location==='/MasterAdmin/ListBooking'?null
-              :location==='/MasterAdmin/Rooms'?<button>Add New Room</button>:null
+              :location==='/MasterAdmin/Rooms'&&<Button onClick={()=>navigation('/MasterAdmin/rooms-data')}>Add New Room</Button>
 
               
           }

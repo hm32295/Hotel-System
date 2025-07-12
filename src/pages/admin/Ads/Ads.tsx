@@ -6,10 +6,11 @@ import GenericTable , { type HeadCell } from "../../../component_Admin/GenericTa
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { Box } from '@mui/material';
 import { ADS_URL, axiosInstance } from '../../../services/Url';
-import { Fragment, useEffect, useState } from 'react';
+import {  useEffect, useState } from 'react';
 import Model from './Model';
 import DeleteConfirmation from '../../../component_Admin/deleteConfirmation/DeleteConfirmation';
 import { Skeleton_Loader } from '../../../component_Admin/loader/Skeleton';
+import ViewData from "./ViewData";
 interface Product {
   id: number;
   name: string;
@@ -31,13 +32,16 @@ const productHeadCells: HeadCell<Product>[] = [
 export default function Ads() {
   const [product , setProduct] = useState<Product[]>([])
   const [loader, setLoader] = useState(false)
+  const [showData ,setShowData] = useState(false);
+  const [row ,setRow] = useState(false);
+  const [totalAds ,setTotalAds] = useState(0)
   const getAds = async()=>{
     setLoader(true)
     try {
         const response = await axiosInstance(ADS_URL.GET)
-        const data = response.data.data.ads;
-      
-        setProduct(data.map((product)=>{
+        const data = response.data.data;
+        setTotalAds(data.totalCount)
+        setProduct(data.ads.map((product)=>{
           return {
             id: product._id,
             name: product.room.roomNumber,
@@ -83,6 +87,7 @@ export default function Ads() {
     <>
       <Box component={'button'}><Model icon={false} getAds={getAds}/></Box>
       <GenericTable
+      totalData={totalAds}
         rows={product}
         headCells={productHeadCells}
         title=""
@@ -93,11 +98,16 @@ export default function Ads() {
 
                   <Model getAds={getAds} icon={true} row={row}/>
                   <DeleteConfirmation data={row} deleteFun={deleteAds}/>
-                  <VisibilityIcon onClick={()=>console.log(row)}/>
+                  <VisibilityIcon onClick={()=>{setRow(row);setShowData(true)}}/>
               </Box>
             </>
     )}
+
   />
+  {showData&&(
+    <ViewData data={row} setShowData={setShowData} showData={showData}/>
+
+  )}
      </>
   )
 }

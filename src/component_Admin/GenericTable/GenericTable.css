@@ -3,6 +3,9 @@
 p{
     margin-bottom:  0;  
 }
+.GenericTable td{
+    display: table-cell !important;
+}
 .GenericTable .Actions{
     display: flex;
     justify-content: center;

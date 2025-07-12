@@ -4,9 +4,7 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { Box, Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField, Typography } from '@mui/material';
+import { Box, Button, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import {useForm} from 'react-hook-form';
@@ -14,13 +12,14 @@ import { Link } from '@mui/material';
 import { EMAIL_VALIDATION } from '../../../services/Validation';
 import { ADMIN_URL, axiosInstance, USERS_URL } from '../../../services/Url';
 import type { resetPassword } from '../../../services/interface';
+import Progress from '../../../component_Admin/loader/Progress';
 export default  function Forget(){
-
+  const [loader , setLoader]= useState(false)
   const navigation = useNavigate();
   const {register, formState:{errors}, handleSubmit,reset} =  useForm<resetPassword>();
   const sendData = async(data:resetPassword)=>{
     const loginData = 'admin';
-   
+   setLoader(true)
     try {
       let response;
       if(loginData === 'admin'){
@@ -41,7 +40,7 @@ export default  function Forget(){
         console.log(error);
         
     }finally{
-      // console.log('success');
+      setLoader(false)
       
     }
     
@@ -52,7 +51,7 @@ export default  function Forget(){
       
         <Box component="form"  onSubmit={handleSubmit(sendData)} sx={{display:'flex',gap:"1rem", flexDirection:'column'}}>
           <Box className='details'>
-            <Typography sx={{mb:3, fontSize:30}} >Login</Typography>
+            <Typography sx={{mb:3, fontSize:30}} >Forget Password</Typography>
             <Typography sx={{fontSize:16, mb:1}}>If you already have an account register </Typography>
             <Typography sx={{fontSize:16, mb:9}}>
               You can  
@@ -74,8 +73,9 @@ export default  function Forget(){
             </Box> 
 
          
-
-        <Button type='submit' sx={{background:"#3252DF", color:"#fff"}} variant="contained">send</Button>
+        <Button type='submit' disabled={loader} sx={{background:"#3252DF", color:"#fff"}} variant="contained">
+                {loader ?<Progress /> : 'send' }   
+        </Button>
         </Box>
         <Box className="img">
 

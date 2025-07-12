@@ -1,8 +1,6 @@
-import { Box } from '@mui/material'
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { Box, Button } from '@mui/material'
 import GenericTable , { type HeadCell } from "../../../component_Admin/GenericTable/GenericTable";
 import EditNoteIcon from '@mui/icons-material/EditNote';
-import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { axiosInstance, ROOMS_URL } from '../../../services/Url';
 import { useEffect, useState, type JSX } from 'react';
@@ -38,13 +36,16 @@ export default function Rooms() {
     const [loader ,setLoader] = useState(false)
     const [showData , setShowData] = useState(false);
     const [row , setRow] = useState({})
+    
+      const [totalRooms,setTotalRooms] = useState(0)
     const getRooms = async () =>{
       setLoader(true)
       try {
         const response = await axiosInstance(ROOMS_URL.GET)
-        const data = response.data.data.rooms
-        
-        setProduct(data.map((ele)=>{
+        const data = response.data.data
+       
+        setTotalRooms(data.totalCount)
+        setProduct(data.rooms.map((ele)=>{
           const imageUrl = Array.isArray(ele.images) && ele.images.length > 0
           ? ele.images[0]
           : ele.images || '';
@@ -93,11 +94,13 @@ export default function Rooms() {
   if(loader) return <Skeleton_Loader />
   return (
     <Box className='rooms'>
-      
+
+
         <GenericTable
                 rows={product}
                 headCells={productHeadCells}
                 title="Room List"
+                totalData={totalRooms}
                 renderActions={(row) => (
                     <>
                     <Box sx={{display:'flex' ,gap:'.1rem' ,justifyContent:'center',alignItems:'center'}}>
@@ -119,7 +122,7 @@ export default function Rooms() {
             {showData && <Box 
             onClick={()=>{setShowData(false)}}
               sx={{position:'fixed' , top:'0' ,left:'0' , width:'100%', height:'100%', background:'#00000042', display:'flex' , justifyContent:'center',alignItems:'center'}}
-            ><ViewData  setShowData={setShowData} data={row}/></Box>}
+            ><ViewData  setShowData={setShowData} showData={showData} data={row}/></Box>}
     </Box>
   )
 }

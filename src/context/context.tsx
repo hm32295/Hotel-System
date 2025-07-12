@@ -43,10 +43,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   useEffect(() => {
     saveLoginData();
   }, []);
-// Favility 
-
-
-
 
 
   return (
