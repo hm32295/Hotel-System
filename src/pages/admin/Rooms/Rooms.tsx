@@ -38,10 +38,10 @@ export default function Rooms() {
     const [row , setRow] = useState({})
     
       const [totalRooms,setTotalRooms] = useState(0)
-    const getRooms = async () =>{
+    const getRooms = async (page:number,size:number) =>{
       setLoader(true)
       try {
-        const response = await axiosInstance(ROOMS_URL.GET)
+        const response = await axiosInstance(ROOMS_URL.GET,{params:{page,size}})
         const data = response.data.data
        
         setTotalRooms(data.totalCount)
@@ -68,7 +68,7 @@ export default function Rooms() {
       }
     }
     useEffect(()=>{
-      getRooms()
+      getRooms(1,5)
     },[])
 
   const deleteRoom =async (data)=>{
@@ -82,7 +82,7 @@ export default function Rooms() {
       
     }
     finally{
-      getRooms()
+      getRooms(1,5)
     }
   }
 
@@ -95,11 +95,11 @@ export default function Rooms() {
   return (
     <Box className='rooms'>
 
-
         <GenericTable
                 rows={product}
                 headCells={productHeadCells}
                 title="Room List"
+                // getData ={getRooms}
                 totalData={totalRooms}
                 renderActions={(row) => (
                     <>
@@ -111,8 +111,6 @@ export default function Rooms() {
                           }}/>
                         <DeleteConfirmation data={row} deleteFun={deleteRoom}/>
                      
-                       
-                       
                     </Box>
                       
                       

@@ -1,4 +1,4 @@
-import React from 'react';
+import{ useEffect, useMemo, useState, type ChangeEvent, type ReactNode } from 'react';
 import './GenericTable.css';
 import {
   Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination,
@@ -13,30 +13,31 @@ export interface HeadCell<T> {
   label: string;
   numeric: boolean;
   disablePadding: boolean;
-  renderCell?: (value: T[keyof T], row: T) => React.ReactNode;
+  renderCell?: (value: T[keyof T], row: T) => ReactNode;
 }
 
 interface GenericTableProps<T> {
   rows: T[];
   headCells: HeadCell<T>[];
   title?: string;
+  getData?:()=> void
   totalData?: number
-  renderActions?: (row: T) => React.ReactNode;
+  renderActions?: (row: T) => ReactNode;
 }
 
 export default function GenericTable<T extends { id: string | number }>({
   rows,
   headCells,
   totalData,
+  getData,
   title,
   renderActions,
 }: GenericTableProps<T>) {
   
-  const [order, setOrder] = React.useState<Order>('asc');
-  const [orderBy, setOrderBy] = React.useState<keyof T>(headCells[0].id);
-  const [selected, setSelected] = React.useState<readonly (string | number)[]>([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [order, setOrder] = useState<Order>('asc');
+  const [orderBy, setOrderBy] = useState<keyof T>(headCells[0].id);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const handleRequestSort = (property: keyof T) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -44,24 +45,11 @@ export default function GenericTable<T extends { id: string | number }>({
     setOrderBy(property);
   };
 
-  const handleClick = (id: string | number) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected: readonly (string | number)[] = [];
-
-    if (selectedIndex === -1) {
-      newSelected = selected.concat(id);
-    } else {
-      newSelected = selected.filter((selectedId) => selectedId !== id);
-    }
-
-    setSelected(newSelected);
-  };
-
   const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
@@ -72,19 +60,25 @@ export default function GenericTable<T extends { id: string | number }>({
     return 0;
   };
 
-  const visibleRows = React.useMemo(() => {
+  const visibleRows = useMemo(() => {
     return rows
       .slice()
       .sort((a, b) => (order === 'desc' ? comparator(a, b) : -comparator(a, b)))
       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
   }, [rows, order, orderBy, page, rowsPerPage]);
 
+
+  useEffect(()=>{
+
+      // if(getData){getData(page,rowsPerPage);}
+
+  },[rowsPerPage, page])
   return (
     <Box sx={{ width: '100%',marginTop:'30px'}} className='GenericTable' >
       <Paper sx={{ width: '100%', mb: 2 }}>
         <Toolbar>
           <Typography variant="h6" sx={{ flex: 1 }}>
-           
+           {title}
           </Typography>
         </Toolbar>
 
@@ -115,13 +109,10 @@ export default function GenericTable<T extends { id: string | number }>({
             <TableBody>
               {visibleRows.length > 0 ? (
                 visibleRows.map((row) => {
-                  const isItemSelected = selected.includes(row.id);
                   return (
                     <TableRow
                       hover
-                      onClick={() => handleClick(row.id)}
                       key={String(row.id)}
-                      selected={isItemSelected}
                       sx={{ cursor: 'pointer' }}
                     >
                       {headCells.map((headCell) => (

@@ -16,6 +16,7 @@ export {default as Facilities  }from './admin/Facilities/Facilities'
 export {default as Dashboard  }from './admin/dashboard/Dashboard'
 export {default as RoomData  }from './admin/RoomData/RoomData'
 export {default as Rooms  }from './admin/Rooms/Rooms'
+export {default as Booking  }from './user/Booking/Booking'
 
 export {default as UsersList  }from './admin/usersList/usersList'
 

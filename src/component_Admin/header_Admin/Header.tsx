@@ -8,16 +8,15 @@ import Backdrop from '@mui/material/Backdrop';
 import { useNavigate } from 'react-router-dom';
 const Header = ({fetchFacilities,setRefresh}) => {
   const navigation = useNavigate()
-    let  location=window.location.pathname
+  let location=window.location.pathname
     // Start With Add Facilites
   const [itemToUpdate, setItemToUpdate] = useState(null);
-const [openUpdate, setOpenUpdate] = useState(false);
+  const [openUpdate, setOpenUpdate] = useState(false);
   const [value, setValue] = useState('');
 //  Modal Edit 
   const handleOpenUpdate = (row) => {
     setItemToUpdate(row);
     setValue(row.name);
-    console.log(row)
     setOpenUpdate(true);
     
   };
@@ -29,12 +28,12 @@ const [openUpdate, setOpenUpdate] = useState(false);
   };
  
   const handleConfirmAdd = async () => {
+    
     if (itemToUpdate) {
       try {
-       
-        await axiosInstance.post(`${FacilitesUrls.CREATE}`, { name: value });
-         toast.success(`Added   successfully.`)
-        window.location.reload()
+        
+        await axiosInstance.post(`${FacilitesUrls.CREATE}`,{name: value});
+        toast.success(`Added   successfully.`)
         fetchFacilities()
         setRefresh(vl=>vl+1)
          
@@ -47,12 +46,9 @@ const [openUpdate, setOpenUpdate] = useState(false);
   };
 
 
-
-
     // End With Add Facilites
 
-
- const { mode } = useColorScheme();
+  const { mode } = useColorScheme();
   const isDarkMode = mode === 'dark';
 
   return (
@@ -100,7 +96,7 @@ const [openUpdate, setOpenUpdate] = useState(false);
                 </Box>
               </Fade>
             </Modal>
-            {/* End Mofal Add Facilites */}
+            {/* End Model Add Facilites */}
             <div className="Header_Container " style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center',color:'#fff'}}>
             <div className={isDarkMode?'indark' :'Header_Left'} style={{display: 'flex', alignItems: 'center',flexDirection: 'column',color:'#fff'}} >
               {location==='/MasterAdmin/Facilities'?
@@ -112,7 +108,7 @@ const [openUpdate, setOpenUpdate] = useState(false);
               
           }
 
-          {location!='/MasterAdmin/HomeAdmin' ?  <h4 className={isDarkMode?"dark_WE":''}>You can check all details</h4>:null}
+          {/* {location!='/MasterAdmin/HomeAdmin' ?  <h4 className={isDarkMode?"dark_WE":''}>You can check all details</h4>:null} */}
         
 
             </div>

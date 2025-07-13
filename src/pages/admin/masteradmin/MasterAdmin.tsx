@@ -258,7 +258,7 @@ export default function Sidepar_Admin(props: { window?: () => Window }) {
               overflow: 'hidden',       
             },
           }}
-           branding={{ title: 'Reflex',logo: <img src={'https://www.daleeeel.com/f/res/s05/locations-photos/000/891/0089179-269-4412de14ea85462e923e77887a343b55-r01.jpg'} /> }}
+           branding={{ title: 'Reflex',logo: <img style={{borderRadius:"50%"}} src={'https://www.daleeeel.com/f/res/s05/locations-photos/000/891/0089179-269-4412de14ea85462e923e77887a343b55-r01.jpg'} /> }}
         
           slots={{ toolbarActions: CustomToolbarActions, sidebarFooter: SidebarFooterAccount }}
         >
