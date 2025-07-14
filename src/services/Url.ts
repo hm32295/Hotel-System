@@ -74,3 +74,7 @@ export const ROOMS_URL ={
     DETAILS: (id:string)=> `/admin/rooms/${id}`,
 }
 
+export const PORTAL_URLS = {
+  AVAILABLE_ROOMS: '/portal/rooms',
+  
+}

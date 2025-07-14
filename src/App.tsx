@@ -1,14 +1,13 @@
 import React from 'react'
 import {createBrowserRouter, RouterProvider } from 'react-router-dom';
-
 import 'react-pro-sidebar/dist/css/styles.css';
 import 'antd/dist/antd.css';
 import 'react-toastify/dist/ReactToastify.css';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { SnackbarProvider } from 'notistack';
 import { Login,Register,Reset,Forget,Verify,Home,Favorites,Explore,Details,MasterUser,MasterAdmin,Ads,Facilities, UsersList, Dashboard, RoomData, Rooms, ChangePassword } from './pages/index';
-
 import ListBooking from './pages/admin/ListBooking/ListBooking';
+import EXpPLORE from './pages/user/Home/CoMPO_Home/ExPlore/EXpPLORE';
 const App = () => {
   const routes=createBrowserRouter(
     [
@@ -28,8 +27,9 @@ const App = () => {
         children:[
           {index:true,element:<Home/>},
           {path:'Home',element:<Home/>},
-          {path:'Favorites',element:<Favorites/>},
           {path:'Explore',element:<Explore/>},
+          {path:'Favorites',element:<Favorites/>},
+          {path:'Explore_USER',element:<EXpPLORE/>},
           {path:'Details',element:<Details/>},
         ]
       }

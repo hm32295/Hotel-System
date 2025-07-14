@@ -1,0 +1,39 @@
+.vacation-booking {
+  background: linear-gradient(to bottom right, #ebf8ff, #ffffff, #cffafe);
+  overflow: hidden;
+  padding: 4rem 0;
+}
+
+.booking-card {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.custom-label {
+  display: block;
+  margin-bottom: 4px;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.capacity-control {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}
+
+.capacity-text {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.btn-explore {
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s;
+}
+
+.btn-explore:hover {
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+}
