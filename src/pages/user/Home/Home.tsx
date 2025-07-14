@@ -1,3 +1,4 @@
+import PopularAds from "./popularAds/popularAds"
 
 const Home = () => {
   
@@ -5,6 +6,8 @@ const Home = () => {
   return (
     <div>
  
+
+      <PopularAds />
     </div>
   )
 }

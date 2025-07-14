@@ -87,3 +87,17 @@ export const ROOM_REVIEW_URL ={
     CREATE:`/portal/room-reviews`,
     UPDATE:(id:string)=> `/portal/room-comments/${id}`,
 }
+
+// Get Rooms User 
+// /portal/rooms/available
+export const ROOMS_USER_URL ={
+    GET : '/portal/rooms/available',
+    GET_DETAILS :(id:string)=>`/portal/rooms/${id}`
+}
+
+//  /portal/favorite-rooms
+export const FAVORITE_URL ={
+    CREATE: '/portal/favorite-rooms/',
+    GET: '/portal/favorite-rooms',
+    DELETE: (id:string)=>`/portal/favorite-rooms/${id}`
+}

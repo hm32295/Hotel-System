@@ -7,39 +7,41 @@ import Rate from "./Rate/Rate"
 import Comment from "./Comment/Comment"
 
 import './details.css'
+import { useLocation } from "react-router-dom"
+import { useEffect, useState } from "react"
 
-const data ={
-    "_id": "6873a575ccc448ef859ee1ad",
-    "roomNumber": "1000",
-    "price": 1015,
-    "capacity": 2,
-    "discount": 2,
-    "facilities": [
-        {
-            "_id": "68729f80ccc448ef859ebb0e",
-            "name": "TWINZz"
-        },
-        {
-            "_id": "6872479bccc448ef859eb567",
-            "name": "edit"
-        },
-        {
-            "_id": "68724571ccc448ef859eb481",
-            "name": "test"
-        },
-        {
-            "_id": "687247c9ccc448ef859eb56a",
-            "name": "Name"
-        }
-    ],
-    "createdBy": "68656751ccc448ef859d40df",
-    "images": [
-        "http://res.cloudinary.com/dpa4yqvdv/image/upload/v1752409460/rooms/wc5fj1kjwrjmqniudsnb.png"
-    ],
-    "createdAt": "2025-07-13T12:24:21.085Z",
-    "updatedAt": "2025-07-13T12:24:21.085Z",
-    "isBooked": false
-}
+// let data ={
+//     "_id": "6873a575ccc448ef859ee1ad",
+//     "roomNumber": "1000",
+//     "price": 1015,
+//     "capacity": 2,
+//     "discount": 2,
+//     "facilities": [
+//         {
+//             "_id": "68729f80ccc448ef859ebb0e",
+//             "name": "TWINZz"
+//         },
+//         {
+//             "_id": "6872479bccc448ef859eb567",
+//             "name": "edit"
+//         },
+//         {
+//             "_id": "68724571ccc448ef859eb481",
+//             "name": "test"
+//         },
+//         {
+//             "_id": "687247c9ccc448ef859eb56a",
+//             "name": "Name"
+//         }
+//     ],
+//     "createdBy": "68656751ccc448ef859d40df",
+//     "images": [
+//         "http://res.cloudinary.com/dpa4yqvdv/image/upload/v1752409460/rooms/wc5fj1kjwrjmqniudsnb.png"
+//     ],
+//     "createdAt": "2025-07-13T12:24:21.085Z",
+//     "updatedAt": "2025-07-13T12:24:21.085Z",
+//     "isBooked": false
+// }
 
 
 
@@ -49,7 +51,13 @@ const data ={
 
 
 const Details = () => {
- 
+    const location = useLocation();
+    const [data,setData] = useState(null)
+    useEffect(()=>{
+        setData(location.state)
+        
+    },[data])
+    if(!data) return
   return (
     <Box sx={{padding:'1rem'}}>
         <TitleDetails data={data}/>
