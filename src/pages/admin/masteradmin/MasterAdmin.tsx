@@ -10,7 +10,8 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
-
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import PeopleIcon       from '@mui/icons-material/People';
 import { createTheme } from '@mui/material/styles';
 import WidgetsIcon from '@mui/icons-material/Widgets';
 import AddHomeWorkIcon from '@mui/icons-material/AddHomeWork';
@@ -25,38 +26,18 @@ import Picture_Profile from '../../../assets/images/rectangle-7-2.svg';
 import { Outlet, useNavigate } from 'react-router-dom'; 
 import HotTubIcon from '@mui/icons-material/HotTub';
 import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
-import LogoutIcon from '@mui/icons-material/Logout';
-// import Header from '../../../component_Admin/header_Admin/Header';
-
-// Fallback type definitions and placeholder components for missing modules
-type Navigation = Array<{ kind?: string; title: string; segment?: string; icon?: React.ReactNode }>;
-interface Router {
-  pathname: string;
-  searchParams: URLSearchParams;
-  navigate: (path: string) => void;
-}
-interface Session {
-  user: { name: string; email: string; image: string };
-}
-const AppProvider: React.FC<any> = ({ children }) => <>{children}</>;
-const DashboardLayout: React.FC<any> = ({ children }) => <>{children}</>;
-const ThemeSwitcher: React.FC = () => null;
-const Account: React.FC<any> = () => null;
-const AccountPreview: React.FC<any> = () => null;
-const AccountPopoverFooter: React.FC<any> = ({ children }) => <>{children}</>;
-const SignOutButton: React.FC = () => <button>Sign Out</button>;
-const DemoProvider: React.FC<any> = ({ children }) => <>{children}</>;
-const Header: React.FC = () => <></>;
-
+import Header from '../../../component_Admin/header_Admin/Header';
+import { AuthContext } from '../../../context/context';
+import { Skeleton } from '@mui/material';
 const NAVIGATION: Navigation = [
   { kind: 'header', title: 'Main items' },
-  { segment: 'HomeAdmin', title: 'Home', icon: <AddHomeWorkIcon /> },
-  { segment: 'Explore', title: 'Users', icon: <GroupIcon /> },
+  { segment: 'dashboard', title: 'Dashboard', icon: <AddHomeWorkIcon /> },
   { segment: 'Rooms', title: 'Rooms', icon: <WidgetsIcon /> },
   { segment: 'Ads', title: 'Ads', icon: <CalendarMonthIcon /> },
-  { segment: 'ListBooking', title: 'Bookings', icon: <HotTubIcon /> },
-  { segment: 'ChangePW', title: 'ٌReset PW', icon: <ChangeCircleIcon /> },
-  { segment: 'ٌLogout', title: 'ٌLogout', icon: <LogoutIcon /> },
+  { segment: 'Facilities', title: 'Facilities', icon: <HotTubIcon /> },
+  { segment: 'list-booking', title: 'Bookings', icon: <ShoppingCartIcon /> },
+  { segment: 'users-list', title: 'Users', icon: <PeopleIcon /> },
+  { segment: 'change-password', title: 'change password', icon: <ChangeCircleIcon /> },
 ];
 
 

@@ -1,4 +1,8 @@
+
 import PopularAds from "./popularAds/popularAds"
+import { Explore } from "@mui/icons-material"
+
+import Interface from "./CoMPO_Home/Interface_Home/Interface"
 
 const Home = () => {
   
@@ -7,8 +11,14 @@ const Home = () => {
     <div>
  
 
-      <PopularAds />
-    </div>
+
+     
+  <Interface/>
+  <Explore/>
+  <PopularAds />
+  
+
+  </div>
   )
 }
 

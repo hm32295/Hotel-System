@@ -43,10 +43,19 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   useEffect(() => {
     saveLoginData();
   }, []);
-
+ const [BookingData, setBookingData] = useState(
+    {
+        startDate:'',
+        endDate:'',
+        capacity:1,
+    }
+   
+  );
+   console.log(BookingData)
+  
 
   return (
-    <AuthContext.Provider value={{ loginData, isAuthLoading, saveLoginData, logout}}>
+    <AuthContext.Provider value={{ loginData, isAuthLoading, saveLoginData, logout,setBookingData,BookingData}}>
       {children}
     </AuthContext.Provider>
   );

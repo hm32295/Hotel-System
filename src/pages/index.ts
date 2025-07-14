@@ -19,10 +19,7 @@ export {default as Rooms  }from './admin/Rooms/Rooms'
 export {default as Booking  }from './user/Booking/Booking'
 
 export {default as UsersList  }from './admin/usersList/usersList'
-
 export {default as DeleteConfirmation  }from '../component_Admin/deleteConfirmation/DeleteConfirmation'
-
-
 
 
 

@@ -6,9 +6,8 @@ import { Box, Button, Fade, IconButton, Modal, TextField, useColorScheme} from '
 import CloseIcon from '@mui/icons-material/Close';
 import Backdrop from '@mui/material/Backdrop';
 import { useNavigate } from 'react-router-dom';
-const Header = ({fetchFacilities,setRefresh}) => {
-  const navigation = useNavigate()
-  let location=window.location.pathname
+const Header = () => {
+    let  location=window.location.pathname
     // Start With Add Facilites
   const [itemToUpdate, setItemToUpdate] = useState(null);
   const [openUpdate, setOpenUpdate] = useState(false);
@@ -31,12 +30,10 @@ const Header = ({fetchFacilities,setRefresh}) => {
     
     if (itemToUpdate) {
       try {
-        
-        await axiosInstance.post(`${FacilitesUrls.CREATE}`,{name: value});
-        toast.success(`Added   successfully.`)
-        fetchFacilities()
-        setRefresh(vl=>vl+1)
-         
+       
+        await axiosInstance.post(`${FacilitesUrls.CREATE}`, { name: value });
+         toast.success(`Added  successfully.`)
+        window.location.reload()
       } catch (error) {
         console.error('Delete Error:', error);
         
@@ -44,13 +41,10 @@ const Header = ({fetchFacilities,setRefresh}) => {
     }
     handleCloseUpdate();
   };
-
-
     // End With Add Facilites
-
-  const { mode } = useColorScheme();
+ const { mode } = useColorScheme();
   const isDarkMode = mode === 'dark';
-
+let navigation=useNavigate()
   return (
     <div className="Header" >
          <Modal

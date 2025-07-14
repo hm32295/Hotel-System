@@ -101,3 +101,6 @@ export const FAVORITE_URL ={
     GET: '/portal/favorite-rooms',
     DELETE: (id:string)=>`/portal/favorite-rooms/${id}`
 }
+export const  PORTAL_URLS={
+    AVAILABLE_ROOMS:'/portal/rooms/'
+}
