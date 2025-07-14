@@ -36,7 +36,7 @@ export default function PopularAds() {
       const isLg = useMediaQuery(theme.breakpoints.up('lg'));
 
       const addFavorite = async(roomId, isChecked)=>{
-        console.log(isChecked);
+        
         
         try {
             let response;
@@ -60,6 +60,7 @@ export default function PopularAds() {
             const response = await axiosInstance(ROOMS_USER_URL.GET,{params:{page:1,size:5}})
             setRooms(response.data.data.rooms)
             ;
+            console.log(response.data.data.rooms);
             
         } catch (error) {
                 console.log(error);
