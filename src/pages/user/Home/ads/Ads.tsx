@@ -1,0 +1,81 @@
+
+import React, { useEffect, useRef, useState } from 'react';
+// Import Swiper React components
+import { Swiper, SwiperSlide } from 'swiper/react';
+import image1 from '../../../../assets/images/slider/slider1.png'
+import image2 from '../../../../assets/images/slider/slider2.png'
+import image3 from '../../../../assets/images/slider/slider3.png'
+import image4 from '../../../../assets/images/slider/slider4.png'
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+
+import './ads.css';
+
+// import required modules
+import { Pagination } from 'swiper/modules';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
+import { ADS_URL, axiosInstance } from '../../../../services/Url';
+import { useNavigate } from 'react-router-dom';
+
+export default function Ads() {
+    const [ads, setAds] = useState([]);
+    const theme = useTheme();
+    const isXs = useMediaQuery(theme.breakpoints.down('sm'));
+    const isSm = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+    const navigation = useNavigate()
+    const getAds = async()=>{
+
+        try {
+            const response = await axiosInstance(ADS_URL.GET)
+            setAds(response?.data?.data?.ads)
+            console.log(response.data.data.ads);
+            
+            
+        } catch (error) {
+            console.log(error);
+            
+        }
+    }
+    useEffect(()=>{
+        getAds()
+    },[])
+  return (
+    <Box className='review' sx={{padding:'1rem'}}>
+        {/* {console.log(ads) } */}
+      <Swiper
+        slidesPerView={isSm? 2 : (isXs ? 1 : 3)}
+        spaceBetween={5}
+        pagination={{
+          clickable: true,
+        }}
+        modules={[Pagination]}
+        className="mySwiper"
+      >
+
+        {ads.length&&(
+            ads.map((ads)=>{
+                return(
+                    <SwiperSlide key={ads._id} onClick={()=>{navigation('/MasterUser/Details',{state:ads.room})}}>
+                        <img src={ads?.room?.images[0] || image1} alt="imgs" />
+                        <Box component={'p'} sx={{
+                            color:'#FFF',background:'#FF498B',position:'absolute',top:'0', right:'0',
+                            padding:'8px 15px',
+                            borderTopRightRadius:'1rem',
+                            borderBottomLeftRadius:'1rem',
+                            
+                            }}>{ads?.room?.discount}% Off</Box>
+
+                            <Box sx={{display:'flex' , justifyContent:'start',alignItems:'start',flexDirection:'column' ,width:"100%", padding:'.3rem'}}>
+                                <Box>{ads.room?.roomNumber}</Box>
+                                <Box sx={{color:'#B0B0B0'}}>Depok, Indonesia</Box>
+                            </Box> 
+                    </SwiperSlide>
+                )
+            })
+        )}
+  
+      </Swiper>
+    </Box>
+  );
+}
