@@ -36,7 +36,6 @@ type HeadCell = {
 function DeleteConfirmation({ open, onClose, onConfirm, name }) {
 
 
-
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Delete Confirmation</DialogTitle>

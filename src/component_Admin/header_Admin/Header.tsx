@@ -10,13 +10,12 @@ const Header = () => {
     let  location=window.location.pathname
     // Start With Add Facilites
   const [itemToUpdate, setItemToUpdate] = useState(null);
-const [openUpdate, setOpenUpdate] = useState(false);
+  const [openUpdate, setOpenUpdate] = useState(false);
   const [value, setValue] = useState('');
 //  Modal Edit 
   const handleOpenUpdate = (row) => {
     setItemToUpdate(row);
     setValue(row.name);
-    console.log(row)
     setOpenUpdate(true);
     
   };
@@ -28,6 +27,7 @@ const [openUpdate, setOpenUpdate] = useState(false);
   };
  
   const handleConfirmAdd = async () => {
+    
     if (itemToUpdate) {
       try {
        
@@ -90,7 +90,7 @@ let navigation=useNavigate()
                 </Box>
               </Fade>
             </Modal>
-            {/* End Mofal Add Facilites */}
+            {/* End Model Add Facilites */}
             <div className="Header_Container " style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center',color:'#fff'}}>
             <div className={isDarkMode?'indark' :'Header_Left'} style={{display: 'flex', alignItems: 'center',flexDirection: 'column',color:'#fff'}} >
               {location==='/MasterAdmin/Facilities'?
@@ -102,7 +102,7 @@ let navigation=useNavigate()
               
           }
 
-          {location!='/MasterAdmin/HomeAdmin' ?  <h4 className={isDarkMode?"dark_WE":''}>You can check all details</h4>:null}
+          {/* {location!='/MasterAdmin/HomeAdmin' ?  <h4 className={isDarkMode?"dark_WE":''}>You can check all details</h4>:null} */}
         
 
             </div>

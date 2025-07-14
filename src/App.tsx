@@ -31,6 +31,9 @@ const App = () => {
           {path:'Favorites',element:<Favorites/>},
           {path:'Explore_USER',element:<EXpPLORE/>},
           {path:'Details',element:<Details/>},
+          // {path:'navAdmin',element:<Nav_Admin/>}, 
+
+      
         ]
       }
       ,{

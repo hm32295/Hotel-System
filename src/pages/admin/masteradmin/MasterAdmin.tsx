@@ -1,4 +1,6 @@
+
 import React, { useContext } from 'react';
+
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
@@ -8,27 +10,20 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
-import { createTheme, useColorScheme } from '@mui/material/styles';
-import PeopleIcon from '@mui/icons-material/People';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import PeopleIcon       from '@mui/icons-material/People';
+import { createTheme } from '@mui/material/styles';
 import WidgetsIcon from '@mui/icons-material/Widgets';
 import AddHomeWorkIcon from '@mui/icons-material/AddHomeWork';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { AppProvider } from '@toolpad/core/AppProvider';
+import GroupIcon from '@mui/icons-material/Group';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import Picture_Profile from '../../../assets/images/Ellipse 234.svg';
-import {
-  DashboardLayout,
-  ThemeSwitcher,
-} from '@toolpad/core/DashboardLayout';
-import {
-  Account,
-  AccountPreview,
-  AccountPopoverFooter,
-  SignOutButton,
-} from '@toolpad/core/Account';
-import type { Navigation, Router, Session } from '@toolpad/core/AppProvider';
-import { DemoProvider } from '@toolpad/core/internal';
-import { Outlet, useNavigate } from 'react-router-dom';
+import Picture_Profile from '../../../assets/images/rectangle-7-2.svg';
+// import { AppProvider } from '@toolpad/core/AppProvider';
+// import { DashboardLayout, ThemeSwitcher } from '@toolpad/core/DashboardLayout';
+// import { Account, AccountPreview, AccountPopoverFooter, SignOutButton } from '@toolpad/core/Account';
+// import type { Navigation, Router, Session } from '@toolpad/core/AppProvider';
+// import { DemoProvider } from '@toolpad/core/internal';
+import { Outlet, useNavigate } from 'react-router-dom'; 
 import HotTubIcon from '@mui/icons-material/HotTub';
 import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import Header from '../../../component_Admin/header_Admin/Header';
@@ -44,51 +39,34 @@ const NAVIGATION: Navigation = [
   { segment: 'users-list', title: 'Users', icon: <PeopleIcon /> },
   { segment: 'change-password', title: 'change password', icon: <ChangeCircleIcon /> },
 ];
+
+
 const demoTheme = createTheme({
   cssVariables: { colorSchemeSelector: 'data-toolpad-color-scheme' },
   colorSchemes: { light: true, dark: true },
   breakpoints: { values: { xs: 0, sm: 600, md: 600, lg: 1200, xl: 1536 } },
 });
 
-export  function CustomToolbarActions() {
-  const { mode } = useColorScheme();
-  const isDarkMode = mode === 'dark';
 
-  const authContext = useContext(AuthContext);
-
-  if (!authContext || authContext.isAuthLoading || !authContext.loginData) {
-    return <Skeleton />;  
-  }
-
-  const { loginData } = authContext;
-
+function CustomToolbarActions() {
   return (
     <Stack direction="row" justifyContent="space-between" alignItems="center">
       <Box display="flex" flexDirection="row" alignItems="center" gap={1} mr={2}>
-
-        <Avatar src={Picture_Profile} alt="User profile" />
-        <Typography
-          variant="h6"
-          color={isDarkMode ? '#fff' : ''}
-          fontWeight={600}
-          fontSize={14}
-        >
-          {loginData?.role || 'No Role'}
-
+        <Avatar src={Picture_Profile} alt="Upskilling" />
+        <Typography variant="h6" fontWeight={600} fontSize={14}>
+          Upskilling
         </Typography>
       </Box>
       <ThemeSwitcher />
     </Stack>
   );
 }
+
 function DemoPageContent() {
-  const LOCATION = window.location.pathname;
+  let LOCATION = window.location.pathname;
   return (
     <>
-    <div className="" style={{marginTop:'10px'}}>
-       {LOCATION !== '/MasterAdmin/HomeAdmin' && LOCATION !== '/MasterAdmin' ? <Header /> : null}
-    </div>
-     
+      {LOCATION !== '/MasterAdmin' && LOCATION !== '/MasterAdmin/HomeAdmin' ? <Header /> : null}
       <Outlet />
     </>
   );
@@ -115,8 +93,7 @@ const accounts = [
 ];
 
 function SidebarFooterAccountPopover() {
-  const {logout} = useContext(AuthContext);
-  const navigation = useNavigate()
+
   return (
     <Stack direction="column">
       <Typography variant="body2" mx={2} mt={1}>Accounts</Typography>
@@ -128,29 +105,38 @@ function SidebarFooterAccountPopover() {
                 {account.name[0]}
               </Avatar>
             </ListItemIcon>
-            <ListItemText
-              primary={account.name}
-              secondary={account.email}
-              primaryTypographyProps={{ variant: 'body2' }}
-              secondaryTypographyProps={{ variant: 'caption' }}
-            />
+
+            <ListItemText primary={account.name} secondary={account.email} primaryTypographyProps={{ variant: 'body2' }} secondaryTypographyProps={{ variant: 'caption' }} />
           </MenuItem>
         ))}
       </MenuList>
       <Divider />
       <AccountPopoverFooter>
+
         <SignOutButton onClick={()=>{logout(); navigation('/login') }} />
+
       </AccountPopoverFooter>
     </Stack>
   );
 }
 
+
+// Move type definition to top-level scope if needed elsewhere
+type AccountPreviewProps = {
+  handleClick?: () => void;
+  open?: boolean;
+  mini?: boolean;
+};
+import type { Theme } from '@mui/material/styles';
+
 type SidebarFooterAccountProps = { mini: boolean };
 function SidebarFooterAccount({ mini }: SidebarFooterAccountProps) {
   const PreviewComponent = React.useMemo(
-    () => (props: { handleClick: () => void; open: boolean }) => (
-      <AccountSidebarPreview {...props} mini={mini} />
-    ),
+    () =>
+      function PreviewComponent(props: AccountPreviewProps) {
+        return <AccountSidebarPreview {...props} mini={mini} handleClick={props.handleClick ?? (() => {})} open={props.open ?? false} />;
+      },
+
     [mini]
   );
 
@@ -167,7 +153,8 @@ function SidebarFooterAccount({ mini }: SidebarFooterAccountProps) {
               elevation: 0,
               sx: {
                 overflow: 'visible',
-                filter: (theme) =>
+
+                filter: (theme: Theme) =>
                   `drop-shadow(0px 2px 8px ${
                     theme.palette.mode === 'dark'
                       ? 'rgba(255,255,255,0.10)'
@@ -195,31 +182,39 @@ function SidebarFooterAccount({ mini }: SidebarFooterAccountProps) {
   );
 }
 
+// Demo session for authentication
 const demoSession: Session = {
   user: {
-    name: 'Bharat Kashyap',
-    email: 'bharatkashyap@outlook.com',
-    image: 'https://avatars.githubusercontent.com/u/19550456',
+    name: 'Demo User',
+    email: 'demo@demo.com',
+    image: 'https://avatars.githubusercontent.com/u/1',
   },
 };
 
-export default function Sidepar_Admin(props: { window?: () => Window }) {
+interface MasterAdminProps {
+  window?: () => Window;
+}
+
+const MasterAdmin: React.FC<MasterAdminProps> = (props) => {
   const { window } = props;
   const navigate = useNavigate();
-  const initialPathname =
-    typeof window === 'function'
-      ? window()?.location.pathname ?? ''
-      : typeof window !== 'undefined' && window?.location
-      ? (window as Window).location.pathname
-      : '';
-  const [pathname, setPathname] = React.useState(initialPathname);
+  const [pathname, setPathname] = React.useState(
+    window ? window().location.pathname : '/MasterAdmin'
+  );
+
 
   const router = React.useMemo<Router>(
     () => ({
       pathname,
       searchParams: new URLSearchParams(),
-      navigate: (path) => {
-        const fullPath = `/MasterAdmin${String(path)}`;
+
+      navigate: (path: string) => {
+        const stringPath =
+          typeof path === 'string' ? path : String(path);
+        const fullPath = stringPath.startsWith('/')
+          ? `/MasterAdmin${stringPath}`
+          : stringPath;
+
         navigate(fullPath);
         setPathname(fullPath);
       },
@@ -248,19 +243,22 @@ export default function Sidepar_Admin(props: { window?: () => Window }) {
         session={session}
       >
         <DashboardLayout
-          defaultSidebarCollapsed       
-          sx={{
-            '& .MuiDrawer-root .MuiDrawer-paper': {
-              overflow: 'hidden',       
-            },
+
+          slots={{
+            toolbarActions: CustomToolbarActions,
+            sidebarFooter: SidebarFooterAccount,
           }}
-           branding={{ title: 'Reflex',logo: <img src={'https://www.daleeeel.com/f/res/s05/locations-photos/000/891/0089179-269-4412de14ea85462e923e77887a343b55-r01.jpg'} /> }}
+ 
+           branding={{ title: 'Reflex',logo: <img style={{borderRadius:"50%"}} src={'https://www.daleeeel.com/f/res/s05/locations-photos/000/891/0089179-269-4412de14ea85462e923e77887a343b55-r01.jpg'} /> }}
         
           slots={{ toolbarActions: CustomToolbarActions, sidebarFooter: SidebarFooterAccount }}
-        >
+         >
           <DemoPageContent />
         </DashboardLayout>
       </AppProvider>
     </DemoProvider>
   );
-}
+
+};
+
+export default MasterAdmin;

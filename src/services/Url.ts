@@ -12,12 +12,12 @@ export const axiosInstance = axios.create({
         Authorization: localStorage.getItem('token'),
     }
 });
-const tokenTest = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODY1Njc1MWNjYzQ0OGVmODU5ZDQwZGYiLCJyb2xlIjoiYWRtaW4iLCJ2ZXJpZmllZCI6ZmFsc2UsImlhdCI6MTc1MTY0MTMxMywiZXhwIjoxNzUyODUwOTEzfQ.ytN3chDu9gM8Yr1kbbjst81y5jV33ZbbGp2ySWyZZJQ'
+// const tokenTest = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODY1Njc1MWNjYzQ0OGVmODU5ZDQwZGYiLCJyb2xlIjoiYWRtaW4iLCJ2ZXJpZmllZCI6ZmFsc2UsImlhdCI6MTc1MTY0MTMxMywiZXhwIjoxNzUyODUwOTEzfQ.ytN3chDu9gM8Yr1kbbjst81y5jV33ZbbGp2ySWyZZJQ'
 // chat
 axiosInstance.interceptors.request.use((config) => {
-    const token = tokenTest;
+    const token = localStorage.getItem('token');
     if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+        config.headers.Authorization = `${token}`;
     }
     return config;
 });
@@ -71,10 +71,22 @@ export const ROOMS_URL ={
     CREATE : '/admin/rooms',
     UPDATE: (id:string)=> `/admin/rooms/${id}`,
     DELETE: (id:string)=> `/admin/rooms/${id}`,
-    DETAILS: (id:string)=> `/admin/rooms/${id}`,
+    DETAILS: (id:string)=> `/admin/rooms/${id}`
 }
 
-export const PORTAL_URLS = {
-  AVAILABLE_ROOMS: '/portal/rooms',
-  
+// user Comments
+
+export const ROOM_COMMENT_URL ={
+    GET : (id:string)=>`/portal/room-comments/${id}`,
+    CREATE:'/portal/room-comments',
+    DELETE: (id:string)=> `/portal/room-comments/${id}`,
+    UPDATE: (id:string)=> `/portal/room-comments/${id}`,
+}
+export const ROOM_REVIEW_URL ={
+    GET:(id:string)=> `/portal/room-reviews/${id}`,
+    CREATE:`/portal/room-reviews`,
+    UPDATE:(id:string)=> `/portal/room-comments/${id}`,
+}
+export const  PORTAL_URLS={
+    AVAILABLE_ROOMS:'/portal/rooms/'
 }
