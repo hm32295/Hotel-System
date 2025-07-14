@@ -1,6 +1,7 @@
 // context.tsx
 import { createContext, useEffect, useState, ReactNode } from "react";
 import { jwtDecode } from "jwt-decode";
+import { useColorScheme } from "@mui/material";
 
 interface AuthContextType {
   loginData: any;
@@ -25,6 +26,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       if (!token) return;
       const decoded = jwtDecode(token);
       setLoginData(decoded);
+     
     } catch (err) {
       localStorage.clear();
       setLoginData(null);
@@ -42,8 +44,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     saveLoginData();
   }, []);
 
+
   return (
-    <AuthContext.Provider value={{ loginData, isAuthLoading, saveLoginData, logout }}>
+    <AuthContext.Provider value={{ loginData, isAuthLoading, saveLoginData, logout}}>
       {children}
     </AuthContext.Provider>
   );

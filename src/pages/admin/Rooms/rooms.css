@@ -1,0 +1,6 @@
+.GenericTable td {
+    display: table-cell !important;
+}
+.GenericTable p{
+    margin: 0;
+}

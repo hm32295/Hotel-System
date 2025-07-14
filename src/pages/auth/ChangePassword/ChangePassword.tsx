@@ -1,41 +1,42 @@
-
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Box, Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
-import './reset.css';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import {useForm} from 'react-hook-form';
 import { Link } from '@mui/material';
-import { EMAIL_VALIDATION } from '../../../services/Validation';
 import { ADMIN_URL, axiosInstance, USERS_URL } from '../../../services/Url';
-import type { resetPassword } from '../../../services/interface';
+import type { changePassword } from '../../../services/interface';
 import Progress from '../../../component_Admin/loader/Progress';
-export default  function Reset(){
+
+
+export default  function ChangePassword(){
   const [loader, setLoader] = useState(false)
   const navigation = useNavigate();
-  const {register, formState:{errors}, handleSubmit, watch ,reset} =  useForm<resetPassword>();
-  const sendData = async(data:resetPassword)=>{
+  const {register, formState:{errors}, handleSubmit, watch ,reset} =  useForm<changePassword>();
+  const sendData = async(data:changePassword)=>{
     const loginData = 'admin';
    setLoader(true)
     try {
       let response;
       if(loginData === 'admin'){
-        response = await axiosInstance.post(ADMIN_URL.RESET_PASSWORD,data);
+        response = await axiosInstance.post(ADMIN_URL.CHANGE_PASSWORD,data);
       }else if(loginData === 'user'){
-        response = await axiosInstance.post(USERS_URL.RESET_PASSWORD,data);
+        response = await axiosInstance.post(USERS_URL.CHANGE_PASSWORD,data);
       }
       reset(
-       { email: "",
-        seed:'',
-        password:'',
-        confirmPassword: ''}
+       { 
+        oldPassword:'',
+        newPassword:'',
+        confirmPassword: ''
+      }
       )
+      console.log(response);
+      
       navigation('/login')
     } catch (error) {
         console.log(error);
@@ -47,8 +48,20 @@ export default  function Reset(){
     
   }
 
+
+  /// old Password
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const handleClickShowOldPassword = () => setShowOldPassword((show) => !show);
+    const handleMouseDownOldPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
+
+  const handleMouseUpOldPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
+
+  // new Password
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -59,6 +72,8 @@ export default  function Reset(){
     event.preventDefault();
   };
 
+  // Confirm password
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const handleClickShowConfirmPassword = () => setShowConfirmPassword((show) => !show);
 
   const handleMouseDownConfirmPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -73,44 +88,43 @@ export default  function Reset(){
       
         <Box component="form"  onSubmit={handleSubmit(sendData)} sx={{display:'flex',gap:"1rem", flexDirection:'column'}}>
           <Box className='details'>
-            <Typography sx={{mb:3, fontSize:30}} >Reset Password </Typography>
-            <Typography sx={{fontSize:16, mb:1}}>If you already have an account register </Typography>
-            <Typography sx={{fontSize:16, mb:9}}>
-              You can  
-              <Link sx={{color:'red' ,cursor:'pointer', textDecoration:'none'}} component={RouterLink} to='/login'> Login here !</Link>
-            </Typography>
+            <Typography sx={{mb:3, fontSize:30}} >Change Password </Typography>
           </Box>
-
-            <Box>
-                <TextField
-                    // id="outlined-multiline-flexible"
-                    label="Email"
-                    multiline
-                    maxRows={4}
-                    {...register("email",EMAIL_VALIDATION)}
-
-                  />
-                  {errors.email&&<Typography sx={{color:'red',textTransform:'capitalize'}}>{errors?.email?.message}</Typography>}
-
-            </Box>
-
-            <Box>
-
-                  <TextField
-                      // id="outlined-multiline-flexible"
-                      label="OTP"
-                      multiline
-                      maxRows={4}
-                      {...register('seed' ,{required:'The field Is Required'})}
-                    />
-                    {errors.seed&&<Typography sx={{color:'red',textTransform:'capitalize'}}>{errors?.seed?.message}</Typography>}
-            </Box>
-
-
             <Box>
 
                   <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                  <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                  <InputLabel htmlFor="outlined-adornment-password">old Password</InputLabel>
+                  <OutlinedInput
+                              // id="outlined-adornment-password"
+                              type={showOldPassword ? 'text' : 'password'}
+                              endAdornment={
+                                <InputAdornment position="end">
+                                  <IconButton
+                                    aria-label={
+                                      showPassword ? 'hide the password' : 'display the password'
+                                    }
+                                    sx={{display:'flex', alignItems:'center'}}
+                                    onClick={handleClickShowOldPassword}
+                                    onMouseDown={handleMouseDownOldPassword}
+                                    onMouseUp={handleMouseUpOldPassword}
+                                    edge="end"
+                                  >
+                                    {showOldPassword ? <VisibilityOff /> : <Visibility />}
+                                  </IconButton>
+                                </InputAdornment>
+                              }
+
+                              label="Password"
+                              {...register('oldPassword' , {required:'The field Is Required'})}
+                            />
+                  </FormControl>
+                  {errors.oldPassword&&<Typography sx={{color:'red',textTransform:'capitalize'}}>{errors?.oldPassword?.message}</Typography>}
+            </Box>
+        
+            <Box>
+
+                  <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                  <InputLabel htmlFor="outlined-adornment-password">new Password</InputLabel>
                   <OutlinedInput
                               // id="outlined-adornment-password"
                               type={showPassword ? 'text' : 'password'}
@@ -132,10 +146,10 @@ export default  function Reset(){
                               }
 
                               label="Password"
-                              {...register('password' , {required:'The field Is Required'})}
+                              {...register('newPassword' , {required:'The field Is Required'})}
                             />
                   </FormControl>
-                  {errors.password&&<Typography sx={{color:'red',textTransform:'capitalize'}}>{errors?.password?.message}</Typography>}
+                  {errors.newPassword&&<Typography sx={{color:'red',textTransform:'capitalize'}}>{errors?.newPassword?.message}</Typography>}
             </Box>
 
         
@@ -165,7 +179,7 @@ export default  function Reset(){
                           label="Password"
                           {...register('confirmPassword' , 
                             {required:'The field Is Required',
-                              validate: (value) => value === watch("password") || "Passwords do not match"
+                              validate: (value) => value === watch("newPassword") || "Passwords do not match"
 
                             }
                           )}

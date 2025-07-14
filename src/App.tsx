@@ -1,10 +1,15 @@
 import React from 'react'
-import { BrowserRouter as Router, Routes, Route, createBrowserRouter, RouterProvider } from 'react-router-dom';
+import {createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import 'react-pro-sidebar/dist/css/styles.css';
-import 'antd/dist/reset.css';   
+import 'antd/dist/antd.css';
 import 'react-toastify/dist/ReactToastify.css';
-import { Login,Register,Reset,Change_pass,Forget,Verify,Home,Favorites,Explore,Details,MasterUser,MasterAdmin,HomeAdmin,Ads,Facilities, UsersList, Dashboard } from './pages/index';
+
+import { SnackbarProvider } from 'notistack';
+import { Login,Register,Reset,Forget,Verify,Home,Favorites,Explore,Details,MasterUser,MasterAdmin,Ads,Facilities, UsersList, Dashboard, RoomData, Rooms, ChangePassword } from './pages/index';
+
+import ListBooking from './pages/admin/ListBooking/ListBooking';
+// import Nav_Admin from './component_Admin/navAdmin/Nav_Admin';
 const App = () => {
   const routes=createBrowserRouter(
     [
@@ -15,7 +20,6 @@ const App = () => {
           {path:'login',element:<Login/>},
           {path:'Register',element:<Register/>},
           {path:'reset',element:<Reset/>},
-          {path:'Change_pass',element:<Change_pass/>},
           {path:'Forget',element:<Forget/>},
           {path:'Verify',element:<Verify/>},
         ]
@@ -26,19 +30,28 @@ const App = () => {
           {index:true,element:<Home/>},
           {path:'Home',element:<Home/>},
           {path:'Favorites',element:<Favorites/>},
-           {path:'Explore',element:<Explore/>},
-           {path:'Details',element:<Details/>},
+          {path:'Explore',element:<Explore/>},
+          {path:'Details',element:<Details/>},
+          // {path:'navAdmin',element:<Nav_Admin/>}, 
+
+      
         ]
       }
       ,{
         path:'/MasterAdmin',
         element:<MasterAdmin/>,
         children:[
-          {index:true,element:<HomeAdmin/>},
-          {path:'HomeAdmin',element:<HomeAdmin/>},
+
+          {index:true,element:<Dashboard/>},
+
           {path:'dashboard',element:<Dashboard/>},
+          {path:'change-password',element:<ChangePassword/>},
           {path:'Ads',element:<Ads/>},
+          {path:'rooms',element:<Rooms/>},
+          {path:'rooms-data',element:<RoomData/>},
           {path:'users-list',element:<UsersList/>},
+          {path:'list-booking',element:<ListBooking/>},
+
           {path:'Facilities',element:<Facilities/>},
           {path:'Explore',element:<Explore/>},
         ]
@@ -46,10 +59,14 @@ const App = () => {
     ]
   )
   return (
-    <React.Fragment>
-      <RouterProvider router={routes}>
-      </RouterProvider>
-    </React.Fragment>
+    <SnackbarProvider>
+
+        <React.Fragment>
+          <RouterProvider router={routes}>
+          </RouterProvider>
+        </React.Fragment>
+    </SnackbarProvider>
+
   )
 }
 export default App

@@ -22,8 +22,9 @@ axiosInstance.interceptors.request.use((config) => {
     return config;
 });
 
-// /admin/users/reset-password
+
 export const ADMIN_URL ={
+    GET_ALL_USERS: '/admin/users?page=1&size=10',
     RESET_PASSWORD : '/admin/users/reset-password',
     FORGET_PASSWORD: '/admin/users/forgot-password',
     CREATE_USER : '/admin/users',
@@ -31,6 +32,7 @@ export const ADMIN_URL ={
     CHANGE_PASSWORD : '/admin/users/change-password'
 }
 export const USERS_URL ={
+    
     RESET_PASSWORD : '/portal/users/reset-password',
     FORGET_PASSWORD: '/portal/users/forgot-password',
     CREATE_USER : '/portal/users',
@@ -43,3 +45,32 @@ export const USERS_URL ={
 export const DASHBOARD_URL ={
     CHARTS : '/admin/dashboard'
 }
+export const listBooking = {
+    LIST_BOOKING: '/admin/booking?page=1&size=10',
+}
+export const FacilitesUrls = {
+  CREATE: '/admin/room-facilities',
+  GET_ALL: '/admin/room-facilities',
+  GET_DETAILS: (id: string) => `/admin/room-facilities/${id}`,
+  DELETE: (id: string) => `/admin/room-facilities/${id}`,
+  UPDATE: (id: string) => `/admin/room-facilities/${id}`,
+};
+
+
+export const ADS_URL = {
+    GET : '/admin/ads',
+    CREATE : '/admin/ads',
+    DELETE : (id:string)=> `/admin/ads/${id}`,
+    VIEW : (id:string)=> `/admin/ads/${id}`,
+    UPDATE : (id:string)=> `/admin/ads/${id}`,
+}
+
+///admin/rooms
+export const ROOMS_URL ={
+    GET : '/admin/rooms',
+    CREATE : '/admin/rooms',
+    UPDATE: (id:string)=> `/admin/rooms/${id}`,
+    DELETE: (id:string)=> `/admin/rooms/${id}`,
+    DETAILS: (id:string)=> `/admin/rooms/${id}`,
+}
+

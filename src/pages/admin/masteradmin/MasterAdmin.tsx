@@ -1,4 +1,6 @@
-import React from 'react';
+
+import React, { useContext } from 'react';
+
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
@@ -8,6 +10,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
+
 import { createTheme } from '@mui/material/styles';
 import WidgetsIcon from '@mui/icons-material/Widgets';
 import AddHomeWorkIcon from '@mui/icons-material/AddHomeWork';
@@ -56,11 +59,13 @@ const NAVIGATION: Navigation = [
   { segment: 'ٌLogout', title: 'ٌLogout', icon: <LogoutIcon /> },
 ];
 
+
 const demoTheme = createTheme({
   cssVariables: { colorSchemeSelector: 'data-toolpad-color-scheme' },
   colorSchemes: { light: true, dark: true },
   breakpoints: { values: { xs: 0, sm: 600, md: 600, lg: 1200, xl: 1536 } },
 });
+
 
 function CustomToolbarActions() {
   return (
@@ -107,6 +112,7 @@ const accounts = [
 ];
 
 function SidebarFooterAccountPopover() {
+
   return (
     <Stack direction="column">
       <Typography variant="body2" mx={2} mt={1}>Accounts</Typography>
@@ -118,17 +124,21 @@ function SidebarFooterAccountPopover() {
                 {account.name[0]}
               </Avatar>
             </ListItemIcon>
+
             <ListItemText primary={account.name} secondary={account.email} primaryTypographyProps={{ variant: 'body2' }} secondaryTypographyProps={{ variant: 'caption' }} />
           </MenuItem>
         ))}
       </MenuList>
       <Divider />
       <AccountPopoverFooter>
-        <SignOutButton />
+
+        <SignOutButton onClick={()=>{logout(); navigation('/login') }} />
+
       </AccountPopoverFooter>
     </Stack>
   );
 }
+
 
 // Move type definition to top-level scope if needed elsewhere
 type AccountPreviewProps = {
@@ -145,6 +155,7 @@ function SidebarFooterAccount({ mini }: SidebarFooterAccountProps) {
       function PreviewComponent(props: AccountPreviewProps) {
         return <AccountSidebarPreview {...props} mini={mini} handleClick={props.handleClick ?? (() => {})} open={props.open ?? false} />;
       },
+
     [mini]
   );
 
@@ -161,6 +172,7 @@ function SidebarFooterAccount({ mini }: SidebarFooterAccountProps) {
               elevation: 0,
               sx: {
                 overflow: 'visible',
+
                 filter: (theme: Theme) =>
                   `drop-shadow(0px 2px 8px ${
                     theme.palette.mode === 'dark'
@@ -188,6 +200,7 @@ function SidebarFooterAccount({ mini }: SidebarFooterAccountProps) {
     />
   );
 }
+
 // Demo session for authentication
 const demoSession: Session = {
   user: {
@@ -208,16 +221,19 @@ const MasterAdmin: React.FC<MasterAdminProps> = (props) => {
     window ? window().location.pathname : '/MasterAdmin'
   );
 
+
   const router = React.useMemo<Router>(
     () => ({
       pathname,
       searchParams: new URLSearchParams(),
+
       navigate: (path: string) => {
         const stringPath =
           typeof path === 'string' ? path : String(path);
         const fullPath = stringPath.startsWith('/')
           ? `/MasterAdmin${stringPath}`
           : stringPath;
+
         navigate(fullPath);
         setPathname(fullPath);
       },
@@ -246,16 +262,19 @@ const MasterAdmin: React.FC<MasterAdminProps> = (props) => {
         session={session}
       >
         <DashboardLayout
+
           slots={{
             toolbarActions: CustomToolbarActions,
             sidebarFooter: SidebarFooterAccount,
           }}
+
         >
           <DemoPageContent />
         </DashboardLayout>
       </AppProvider>
     </DemoProvider>
   );
+
 };
 
 export default MasterAdmin;
