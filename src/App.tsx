@@ -6,7 +6,7 @@ import 'antd/dist/antd.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { SnackbarProvider } from 'notistack';
-import { Login,Register,Reset,Forget,Verify,Home,Favorites,Explore,Details,MasterUser,MasterAdmin,Ads,Facilities, UsersList, Dashboard, RoomData, Rooms, ChangePassword } from './pages/index';
+import { Login,Register,Reset,Forget,Verify,Home,Favorites,Explore,Details,MasterUser,MasterAdmin,Ads,Facilities, UsersList, Dashboard, RoomData, Rooms, ChangePassword, Booking } from './pages/index';
 
 import ListBooking from './pages/admin/ListBooking/ListBooking';
 // import Nav_Admin from './component_Admin/navAdmin/Nav_Admin';
@@ -31,6 +31,7 @@ const App = () => {
           {path:'Home',element:<Home/>},
           {path:'Favorites',element:<Favorites/>},
           {path:'Explore',element:<Explore/>},
+          {path:'booking',element:<Booking/>},
           {path:'Details',element:<Details/>},
           // {path:'navAdmin',element:<Nav_Admin/>}, 
 

@@ -267,8 +267,11 @@ const MasterAdmin: React.FC<MasterAdminProps> = (props) => {
             toolbarActions: CustomToolbarActions,
             sidebarFooter: SidebarFooterAccount,
           }}
-
-        >
+ 
+           branding={{ title: 'Reflex',logo: <img style={{borderRadius:"50%"}} src={'https://www.daleeeel.com/f/res/s05/locations-photos/000/891/0089179-269-4412de14ea85462e923e77887a343b55-r01.jpg'} /> }}
+        
+          slots={{ toolbarActions: CustomToolbarActions, sidebarFooter: SidebarFooterAccount }}
+         >
           <DemoPageContent />
         </DashboardLayout>
       </AppProvider>
