@@ -7,21 +7,18 @@ import Ads from "./ads/Ads"
 import Review from "./review/Review"
 
 const Home = () => {
-  
-  
+
+
   return (
     <div>
- 
 
+      <Interface />
+      <Explore />
+      <PopularAds />
+      <Ads />
+      <Review />
 
-     
-  <Interface/>
-  <Explore/>
-  <PopularAds />
-  <Ads />
-  <Review />
-
-  </div>
+    </div>
   )
 }
 
