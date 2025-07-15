@@ -13,43 +13,67 @@ import 'swiper/css/pagination';
 import './ads.css';
 
 // import required modules
-import { Pagination } from 'swiper/modules';
+import { Autoplay, Pagination } from 'swiper/modules';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 import { ADS_URL, axiosInstance } from '../../../../services/Url';
 import { useNavigate } from 'react-router-dom';
+import { Skeleton_Loader } from '../review/Skeleton';
+
+
 
 export default function Ads() {
     const [ads, setAds] = useState([]);
+    const [loader , setLoader] = useState(false)
     const theme = useTheme();
     const isXs = useMediaQuery(theme.breakpoints.down('sm'));
     const isSm = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+    const isLg = useMediaQuery(theme.breakpoints.up('lg'));
+    
     const navigation = useNavigate()
     const getAds = async()=>{
-
+          setLoader(true)
         try {
             const response = await axiosInstance(ADS_URL.GET)
             setAds(response?.data?.data?.ads)
-            console.log(response.data.data.ads);
             
             
         } catch (error) {
             console.log(error);
             
+        }finally{
+          setLoader(false)
         }
     }
     useEffect(()=>{
         getAds()
     },[])
+    if(loader) return (
+      <Box sx={{display:'flex' , justifyContent:'space-between' ,gap:'0rem' ,alignItems:'center',width:'100%'}}>
+    
+        {Array.from({ length: ( isLg? 4 : (isSm? 2 : (isXs ? 1 : 3)) ) }).map((_, i) => (
+          <Box key={i} width={'100%'}>
+            <Skeleton_Loader />
+          </Box>
+            
+          ))}  
+      
+      </Box>
+      )
   return (
     <Box className='review' sx={{padding:'1rem'}}>
         {/* {console.log(ads) } */}
       <Swiper
-        slidesPerView={isSm? 2 : (isXs ? 1 : 3)}
+        slidesPerView={isLg? 4 : (isSm? 2 : (isXs ? 1 : 3))}
         spaceBetween={5}
         pagination={{
           clickable: true,
         }}
-        modules={[Pagination]}
+        loop={true}
+        autoplay={{
+            delay: 3000,
+            disableOnInteraction: false,
+          }}
+          modules={[Pagination, Autoplay]}
         className="mySwiper"
       >
 

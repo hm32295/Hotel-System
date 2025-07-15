@@ -1,4 +1,4 @@
-import * as React from 'react';
+
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 import FormControl from '@mui/joy/FormControl';
@@ -15,17 +15,20 @@ import Check from '@mui/icons-material/Check';
 import { useForm } from 'react-hook-form';
 import { Typography } from '@mui/material';
 import { axiosInstance, ROOM_COMMENT_URL } from '../../../../services/Url';
+import { useState } from 'react';
+import Progress from '../Progress';
 
 export default function Comment({id}) {
-  const [italic, setItalic] = React.useState(false);
-  const [fontWeight, setFontWeight] = React.useState('normal');
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [loader ,setLoader] = useState(false)
+  const [italic, setItalic] = useState(false);
+  const [fontWeight, setFontWeight] = useState('normal');
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const {register,formState:{errors}, reset,handleSubmit} = useForm()
 
   const setComment =async (data)=>{
    
     data = {...data, roomId:id}
-    console.log(data);
+    setLoader(true)
     
     
     try {
@@ -35,6 +38,8 @@ export default function Comment({id}) {
     } catch (error) {
       console.log(error);
       
+    }finally{
+      setLoader(false)
     }
     
   }
@@ -98,7 +103,9 @@ export default function Comment({id}) {
             >
               <FormatItalic />
             </IconButton>
-           <Button type='submit' sx={{background:'#3252DF',color:'#fff', padding:'.6rem .9rem',textTransform:'uppercase', ml: 'auto'}}>Send</Button>
+           <Button type='submit' disabled={loader} sx={{background:'#3252DF',color:'#fff', padding:'.6rem .9rem',textTransform:'uppercase', ml: 'auto'}}>
+                {loader ? <Progress /> :'send'}
+            </Button>
           </Box>
           
         }

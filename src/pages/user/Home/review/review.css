@@ -1,8 +1,9 @@
 
 .ads .swiper {
-    width: 600px;
-    height: 720px;
+    width: 90%;
+    height: 450px;
 }
+/* .review_Box */
 
 .ads .swiper-slide {
     display: flex;
@@ -11,45 +12,39 @@
     border-radius: 18px;
     font-size: 22px;
     font-weight: bold;
-    color: #fff;
+    color: #000;
 }
 
-.ads .swiper-slide:nth-child(1n) {
-    background-color: rgb(206, 17, 17);
+.ads .swiper-slide {
+    background-color: #fff;
+    height: 100%;
 }
 
-.ads .swiper-slide:nth-child(2n) {
-    background-color: rgb(0, 140, 255);
+.ads .swiper-slide img{
+    /* background-color: #fff; */
+    border-bottom-right-radius: 2rem;
+    height: 100%;
+    object-fit: cover;
 }
-
-.ads .swiper-slide:nth-child(3n) {
-    background-color: rgb(10, 184, 111);
-}
-
-.ads .swiper-slide:nth-child(4n) {
-    background-color: rgb(211, 122, 7);
-}
-
-.ads .swiper-slide:nth-child(5n) {
-    background-color: rgb(118, 163, 12);
-}
-
-.ads .swiper-slide:nth-child(6n) {
-    background-color: rgb(180, 10, 47);
-}
-
-.ads .swiper-slide:nth-child(7n) {
-    background-color: rgb(35, 99, 19);
-}
-
-.ads .swiper-slide:nth-child(8n) {
-    background-color: rgb(0, 68, 255);
-}
-
-.ads .swiper-slide:nth-child(9n) {
-    background-color: rgb(218, 12, 218);
-}
-
-.ads .swiper-slide:nth-child(10n) {
-    background-color: rgb(54, 94, 77);
+@media (max-width : 767px) {
+    .ads .swiper {
+        height: 550px;;
+    }
+  
+    .ads .swiper .review_Box {
+        flex-direction: column;
+        text-align: center;
+    }
+    .ads .swiper-slide img{
+        height: 200px;
+        margin-top: 1rem;
+        border-radius: 50%;
+        width: 200px ;
+        object-fit: cover;
+        object-position: center;
+    }
+    .ads .swiper-slide .description{
+        font-size: 1.6rem;
+        line-height: 1.3;
+    }
 }

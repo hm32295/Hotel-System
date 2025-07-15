@@ -12,6 +12,7 @@ import Favorite from '@mui/icons-material/Favorite';
 import { axiosInstance, FAVORITE_URL, ROOMS_USER_URL } from '../../../../services/Url';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Skeleton_Loader } from '../review/Skeleton';
 
 
 function srcset(image: string, width: number, height: number, rows = 1, cols = 1) {
@@ -29,6 +30,7 @@ export default function PopularAds() {
     const navigation = useNavigate()
     const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
     const[rooms, setRooms]= useState([]);
+    const [loader , setLoader] = useState(false)
 
       const theme = useTheme();
       const isXs = useMediaQuery(theme.breakpoints.down('sm'));
@@ -36,7 +38,6 @@ export default function PopularAds() {
       const isLg = useMediaQuery(theme.breakpoints.up('lg'));
 
       const addFavorite = async(roomId, isChecked)=>{
-        
         
         try {
             let response;
@@ -56,6 +57,7 @@ export default function PopularAds() {
       }
     
     const getRooms = async() =>{
+        setLoader(true)
         try {
             const response = await axiosInstance(ROOMS_USER_URL.GET,{params:{page:1,size:5}})
             setRooms(response.data.data.rooms)
@@ -65,6 +67,8 @@ export default function PopularAds() {
         } catch (error) {
                 console.log(error);
                 
+        }finally{
+            setLoader(false)
         }
     }
     useEffect(()=>{
@@ -80,10 +84,10 @@ export default function PopularAds() {
         
         return '100%'
     }
-   
+   if (loader) return( <Skeleton_Loader/>)
   return (
     <Box sx={{display:'flex', justifyContent:'center', flexWrap:'wrap'}}>
-            <Box component={'h2'} sx={{textAlign:'center',width:'100%'}} mb={1} >Most popular ads</Box>
+            <Box component={'h2'} sx={{textAlign:'center',width:'100%',textTransform:'capitalize'}} mb={1} >Most popular ads</Box>
             <ImageList
             sx={{
                 width: widthImages(),

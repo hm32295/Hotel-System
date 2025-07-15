@@ -1,6 +1,5 @@
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
-import StarIcon from '@mui/icons-material/Star';
 import { useState } from 'react';
 import { Check, FormatBold, FormatItalic, KeyboardArrowDown } from '@mui/icons-material';
 import { Button, FormControl, FormLabel, IconButton, Menu, MenuItem, Typography } from '@mui/material';
@@ -8,6 +7,7 @@ import ListItemDecorator from '@mui/joy/ListItemDecorator';
 import Textarea from '@mui/joy/Textarea';
 import { useForm } from 'react-hook-form';
 import { axiosInstance, ROOM_REVIEW_URL } from '../../../../services/Url';
+import Progress from '../Progress';
 
 const labels: { [index: string]: string } = {
   0.5: 'Useless',
@@ -22,12 +22,6 @@ const labels: { [index: string]: string } = {
   5: 'Excellent+',
 };
 
-
-// {
-//     "roomId": "65a07140283b56f568210379",
-//     "rating": 3,
-//     "review": "test review"
-// }
 export default function Rate({id}) {
   const {register,formState:{errors}, reset, handleSubmit} =useForm()
   const [value, setValue] = useState<number | null>(2);
@@ -35,11 +29,11 @@ export default function Rate({id}) {
   const [fontWeight, setFontWeight] = useState('normal');
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
+    const[loader ,setLoader] = useState(false)
 
   const setRating = async (data)=>{
     data ={...data,rating:value,roomId:id }
-    console.log(data);
-    
+    setLoader(true)
     try {
       const response = await axiosInstance.post(ROOM_REVIEW_URL.CREATE,data)
       console.log(response);
@@ -47,6 +41,8 @@ export default function Rate({id}) {
     } catch (error) {
       console.log(error);
       
+    }finally{
+      setLoader(false)
     }
     
     
@@ -124,7 +120,9 @@ export default function Rate({id}) {
                 >
                   <FormatItalic />
                 </IconButton>
-                 <Button type='submit' sx={{background:'#3252DF',color:'#fff', ml: 'auto' }}>Send</Button>
+                 <Button type='submit' disabled={loader} sx={{background: (loader ? '#fff' :'#3252DF'),color:'#fff', ml: 'auto' }}>
+                    {loader ? <Progress  /> :'send'}
+                  </Button>
               </Box>
             }
             sx={[
