@@ -18,11 +18,11 @@ import AddHomeWorkIcon from '@mui/icons-material/AddHomeWork';
 import GroupIcon from '@mui/icons-material/Group';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import Picture_Profile from '../../../assets/images/rectangle-7-2.svg';
-// import { AppProvider } from '@toolpad/core/AppProvider';
-// import { DashboardLayout, ThemeSwitcher } from '@toolpad/core/DashboardLayout';
-// import { Account, AccountPreview, AccountPopoverFooter, SignOutButton } from '@toolpad/core/Account';
-// import type { Navigation, Router, Session } from '@toolpad/core/AppProvider';
-// import { DemoProvider } from '@toolpad/core/internal';
+import { AppProvider } from '@toolpad/core/AppProvider';
+import { DashboardLayout, ThemeSwitcher } from '@toolpad/core/DashboardLayout';
+import { Account, AccountPreview, AccountPopoverFooter, SignOutButton } from '@toolpad/core/Account';
+import type { Navigation, Router, Session } from '@toolpad/core/AppProvider';
+import { DemoProvider } from '@toolpad/core/internal';
 import { Outlet, useNavigate } from 'react-router-dom'; 
 import HotTubIcon from '@mui/icons-material/HotTub';
 import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
@@ -93,7 +93,8 @@ const accounts = [
 ];
 
 function SidebarFooterAccountPopover() {
-
+  const [logout]= useContext(AuthContext)
+  const navigation = useNavigate()
   return (
     <Stack direction="column">
       <Typography variant="body2" mx={2} mt={1}>Accounts</Typography>
@@ -231,7 +232,6 @@ const MasterAdmin: React.FC<MasterAdminProps> = (props) => {
     }),
     []
   );
-
   return (
     <DemoProvider window={demoWindow}>
       <AppProvider
