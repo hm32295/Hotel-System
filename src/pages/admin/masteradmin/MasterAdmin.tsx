@@ -18,11 +18,11 @@ import AddHomeWorkIcon from '@mui/icons-material/AddHomeWork';
 import GroupIcon from '@mui/icons-material/Group';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import Picture_Profile from '../../../assets/images/rectangle-7-2.svg';
-// import { AppProvider } from '@toolpad/core/AppProvider';
-// import { DashboardLayout, ThemeSwitcher } from '@toolpad/core/DashboardLayout';
-// import { Account, AccountPreview, AccountPopoverFooter, SignOutButton } from '@toolpad/core/Account';
-// import type { Navigation, Router, Session } from '@toolpad/core/AppProvider';
-// import { DemoProvider } from '@toolpad/core/internal';
+import { AppProvider } from '@toolpad/core/AppProvider';
+import { DashboardLayout, ThemeSwitcher } from '@toolpad/core/DashboardLayout';
+import { Account, AccountPreview, AccountPopoverFooter, SignOutButton } from '@toolpad/core/Account';
+import type { Navigation, Router, Session } from '@toolpad/core/AppProvider';
+import { DemoProvider } from '@toolpad/core/internal';
 import { Outlet, useNavigate } from 'react-router-dom'; 
 import HotTubIcon from '@mui/icons-material/HotTub';
 import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
@@ -63,7 +63,7 @@ function CustomToolbarActions() {
 }
 
 function DemoPageContent() {
-  let LOCATION = window.location.pathname;
+  const LOCATION = window.location.pathname;
   return (
     <>
       {LOCATION !== '/MasterAdmin' && LOCATION !== '/MasterAdmin/HomeAdmin' ? <Header /> : null}
