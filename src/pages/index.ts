@@ -6,7 +6,7 @@ export {default as Forget  }from './auth/forget/Forget'
 export {default as Verify  }from './auth/verify/Verify'
 export {default as Home  }from './user/Home/Home'
 export {default as Favorites  }from './user/Favorites/Favorites'
-export {default as Explore  }from './user/Explore/Explore'
+
 export {default as Details  }from './user/Details/Details'
 export {default as MasterUser  }from './user/MasterUser/MasterUser'
 export {default as MasterAdmin  }from './admin/masteradmin/MasterAdmin'

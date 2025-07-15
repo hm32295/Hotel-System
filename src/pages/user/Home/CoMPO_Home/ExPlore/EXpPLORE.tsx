@@ -30,7 +30,6 @@ const EXpPLORE = () => {
   let [data_Mohada, setdata_Mohada] = useState([]);
   let [data_Kollow, setdata_Kollow] = useState([]);
   const size = 8; 
-
   const FUN_GET_DATA_DETAILS = async (page, size) => {
     try {
       if (BookingData?.startDate && BookingData?.endDate) {
@@ -163,7 +162,7 @@ const EXpPLORE = () => {
         sx={{ height: '20vh' }}
       >
         <Pagination
-          count={totalPages}
+          count={5}
           page={currentPage}
           onChange={(event, value) => {
             setCurrentPage(value);

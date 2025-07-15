@@ -8,6 +8,35 @@
   max-width: 400px;
   margin: 0 auto;
 }
+.booking-card h3 {
+  color: rgba(21, 44, 91, 1) !important;
+  font-weight: 700;
+}
+.booking-card p {
+  color:rgba(176, 176, 176, 1);
+  font-weight: 500;
+ 
+}
+.card-title,.card-text{
+  color: rgba(21, 44, 91, 1) !important;
+  font-weight: 500 !important;
+}
+.btton_slect,.BOOTN_EXPLORE{
+  background-color:  rgba(21, 44, 91, 1) !important;
+  color: #fff;
+}
+.decrement{
+background-color: rgba(231, 76, 60, 1) !important;
+color: #fff;
+}
+.increment{
+  background-color: rgba(26, 188, 156, 1) !important;
+  color: #fff;
+  
+}
+
+
+
 
 .custom-label {
   display: block;

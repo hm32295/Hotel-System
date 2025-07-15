@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
    
   );
-   console.log(BookingData)
+  //  console.log(BookingData)
   
 
   return (

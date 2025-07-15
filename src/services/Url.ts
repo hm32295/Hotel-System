@@ -94,13 +94,14 @@ export const ROOMS_USER_URL ={
     GET : '/portal/rooms/available',
     GET_DETAILS :(id:string)=>`/portal/rooms/${id}`
 }
-
+export const  PORTAL_URLS={
+    AVAILABLE_ROOMS:'/portal/rooms/'
+}
 //  /portal/favorite-rooms
 export const FAVORITE_URL ={
     CREATE: '/portal/favorite-rooms/',
     GET: '/portal/favorite-rooms',
-    DELETE: (id:string)=>`/portal/favorite-rooms/${id}`
-}
-export const  PORTAL_URLS={
-    AVAILABLE_ROOMS:'/portal/rooms/'
+    DELETE:  `/portal/favorite-rooms`
+
+   
 }

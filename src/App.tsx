@@ -5,7 +5,7 @@ import 'antd/dist/antd.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { SnackbarProvider } from 'notistack';
-import { Login,Register,Reset,Forget,Verify,Home,Favorites,Explore,Details,MasterUser,MasterAdmin,Ads,Facilities, UsersList, Dashboard, RoomData, Rooms, ChangePassword } from './pages/index';
+import { Login,Register,Reset,Forget,Verify,Home,Favorites,Details,MasterUser,MasterAdmin,Ads,Facilities, UsersList, Dashboard, RoomData, Rooms, ChangePassword } from './pages/index';
 import ListBooking from './pages/admin/ListBooking/ListBooking';
 import EXpPLORE from './pages/user/Home/CoMPO_Home/ExPlore/EXpPLORE';
 const App = () => {
@@ -27,7 +27,7 @@ const App = () => {
         children:[
           {index:true,element:<Home/>},
           {path:'Home',element:<Home/>},
-          {path:'Explore',element:<Explore/>},
+         
           {path:'Favorites',element:<Favorites/>},
           {path:'Explore_USER',element:<EXpPLORE/>},
           {path:'Details',element:<Details/>},
@@ -52,7 +52,7 @@ const App = () => {
           {path:'list-booking',element:<ListBooking/>},
 
           {path:'Facilities',element:<Facilities/>},
-          {path:'Explore',element:<Explore/>},
+          
         ]
       }
     ]
