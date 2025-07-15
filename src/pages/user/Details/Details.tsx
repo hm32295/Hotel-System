@@ -29,7 +29,7 @@ const Details = () => {
             <ToBooking data={data}/>
           
         </Box>
-        <Box sx={{mt:'2rem',border:' 1px solid #E5E5E5',p:'40px' , display:'flex',flexWrap:'wrap' ,alignItems:'center' ,justifyContent:'center',gap:'2rem'}}>
+        <Box sx={{mt:'2rem',border:' 1px solid #E5E5E5',p:'8px' , display:'flex',flexWrap:'wrap' ,alignItems:'center' ,justifyContent:'center',gap:'2rem'}}>
             <Rate id={data._id} />
             <Box className='border-comment' sx={{width:'1px' , background:'#203FC7', height:'180px'}}></Box>
             <Comment id={data._id} />
