@@ -43,32 +43,41 @@ export default function ListBooking() {
   const [loading, setLoading] = useState(true);
 
   const [totalBooking, setTotalBooking] = useState(0);
-
-  useEffect(() => {
-    const fetchBookings = async () => {
-      try {
-        setLoading(true);
-        const { data } = await axiosInstance.get(listBooking.LIST_BOOKING);
-        setTotalBooking(data.data.totalCount)
-        
-        const formattedData: Booking[] = data?.data?.booking?.map((item: any) => ({
-          id: item._id,
-          roomNumber: item.room?.roomNumber?.toString() || 'N/A',
-          totalPrice: item.totalPrice,
-          startDate: new Date(item.startDate).toLocaleDateString(),
-          endDate: new Date(item.endDate).toLocaleDateString(),
-          userName: item.user?.userName || 'N/A',
-        })) || [];
-
-        setBookings(formattedData);
-      } catch (error) {
-        console.error('Error fetching bookings:', error);
-      } finally {
-        setLoading(false);
+const getData = async ()=>{
+        try {
+          const response = await axiosInstance(listBooking.LIST_BOOKING);
+          const totalData = response?.data?.data?.totalCount;
+            fetchBookings(1,totalData)
+        } catch (error) {
+          console.log(error);
+          
+        }
       }
-    };
+      const fetchBookings = async (page:number,size:number) => {
+        try {
+          setLoading(true);
+          const { data } = await axiosInstance.get(listBooking.LIST_BOOKING,{params:{page,size}});
+          setTotalBooking(data.data.totalCount)
+          
+          const formattedData: Booking[] = data?.data?.booking?.map((item: any) => ({
+            id: item._id,
+            roomNumber: item.room?.roomNumber?.toString() || 'N/A',
+            totalPrice: item.totalPrice,
+            startDate: new Date(item.startDate).toLocaleDateString(),
+            endDate: new Date(item.endDate).toLocaleDateString(),
+            userName: item.user?.userName || 'N/A',
+          })) || [];
+  
+          setBookings(formattedData);
+        } catch (error) {
+          console.error('Error fetching bookings:', error);
+        } finally {
+          setLoading(false);
+        }
+      };
+  useEffect(() => {
 
-    fetchBookings();
+    getData();
   }, []);
 
   const handleOpenView = (row: Booking) => {

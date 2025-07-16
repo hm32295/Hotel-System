@@ -6,9 +6,8 @@ const MasterUser = () => {
   return (
     <>
     <Nav_User/>
-        <main>
+        
         <Outlet/>
-    </main>
     <Footer_User/>
     </>
 

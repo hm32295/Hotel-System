@@ -1,7 +1,6 @@
 // context.tsx
 import { createContext, useEffect, useState, ReactNode } from "react";
 import { jwtDecode } from "jwt-decode";
-import { useColorScheme } from "@mui/material";
 
 interface AuthContextType {
   loginData: any;
@@ -19,6 +18,7 @@ interface AuthProviderProps {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [loginData, setLoginData] = useState(null);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
+
 
   const saveLoginData = () => {
     try {
@@ -51,7 +51,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
    
   );
-   console.log(BookingData)
   
 
   return (

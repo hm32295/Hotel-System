@@ -20,8 +20,8 @@ interface GenericTableProps<T> {
   rows: T[];
   headCells: HeadCell<T>[];
   title?: string;
-  getData?:()=> void
   totalData?: number
+  loader?:boolean
   renderActions?: (row: T) => ReactNode;
 }
 
@@ -29,13 +29,13 @@ export default function GenericTable<T extends { id: string | number }>({
   rows,
   headCells,
   totalData,
-  getData,
+  loader,
   title,
   renderActions,
 }: GenericTableProps<T>) {
   
   const [order, setOrder] = useState<Order>('asc');
-  const [orderBy, setOrderBy] = useState<keyof T>(headCells[0].id);
+  const [orderBy, setOrderBy] = useState<keyof T>(headCells[0]?.id);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -45,8 +45,9 @@ export default function GenericTable<T extends { id: string | number }>({
     setOrderBy(property);
   };
 
-  const handleChangePage = (_event: unknown, newPage: number) => {
+  const handleChangePage = (_event: unknown, newPage: number ) => {
     setPage(newPage);
+  
   };
 
   const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
@@ -68,11 +69,6 @@ export default function GenericTable<T extends { id: string | number }>({
   }, [rows, order, orderBy, page, rowsPerPage]);
 
 
-  useEffect(()=>{
-
-      // if(getData){getData(page,rowsPerPage);}
-
-  },[rowsPerPage, page])
   return (
     <Box sx={{ width: '100%',marginTop:'30px'}} className='GenericTable' >
       <Paper sx={{ width: '100%', mb: 2 }}>
@@ -134,9 +130,9 @@ export default function GenericTable<T extends { id: string | number }>({
                 })
               ) : (
                 <TableRow>
-                  <TableCell colSpan={headCells.length + 1} align="center">
-                    <NoData />
-                  </TableCell>
+                  
+                    <TableCell colSpan={headCells.length + 1} align="center"><NoData /> </TableCell>
+                 
                 </TableRow>
               )}
             </TableBody>

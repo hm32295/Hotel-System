@@ -66,10 +66,28 @@ const Facilities = () => {
   const [refresh,setRefresh]=useState(0);
   const [facilities,setFacilities]=useState(0);
 
-    const fetchFacilities = async() => {
-    try {
-      const res = await axiosInstance.get(FacilitesUrls.GET_ALL);
 
+
+    const getData = async ()=>{
+      setLoading(false)
+          try {
+            const response = await axiosInstance(FacilitesUrls.GET_ALL);
+            const totalData = response?.data?.data?.totalCount;
+              fetchFacilities(1,totalData)
+          } catch (error) {
+            console.log(error);
+            
+          }
+          finally{
+            setLoading(true)
+          }
+        }
+    const fetchFacilities = async(page:number,size:number) => {
+      setLoading(true)
+    try {
+      const res = await axiosInstance.get(FacilitesUrls.GET_ALL,{params:{page,size}});
+      console.log(res.data.data.totalCount);
+      
       setFacilities(res.data.data.totalCount)
       
       const facilitiesData = res.data.data.facilities.map(facility => ({
@@ -94,7 +112,7 @@ const Facilities = () => {
   };
 
   useEffect(() => {
-    fetchFacilities();
+    getData();
   }, []);
 
   const handleOpenUpdate = (row) => {
@@ -110,13 +128,16 @@ const Facilities = () => {
   };
 
   const handleConfirmUpdate = async () => {
+    setLoading(false)
     if (itemToUpdate) {
       try {
         await axiosInstance.put(FacilitesUrls.UPDATE(itemToUpdate.id), { name: value });
         toast.success(`Updated ${itemToUpdate.name} successfully.`);
-        fetchFacilities();
+        getData();
       } catch (error) {
         console.error("Update Error:", error);
+      }finally{
+        setLoading(true)
       }
     }
     handleCloseUpdate();
@@ -137,9 +158,10 @@ const Facilities = () => {
       try {
         await axiosInstance.delete(FacilitesUrls.DELETE(itemToDelete.id));
         toast.error(`Deleted ${itemToDelete.name} successfully.`);
-        fetchFacilities();
+        getData();
       } catch (error) {
         console.error("Delete Error:", error);
+      }finally{////
       }
     }
     handleCloseDelete();
@@ -207,7 +229,7 @@ const handleMenuClose = () => {
         name={itemToDelete ? itemToDelete.name : ''}
       />
 <div style={{display:'none'}}>
-  <Header fetchFacilities={fetchFacilities} setrefresh={setRefresh}   />
+  <Header />
 </div>
 
    {loading ? (
