@@ -9,7 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -34,6 +34,7 @@ const Nav_User = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -41,6 +42,13 @@ const Nav_User = () => {
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    navigate('/Login');
+    window.location.reload();
   };
 
   return (
@@ -75,11 +83,7 @@ const Nav_User = () => {
           </Typography>
 
           {/* Desktop Navigation */}
-          <Box sx={{ 
-            display: { xs: 'none', md: 'flex' }, 
-            gap: 2, 
-            alignItems: 'center' 
-          }}>
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2, alignItems: 'center' }}>
             {pages.map((page) => (
               <Button
                 key={page.name}
@@ -103,7 +107,28 @@ const Nav_User = () => {
               </Button>
             ))}
 
-            {!isLoggedIn && (
+            {isLoggedIn ? (
+              <Button
+                onClick={handleLogout}
+                sx={{
+                  backgroundColor: '#d32f2f',
+                  color: '#fff',
+                  textTransform: 'none',
+                  px: 3,
+                  borderRadius: '8px',
+                  fontWeight: 500,
+                  fontFamily: 'Poppins, sans-serif',
+                  boxShadow: 'none',
+                  transition: 'box-shadow 0.3s ease',
+                  '&:hover': {
+                    backgroundColor: '#c62828',
+                    boxShadow: '0px 8px 15px rgba(211, 47, 47, 0.3)',
+                  },
+                }}
+              >
+                Logout
+              </Button>
+            ) : (
               <>
                 <Button
                   component={Link}
@@ -149,7 +174,7 @@ const Nav_User = () => {
                     },
                   }}
                 >
-                  Login 
+                  Login
                 </Button>
               </>
             )}
@@ -193,8 +218,8 @@ const Nav_User = () => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem 
-                  key={page.name} 
+                <MenuItem
+                  key={page.name}
                   onClick={handleCloseNavMenu}
                   component={Link}
                   to={page.path}
@@ -210,10 +235,27 @@ const Nav_User = () => {
                   {page.name}
                 </MenuItem>
               ))}
-              
-              {!isLoggedIn && (
+
+              {isLoggedIn ? (
+                <MenuItem
+                  onClick={() => {
+                    handleCloseNavMenu();
+                    handleLogout();
+                  }}
+                  sx={{
+                    fontFamily: 'Poppins, sans-serif',
+                    color: '#d32f2f',
+                    fontWeight: 500,
+                    '&:hover': {
+                      backgroundColor: '#f5f5f5',
+                    }
+                  }}
+                >
+                  Logout
+                </MenuItem>
+              ) : (
                 <>
-                  <MenuItem 
+                  <MenuItem
                     onClick={handleCloseNavMenu}
                     component={Link}
                     to="/Register"
@@ -228,7 +270,7 @@ const Nav_User = () => {
                   >
                     Register
                   </MenuItem>
-                  <MenuItem 
+                  <MenuItem
                     onClick={handleCloseNavMenu}
                     component={Link}
                     to="/Login"
