@@ -33,9 +33,8 @@ const Header = () => {
        
         await axiosInstance.post(`${FacilitesUrls.CREATE}`, { name: value });
          toast.success(`Added  successfully.`)
-        window.location.reload()
-      } catch (error) {
-        console.error('Delete Error:', error);
+        } catch (error) {
+        toast.error(error?.response?.data?.message || 'Sorry Check your data')
         
       }
     }
@@ -66,7 +65,7 @@ let navigation=useNavigate()
                   width: 400 
                 }}>
                   <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                    <h2 style={{ margin: 0 }}>Edit Facility</h2>
+                    <h2 style={{ margin: 0 }}>Add Facility</h2>
                     <IconButton size="small" onClick={handleCloseUpdate}>
                       <CloseIcon />
                     </IconButton>
@@ -102,16 +101,13 @@ let navigation=useNavigate()
               
           }
 
-          {/* {location!='/MasterAdmin/HomeAdmin' ?  <h4 className={isDarkMode?"dark_WE":''}>You can check all details</h4>:null} */}
-        
 
             </div>
              <div className="Header_Right">
                 {location==='/MasterAdmin/Facilities'?
-             <button onClick={handleOpenUpdate}>Add New Facility</button>: location==='/MasterAdmin/Ads'
-              ?<Button >Add New Ads</Button>:location==='/MasterAdmin/Explore'?<button>Add New Explore</button>
-              :location==='/MasterAdmin/ListBooking'?null
-              :location==='/MasterAdmin/Rooms'&&<Button onClick={()=>navigation('/MasterAdmin/rooms-data')}>Add New Room</Button>
+             <Button sx={{background:'#3252DF !important'}} onClick={handleOpenUpdate}>Add New Facility</Button>:location==='/MasterAdmin/Explore'?<Button>Add New Explore</Button>
+              :location==='/MasterAdmin/ListBooking'&&null
+              
 
               
           }

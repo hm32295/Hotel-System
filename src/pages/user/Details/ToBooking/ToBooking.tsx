@@ -2,7 +2,7 @@ import { Box, Button } from "@mui/material";
 import NewspaperIcon from '@mui/icons-material/Newspaper';
 import { useNavigate } from "react-router-dom";
 
-export default function ToBooking({data}) {
+export default function ToBooking({data,isLogged}) {
   const navigation = useNavigate()
   return (
     <Box sx={{flex:"1", border:'solid #E5E5E5 1px',minWidth:'300px', borderRadius:'1rem', padding:'2rem' ,
@@ -39,11 +39,15 @@ export default function ToBooking({data}) {
                 <Box component={'span'} sx={{color:'#B0B0B0' , fontSize:'1rem'}}>per</Box>
                 <Box component={'span'} sx={{color:'#152C5B' ,fontSize:'1rem'}}>{data.capacity} Person</Box>
           </Box>
-          <Box sx={{mt:'20px', display:'flex', justifyContent:'center'}} >
-            <Button onClick={()=>{navigation('/MasterUser/booking', {state:data._id})}} sx={{background:"#3252DF",fontSize:'18px',padding:'10px 20px', color:"#fff",boxShadow: '0px 8px 15px 0px #3252DF4D'}} variant="contained">
-                   Continue Book 
-          </Button>
-          </Box>
+          {isLogged || localStorage.getItem('token')?(
+
+              <Box sx={{mt:'20px', display:'flex', justifyContent:'center'}} >
+
+                <Button onClick={()=>{navigation('/MasterUser/booking', {state:data._id})}} sx={{background:"#3252DF",fontSize:'18px',padding:'10px 20px', color:"#fff",boxShadow: '0px 8px 15px 0px #3252DF4D'}} variant="contained">
+                      Continue Book 
+              </Button>
+              </Box>
+          ):null}
         </Box>
     </Box>
   )

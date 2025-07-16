@@ -56,9 +56,9 @@ export default function Review() {
 
   useEffect(()=>{getRooms()},[])
 
-  if(loader) return <Box maxWidth={1000} mx={"auto"} p={2} > <Skeleton_Loader /></Box>
+  if(loader) return <Box width={'90%'} mx={"auto"} p={2} > <Skeleton_Loader /></Box>
   return (
-    <Box sx={{ maxWidth: 1000, mx: 'auto', p: 2 ,overflow:'hidden'}} className='ads'>
+    <Box sx={{ maxWidth: '95%', mx: 'auto', p: 2 ,overflow:'hidden'}} className='ads'>
             <Swiper
               effect={'cards'}
               grabCursor={true}

@@ -1,4 +1,5 @@
-import * as React from 'react';
+
+import './register.css'
 import {
   Grid,
   Box,
@@ -21,6 +22,8 @@ import { EMAIL_VALIDATION } from '../../../services/Validation';
 import { styled } from '@mui/material/styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Progress from '../../../component_Admin/loader/Progress';
+import { toast } from 'react-toastify';
+import { useState } from 'react';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -34,28 +37,10 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 export default function Register() {
-  const [showPassword, setShowPassword] = React.useState(false);
-  const [showConfirm, setShowConfirm] = React.useState(false);
-  const [loader, setLoader] = React.useState(false)
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [loader, setLoader] = useState(false)
   const navigation = useNavigate()
   const {
     register,
@@ -94,10 +79,12 @@ export default function Register() {
       }else if(data.role === 'user'){
         response = await axiosInstance.post(USERS_URL.CREATE_USER,handelData)
       }
-      console.log(response?.data?.data?.message);
+      toast.success(response?.data?.data?.message || 'Success Create User Please Log in ')
+     
       navigation('/login')
     } catch (error) {
-      console.log(error.response.data.message);
+     
+      toast.error(error.response.data.message || 'please check your data')
       
     }finally{
       setLoader(false)
@@ -108,7 +95,7 @@ export default function Register() {
   const password = watch('password');
 
   return (
-    <Grid container sx={{ minHeight: '100vh' }} alignItems="center" justifyContent="center">
+    <Grid container className="register" sx={{ minHeight: '100vh' }} alignItems="center" justifyContent="center">
       {/*  Left Side (Form) */}
       <Grid
         item
@@ -264,6 +251,7 @@ export default function Register() {
 
       {/* Right Side  */}
       <Grid
+        className="img"
         item
         xs={12}
         sm={6}

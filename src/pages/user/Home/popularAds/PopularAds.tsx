@@ -10,15 +10,18 @@ import './PopularAds.css'
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Favorite from '@mui/icons-material/Favorite';
 import { axiosInstance, FAVORITE_URL, ROOMS_USER_URL } from '../../../../services/Url';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Skeleton_Loader } from '../review/Skeleton';
-import img1 from '../../../../assets/images/adsPopular/1.png';
+ import img1 from '../../../../assets/images/adsPopular/1.png';
 import img2 from '../../../../assets/images/adsPopular/2.png';
 import img3 from '../../../../assets/images/adsPopular/3.png';
 import img4 from '../../../../assets/images/adsPopular/4.png';
 import img5 from '../../../../assets/images/adsPopular/5.png';
 
+ 
+import { AuthContext } from '../../../../context/context';
+ 
 
 
 function srcset(image: string, width: number, height: number, rows = 1, cols = 1) {
@@ -32,6 +35,7 @@ function srcset(image: string, width: number, height: number, rows = 1, cols = 1
 
 
 export default function PopularAds() {
+    const {loginData} = useContext(AuthContext)
     const navigation = useNavigate()
     const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
     const [rooms, setRooms] = useState([]);
@@ -142,7 +146,7 @@ navigation('/MasterUser/Favorites');
                                             }}
                                         />
 
-                                        {/* ✅ Overlay */}
+                                        {/*   Overlay */}
                                         <Box
                                             sx={{
                                                 position: 'absolute',
@@ -165,15 +169,12 @@ navigation('/MasterUser/Favorites');
                                             }}
                                         >
 
-                                            {/* الأيقونات */}
-                                            <Box sx={{ mb: 2, fontSize: '1.2rem', fontWeight: 'bold', color: '#fff' }}>
+                                             <Box sx={{ mb: 2, fontSize: '1.2rem', fontWeight: 'bold', color: '#fff' }}>
                                                 {itemData[index].title}
                                             </Box>
 
-                                            {/* الأيقونات */}
-                                            <Box sx={{ display: 'flex', gap: 3 }}>
-                                                {/* القلب */}
-                                                <Checkbox
+                                             <Box sx={{ display: 'flex', gap: 3 }}>
+                                                 <Checkbox
                                                     onChange={(event) => {
                                                         const isChecked = event.target.checked;
                                                         addFavorite(room._id, isChecked);
@@ -187,7 +188,7 @@ navigation('/MasterUser/Favorites');
                                                     }
                                                 />
 
-                                                {/* العين */}
+                                       
                                                 <IconButton
                                                     onClick={() => navigation('/MasterUser/Details/', { state: room })}
                                                     sx={{
@@ -204,8 +205,7 @@ navigation('/MasterUser/Favorites');
                                         </Box>
 
 
-                                        {/* السعر فوق الصورة */}
-                                        <ImageListItemBar
+                                         <ImageListItemBar
                                             sx={{
                                                 background: 'transparent',
                                                 borderRadius: '1rem'
@@ -234,7 +234,129 @@ navigation('/MasterUser/Favorites');
 
                     )
                 }
-            </ImageList>
+ 
+                 if((index && isXs)|| (index && isSm)){
+                    rows = 2
+                    cols = 4
+                }
+                return (
+                <ImageListItem key={room._id} cols={cols} rows={rows}>
+                    <img
+                        {...srcset(itemData[index].img, 250, 200, rows, cols)}
+                        alt={room.roomNumber}
+                        loading="lazy"
+                        style={{borderRadius:'1rem',position:'relative'}}
+                    />
+                    <ImageListItemBar
+                    sx={{
+                        background:'transparent',
+                        borderRadius:'1rem'
+                    }}
+                    position="top"
+                    
+                    actionIcon={
+                        <IconButton
+                                sx={{ color: 'white',background:'#FF498B' ,borderRadius:0,
+                                        borderTopRightRadius:'1rem',
+                                        borderBottomLeftRadius:'1rem',
+
+                                }}
+                        >
+                                {`${room.price} per night`}
+                        </IconButton>
+                    }
+                    actionPosition="right"
+                    />
+
+
+
+                    <ImageListItemBar
+                    sx={{
+                        background:'transparent',
+                        borderRadius:'1rem'
+                    }}
+                    position="bottom"
+                    
+                    actionIcon={
+                        <IconButton
+                        sx={{ color: 'white',background:'transparent' ,borderRadius:0,
+                            display:'flex',
+                            justifyContent:'center',
+                            flexDirection:'column',
+                            margin :'1.5rem'
+
+                        }}
+                        >
+                            <Box>
+
+                                {`${itemData[index].title}`}
+                                
+                            </Box>
+                        </IconButton>
+                    }
+                    actionPosition="left"
+                    />
+
+
+
+               
+
+                    <ImageListItemBar
+                    
+                        className='icons-show'
+                    sx={{
+                        background:'transparent',
+                        borderRadius:'1rem',
+                        position:'absolute',
+                        top:'50%',
+                        left:'50%',
+                        transform:'translate(-50%, -50%)'
+                    }}
+                    
+                    actionIcon={
+                        <IconButton
+                        sx={{ color: 'white',background:'transparent' ,borderRadius:0,
+                            display:'flex', alignItems:'center',justifyContent:'center'
+                        
+                        }}
+                        >
+                             
+                                <Box sx={{display:'flex',alignItems:'center', justifyContent:'center'}}>
+                                        {loginData?.role || localStorage.getItem('token')?(
+                                            <Checkbox 
+                                                onChange={(event)=>{
+                                                    const isChecked = event.target.checked;
+                                                    addFavorite(room._id,isChecked)
+                                                    
+                                                }}
+                                            {...label} icon={
+                                            <FavoriteIcon 
+                                                sx={{fontSize:'2rem',color:'#fff' }}/>} checkedIcon={
+                                            <Favorite 
+                                                sx={{fontSize:'2rem' }} />} />
+                                        ):null}
+                                        < VisibilityIcon  sx={{fontSize:'2rem' }} onClick={()=>{ navigation('/MasterUser/Details/',{state:room})}}/>
+                                
+                                </Box>
+                           
+                        </IconButton>
+                    }
+                    actionPosition="right"
+                    />
+                
+
+
+
+
+
+
+                </ImageListItem>
+                );
+            })
+            
+        )
+            }
+             </ImageList>
         </Box>
     );
 }

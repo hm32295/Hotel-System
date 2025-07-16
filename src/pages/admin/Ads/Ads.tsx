@@ -4,13 +4,14 @@ import GenericTable , { type HeadCell } from "../../../component_Admin/GenericTa
 // import DeleteIcon from '@mui/icons-material/Delete';
 
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { ADS_URL, axiosInstance } from '../../../services/Url';
 import {  useEffect, useState } from 'react';
 import Model from './Model';
 import DeleteConfirmation from '../../../component_Admin/deleteConfirmation/DeleteConfirmation';
 import { Skeleton_Loader } from '../../../component_Admin/loader/Skeleton';
 import ViewData from "./ViewData";
+import { toast } from "react-toastify";
 interface Product {
   id: number;
   name: string;
@@ -35,10 +36,21 @@ export default function Ads() {
   const [showData ,setShowData] = useState(false);
   const [row ,setRow] = useState(false);
   const [totalAds ,setTotalAds] = useState(0)
-  const getAds = async()=>{
+  const getData = async ()=>{
     setLoader(true)
+          try {
+            const response = await axiosInstance(ADS_URL.GET);
+            const totalData = response?.data?.data?.totalCount;
+             await getAds(1,totalData)
+          } catch (error) {
+            console.log(error);
+            
+          }finally{setLoader(false)}
+        }
+  const getAds = async(page:number,size:number)=>{
+   
     try {
-        const response = await axiosInstance(ADS_URL.GET)
+        const response = await axiosInstance(ADS_URL.GET,{params:{page,size}})
         const data = response.data.data;
         setTotalAds(data.totalCount)
         setProduct(data.ads.map((product)=>{
@@ -57,8 +69,6 @@ export default function Ads() {
     } catch (error) {
         console.log(error);
         
-    }finally{
-      setLoader(false)
     }
   }
 
@@ -66,26 +76,29 @@ export default function Ads() {
     const id =ads.id
         try {
           const response =await axiosInstance.delete(ADS_URL.DELETE(id))
-          console.log(response);
+          toast.success(response.data.message);
           
         } catch (error) {
           console.log(error);
           
         }
 
-        getAds()
+        getData()
     
   }
 
   useEffect(()=>{
-    getAds()
+    getData()
     
   },[])
  
   if(loader) return <Skeleton_Loader />
   return (
     <>
-      <Box component={'button'}><Model icon={false} getAds={getAds}/></Box>
+        <Box sx={{display:'flex',justifyContent:'flex-end'}}>
+           {/* <Box component={'button'}><Model icon={false} getAds={getData}/></Box> */}
+          <Button sx={{background:"#3252DF" ,color:'#fff',marginRight:'1rem'}}><Model icon={false} getAds={getData}/></Button>
+      </Box>
       <GenericTable
       totalData={totalAds}
         rows={product}
@@ -96,7 +109,7 @@ export default function Ads() {
               {/* <MoreVertIcon className='showList'/> */}
               <Box sx={{display:'flex' ,justifyContent:'center',alignItems:'center'}}>
 
-                  <Model getAds={getAds} icon={true} row={row}/>
+                  <Model getAds={getData} icon={true} row={row}/>
                   <DeleteConfirmation data={row} deleteFun={deleteAds}/>
                   <VisibilityIcon onClick={()=>{setRow(row);setShowData(true)}}/>
               </Box>

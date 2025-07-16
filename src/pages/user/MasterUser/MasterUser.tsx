@@ -8,9 +8,8 @@ const MasterUser = () => {
     <>
 <<<<<<< Updated upstream
     <Nav_User/>
-        <main>
+        
         <Outlet/>
-    </main>
     <Footer_User/>
 =======
       <Nav_User />

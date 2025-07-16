@@ -31,7 +31,12 @@ type HeadCell = {
   numeric: boolean;
   disablePadding: boolean;
 };
-
+const headCells =[
+        { id: "name", label: 'Facility Name', numeric: false, disablePadding: false },
+        { id: "createdByUserName", label: "Created By", numeric: false, disablePadding: false },
+        { id: "createdAt", label: "Creation Date", numeric: false, disablePadding: false },
+        { id: "updatedAt", label: "Update Date", numeric: false, disablePadding: false },
+      ]
 // Delete Modal
 function DeleteConfirmation({ open, onClose, onConfirm, name }) {
 
@@ -54,7 +59,6 @@ function DeleteConfirmation({ open, onClose, onConfirm, name }) {
 
 const Facilities = () => {
   const [rows, setRows] = useState<any[]>([]);
-  const [headCells, setHeadCells] = useState<HeadCell[]>([]);
   const [loading, setLoading] = useState(true);
 
   const [openUpdate, setOpenUpdate] = useState(false);
@@ -63,38 +67,48 @@ const Facilities = () => {
 
   const [openDelete, setOpenDelete] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<any>(null);
-  const [refresh,setRefresh]=useState(0);
   const [facilities,setFacilities]=useState(0);
 
-    const fetchFacilities = async() => {
-    try {
-      const res = await axiosInstance.get(FacilitesUrls.GET_ALL);
 
-      setFacilities(res.data.data.totalCount)
+
+    const getData = async ()=>{
+      setLoading(false)
+          try {
+            const response = await axiosInstance(FacilitesUrls.GET_ALL,{params:{page:1,size:1}});
+            const totalData = response?.data?.data?.totalCount || 100;
+             await fetchFacilities(1,totalData)
+          } catch (error) {
+            console.log(error);
+            
+          }
+          finally{
+            setLoading(true)
+          }
+        }
+    const fetchFacilities = async(page:number,size:number) => {
       
-      const facilitiesData = res.data.data.facilities.map(facility => ({
-        id: facility._id,
-        name: facility.name,
-        createdByUserName: facility.createdBy?.userName ?? 'N/f',
-        createdAt: facility.createdAt,
-        updatedAt: facility.updatedAt,
-      }));
-      setRows(facilitiesData);
-      setHeadCells([
-        { id: "name", label: 'Facility Name', numeric: false, disablePadding: false },
-        { id: "createdByUserName", label: "Created By", numeric: false, disablePadding: false },
-        { id: "createdAt", label: "Creation Date", numeric: false, disablePadding: false },
-        { id: "updatedAt", label: "Update Date", numeric: false, disablePadding: false },
-      ]);
-    } catch (error) {
-      console.log("Fetch Error:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+        try {
+          const res = await axiosInstance.get(FacilitesUrls.GET_ALL,{params:{page,size}});
+        
+          setFacilities(res.data.data.totalCount)
+          
+          const facilitiesData = res.data.data.facilities.map(facility => ({
+            id: facility._id,
+            name: facility.name,
+            createdByUserName: facility.createdBy?.userName ?? 'N/f',
+            createdAt: facility.createdAt,
+            updatedAt: facility.updatedAt,
+          }));
+          setRows(facilitiesData);
+        
+          
+        } catch (error) {
+          console.log(error);
+        } 
+      };
 
   useEffect(() => {
-    fetchFacilities();
+    getData();
   }, []);
 
   const handleOpenUpdate = (row) => {
@@ -110,13 +124,16 @@ const Facilities = () => {
   };
 
   const handleConfirmUpdate = async () => {
+    setLoading(false)
     if (itemToUpdate) {
       try {
         await axiosInstance.put(FacilitesUrls.UPDATE(itemToUpdate.id), { name: value });
         toast.success(`Updated ${itemToUpdate.name} successfully.`);
-        fetchFacilities();
+        getData();
       } catch (error) {
         console.error("Update Error:", error);
+      }finally{
+        setLoading(true)
       }
     }
     handleCloseUpdate();
@@ -136,15 +153,15 @@ const Facilities = () => {
     if (itemToDelete) {
       try {
         await axiosInstance.delete(FacilitesUrls.DELETE(itemToDelete.id));
-        toast.error(`Deleted ${itemToDelete.name} successfully.`);
-        fetchFacilities();
+        toast.error(`Deleted ${itemToDelete?.name} successfully.`);
+        getData();
       } catch (error) {
         console.error("Delete Error:", error);
       }
     }
     handleCloseDelete();
   };
-  // حطّ دي قبل الـ return:
+  
 const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 const [selectedRow, setSelectedRow] = useState<any>(null);
 
@@ -180,7 +197,7 @@ const handleMenuClose = () => {
             width: 400
           }}>
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-              <h2 style={{ margin: 0 }}>Edit Facility</h2>
+              <Box component={'h2'} style={{ margin: 0 }}>Edit Facility</Box>
               <IconButton size="small" onClick={handleCloseUpdate}>
                 <CloseIcon />
               </IconButton>
@@ -207,10 +224,10 @@ const handleMenuClose = () => {
         name={itemToDelete ? itemToDelete.name : ''}
       />
 <div style={{display:'none'}}>
-  <Header fetchFacilities={fetchFacilities} setrefresh={setRefresh}   />
+  <Header />
 </div>
 
-   {loading ? (
+   {!loading ? (
     
         <Skeleton_Loader />
       ) : (

@@ -7,7 +7,7 @@
 .explore-container h2 {
   font-size: 2.5rem;
   font-weight: 700;
-  color: hsl(var(--foreground));
+  color: #111111;
   text-align: center;
   margin-bottom: 3rem;
   position: relative;
@@ -21,7 +21,7 @@
   transform: translateX(-50%);
   width: 80px;
   height: 4px;
-  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+  background: linear-gradient(135deg, #333333, #444444);
   border-radius: 2px;
 }
 
@@ -33,19 +33,21 @@
 }
 
 .room-card {
-  background: hsl(var(--card));
-  border: 1px solid hsl(var(--border));
+  background: #FFFFFF; 
+  border: 1px solid #444444; 
   border-radius: 1rem;
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
 }
 
 .room-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  border-color: hsl(var(--primary) / 0.3);
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.5),
+    0 10px 10px -5px rgba(0, 0, 0, 0.4);
+  border-color: rgba(51, 51, 51, 0.5); 
 }
 
 .room-image-container {
@@ -70,26 +72,26 @@
   position: absolute;
   top: 1rem;
   right: 1rem;
-  background: hsl(var(--primary));
-  color: hsl(var(--primary-foreground));
+  background: #222222; 
+  color: #FFFFFF;      
   padding: 0.5rem 1rem;
   border-radius: 2rem;
   font-weight: 600;
   font-size: 0.9rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 .discount-badge {
   position: absolute;
   top: 1rem;
   left: 1rem;
-  background: hsl(var(--destructive));
-  color: hsl(var(--destructive-foreground));
+  background: #444444;
+  color: #FFFFFF;
   padding: 0.3rem 0.8rem;
   border-radius: 1rem;
   font-weight: 600;
   font-size: 0.8rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 .room-content {
@@ -99,7 +101,7 @@
 .room-title {
   font-size: 1.5rem;
   font-weight: 700;
-  color: hsl(var(--foreground));
+  color: #111111; 
   margin-bottom: 1rem;
 }
 
@@ -114,14 +116,14 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: hsl(var(--muted-foreground));
+  color: #888888;
   font-size: 0.9rem;
 }
 
 .room-detail-icon {
   width: 16px;
   height: 16px;
-  color: hsl(var(--primary));
+  color: #222222;
 }
 
 .facilities-container {
@@ -130,7 +132,7 @@
 
 .facilities-title {
   font-weight: 600;
-  color: hsl(var(--foreground));
+  color: #111111; 
   margin-bottom: 0.5rem;
   font-size: 0.9rem;
 }
@@ -142,8 +144,8 @@
 }
 
 .facility-tag {
-  background: hsl(var(--secondary));
-  color: hsl(var(--secondary-foreground));
+  background: #333333; 
+  color: #FFFFFF;      
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
   font-size: 0.8rem;
@@ -152,7 +154,7 @@
 
 .room-meta {
   padding-top: 1rem;
-  border-top: 1px solid hsl(var(--border));
+  border-top: 1px solid #444444; 
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.75rem;
@@ -160,20 +162,20 @@
 
 .meta-item {
   font-size: 0.8rem;
-  color: hsl(var(--muted-foreground));
+  color: #888888; 
 }
 
 .meta-label {
   font-weight: 500;
-  color: hsl(var(--foreground));
+  color: #111111; 
 }
 
 .no-rooms-message {
   text-align: center;
   padding: 4rem 2rem;
-  color: hsl(var(--muted-foreground));
+  color: #888888; 
   font-size: 1.2rem;
-  background: hsl(var(--muted) / 0.3);
+  background: rgba(34, 34, 34, 0.3);
   border-radius: 1rem;
   margin-top: 2rem;
 }
@@ -181,111 +183,16 @@
 .default-room-image {
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, hsl(var(--muted)), hsl(var(--accent) / 0.3));
+  background: linear-gradient(135deg, #222222, rgba(68, 68, 68, 0.3)); 
   display: flex;
   align-items: center;
   justify-content: center;
-  color: hsl(var(--muted-foreground));
+  color: #888888;
   font-size: 4rem;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .explore-container {
-    padding: 1rem 0.5rem;
-  }
-  
-  .explore-container h2 {
-    font-size: 2rem;
-    margin-bottom: 2rem;
-  }
-  
-  .rooms-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    margin-top: 1.5rem;
-  }
-  
-  .room-card {
-    margin: 0 0.5rem;
-  }
-  
-  .room-image-container {
-    height: 200px;
-  }
-  
-  .room-content {
-    padding: 1rem;
-  }
-  
-  .room-title {
-    font-size: 1.25rem;
-  }
-  
-  .room-details {
-    grid-template-columns: 1fr;
-    gap: 0.5rem;
-  }
-  
-  .room-meta {
-    grid-template-columns: 1fr;
-    gap: 0.5rem;
-  }
-}
 
-@media (max-width: 480px) {
-  .explore-container {
-    padding: 0.75rem 0.25rem;
-  }
-  
-  .explore-container h2 {
-    font-size: 1.75rem;
-  }
-  
-  .rooms-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  
-  .room-card {
-    margin: 0 0.25rem;
-  }
-  
-  .room-image-container {
-    height: 180px;
-  }
-  
-  .price-badge {
-    font-size: 0.8rem;
-    padding: 0.4rem 0.8rem;
-  }
-  
-  .discount-badge {
-    font-size: 0.7rem;
-    padding: 0.25rem 0.6rem;
-  }
-}
 
-/* تحسينات إضافية للـ Grid Layout */
-@media (min-width: 769px) and (max-width: 1024px) {
-  .rooms-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1025px) and (max-width: 1366px) {
-  .rooms-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (min-width: 1367px) {
-  .rooms-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-/* Animation للـ Cards */
 .room-card {
   animation: fadeInUp 0.6s ease-out;
 }
@@ -301,7 +208,7 @@
   }
 }
 
-/* Loading State */
+
 .loading-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -309,8 +216,8 @@
 }
 
 .loading-card {
-  background: hsl(var(--card));
-  border: 1px solid hsl(var(--border));
+  background: #111111;
+  border: 1px solid #444444;
   border-radius: 1rem;
   overflow: hidden;
   animation: pulse 1.5s ease-in-out infinite;
@@ -319,7 +226,7 @@
 .loading-image {
   width: 100%;
   height: 240px;
-  background: hsl(var(--muted));
+  background: #333333;
 }
 
 .loading-content {
@@ -328,7 +235,7 @@
 
 .loading-line {
   height: 1rem;
-  background: hsl(var(--muted));
+  background: #333333;
   border-radius: 0.5rem;
   margin-bottom: 0.75rem;
 }
@@ -348,4 +255,20 @@
   50% {
     opacity: 0.7;
   }
+}
+.rooms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  justify-items: center;
+}
+
+.room-card {
+  width: 100%;
+  max-width: 400px;     
+}
+.facility-tag:hover{
+  /* color: #111111; */
+  cursor: pointer;
+
 }
