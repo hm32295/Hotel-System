@@ -43,7 +43,7 @@ const [isLoggedIn,setIsLoggedIn] = useState(false)
       setPages(userPages)
       setIsLoggedIn(true)
     }else{
-
+      setIsLoggedIn(false)
       setPages( guestPages);
     }
     

@@ -39,7 +39,7 @@ export default function ToBooking({data,isLogged}) {
                 <Box component={'span'} sx={{color:'#B0B0B0' , fontSize:'1rem'}}>per</Box>
                 <Box component={'span'} sx={{color:'#152C5B' ,fontSize:'1rem'}}>{data.capacity} Person</Box>
           </Box>
-          {isLogged&&(
+          {isLogged || localStorage.getItem('token')?(
 
               <Box sx={{mt:'20px', display:'flex', justifyContent:'center'}} >
 
@@ -47,7 +47,7 @@ export default function ToBooking({data,isLogged}) {
                       Continue Book 
               </Button>
               </Box>
-          )}
+          ):null}
         </Box>
     </Box>
   )

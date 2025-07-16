@@ -19,12 +19,12 @@ const Home = () => {
 
 
      
-  <Interface/>
-  <PopularAds />
-  <PopularChoice/>
-  <AdsDiscounts/>
-  <Ads/>
-  <Review/>
+        <Interface/>
+        <PopularAds />
+        <PopularChoice/>
+        <AdsDiscounts/>
+        <Ads/>
+        <Review/>
 
 
   

@@ -202,7 +202,7 @@ export default function PopularAds() {
                         >
                              
                                 <Box sx={{display:'flex',alignItems:'center', justifyContent:'center'}}>
-                                        {loginData?.role&&(
+                                        {loginData?.role || localStorage.getItem('token')?(
                                             <Checkbox 
                                                 onChange={(event)=>{
                                                     const isChecked = event.target.checked;
@@ -214,7 +214,7 @@ export default function PopularAds() {
                                                 sx={{fontSize:'2rem',color:'#fff' }}/>} checkedIcon={
                                             <Favorite 
                                                 sx={{fontSize:'2rem' }} />} />
-                                        )}
+                                        ):null}
                                         < VisibilityIcon  sx={{fontSize:'2rem' }} onClick={()=>{ navigation('/MasterUser/Details/',{state:room})}}/>
                                 
                                 </Box>

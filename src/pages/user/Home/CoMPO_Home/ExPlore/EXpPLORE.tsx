@@ -1,13 +1,10 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import './explore.css';
-import axios from 'axios';
 import { axiosInstance, PORTAL_URLS } from '../../../../../services/Url';
 import { toast } from 'react-toastify';
 import { AuthContext } from '../../../../../context/context';
 import PeopleIcon from '@mui/icons-material/People';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import StarIcon from '@mui/icons-material/Star';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import PersonIcon from '@mui/icons-material/Person';
 import img1 from '../../../../../assets/images/Rectangle 3 (1).svg';
 import img2 from '../../../../../assets/images/Rectangle 3 (2).svg';
@@ -17,9 +14,12 @@ import img5 from '../../../../../assets/images/Rectangle 3 (5).svg';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { Skeleton_Loader } from '../../review/Skeleton';
+import { Box, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const EXpPLORE = () => {
   const defaultImages = [img1, img2, img3, img4, img5];
+  const navigation = useNavigate()
   const fallbackImg = useRef(
     defaultImages[Math.floor(Math.random() * defaultImages.length)]
   );
@@ -27,7 +27,7 @@ const EXpPLORE = () => {
   const [loader , setLoader] =useState(false)
   const [currentPage, setCurrentPage] = useState(1); 
   const [totalCount, setTotalCount] = useState(0); 
-  const { BookingData } = useContext(AuthContext);
+  const { BookingData ,loginData} = useContext(AuthContext);
   let [data_Mohada, setdata_Mohada] = useState([]);
   let [data_Kollow, setdata_Kollow] = useState([]);
   const size = 8; 
@@ -79,6 +79,7 @@ const EXpPLORE = () => {
       {roomsToDisplay.length > 0 ? (
         <div className="rooms-grid">
           {roomsToDisplay.map((room, idx) => ( 
+            
             <div key={room._id} className="room-card">
               <div className="room-image-container">
                 {room.images && room.images.length > 0 ? (
@@ -151,8 +152,17 @@ const EXpPLORE = () => {
                   </div>
                 </div>
               </div>
+              {loginData?.role || localStorage.getItem('token') ?(
+
+                  <Box sx={{display:'flex',justifyContent:'center',padding:'.5rem'}}>
+                    <Button onClick={()=>{navigation('/MasterUser/Details',{state:room})}}>Details</Button>
+
+                  </Box>
+              ):null}
             </div>
           ))}
+
+          
         </div>
       ) : (
         <div className="no-rooms-message">

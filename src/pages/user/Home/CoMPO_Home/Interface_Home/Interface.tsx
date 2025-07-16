@@ -39,7 +39,7 @@ const Interface = () => {
       <div className="container">
         <div className="row gap-5">
           {/* Left Content */}
-          {loginData?.role&&(
+          {loginData?.role || localStorage.getItem('token')?(
 
               <div className="col-12 col-lg-6 order-2 order-lg-1 booking-card">
                 <h3 className="mb-4">
@@ -100,7 +100,7 @@ const Interface = () => {
                   </div>
                 </div>
               </div>
-          )}
+          ):null}
           {/* Right Image */}
           <div className="col-12 col-lg-6 order-1 order-lg-2">
             <img src={banner} alt="Modern vacation home" className="img-fluid rounded" />

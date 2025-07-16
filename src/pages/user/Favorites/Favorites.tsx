@@ -12,10 +12,13 @@ import img2 from '../../../assets/images/Rectangle 3 (2).svg';
 import img3 from '../../../assets/images/Rectangle 3 (3).svg';
 import img4 from '../../../assets/images/Rectangle 3 (4).svg';
 import img5 from '../../../assets/images/Rectangle 3 (5).svg';
-import { axiosInstance, FAVORITE_URL, PORTAL_URLS } from '../../../services/Url';
+import { axiosInstance, FAVORITE_URL } from '../../../services/Url';
 import { Skeleton_Loader } from '../Home/review/Skeleton';
+import { Box, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const Favourits = () => {
+  const navigation = useNavigate()
   const defaultImages = [img1, img2, img3, img4, img5];
   const[loader , setLoader] = useState(false)
   const fallbackImg = useRef(
@@ -122,6 +125,11 @@ if(loader) return <Skeleton_Loader />
           </div>
         </div>
       </div>
+
+      <Box sx={{display:'flex',justifyContent:'center',padding:'.5rem'}}>
+        <Button onClick={()=>{navigation('/MasterUser/Details',{state:room})}}>Details</Button>
+
+      </Box>
     </div>
   ))}
 </div>
