@@ -1,9 +1,9 @@
 
 import '../PopularChoice/popularChoice.css';
-import picads1 from '../../../../../assets/images/picAds1.svg'
-import picads2 from '../../../../../assets/images/picAds2.svg'
-import picads3 from '../../../../../assets/images/picAds3.svg'
-import picads4 from '../../../../../assets/images/picAds4.svg'
+import picads1 from '../../../../../assets/images/picads1.svg'
+import picads2 from '../../../../../assets/images/picads2.svg'
+import picads3 from '../../../../../assets/images/picads3.svg'
+import picads4 from '../../../../../assets/images/picads4.svg'
 const AdsDiscounts = () => {
      const hotels = [
     {

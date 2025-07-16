@@ -1,9 +1,9 @@
-import React from 'react';
+
 import './popularChoice.css';
-import piccvg from '../../../../../assets/images/picsvg.svg'
-import pic1 from '../../../../../assets/images/pic (1).png'
-import pic2 from '../../../../../assets/images/pic (2).png'
-import pic3 from '../../../../../assets/images/pic.png'
+import picsvg from '../../../../../assets/images/picsvg.svg'
+import pic1 from '../../../../../assets/images/pic1.svg'
+import pic2 from '../../../../../assets/images/pic2.svg'
+import pic3 from '../../../../../assets/images/pic3.svg'
 
 
 
@@ -15,7 +15,7 @@ const PopularChoice = () => {
       id: 1,
       name: "Green Park",
       location: "Tangerang, Indonesia",
-      image: piccvg,
+      image: picsvg,
       isPopular: false
     },
     {
