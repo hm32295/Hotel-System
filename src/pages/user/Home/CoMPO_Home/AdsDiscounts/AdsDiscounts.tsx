@@ -47,7 +47,7 @@ const AdsDiscounts = () => {
         
         <div className="row">
           {hotels.map((hotel) => (
-            <div key={hotel.id} className="col-lg-3 col-md-6 col-sm-6 col-6">
+            <div key={hotel.id} className="col-lg-3 mb-3 col-md-6 col-sm-6 col-6">
               <div className="hotel-card">
                 <div className="hotel-image-container">
                   <img 
