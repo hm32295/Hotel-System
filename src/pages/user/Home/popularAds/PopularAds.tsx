@@ -10,9 +10,10 @@ import './PopularAds.css'
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Favorite from '@mui/icons-material/Favorite';
 import { axiosInstance, FAVORITE_URL, ROOMS_USER_URL } from '../../../../services/Url';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Skeleton_Loader } from '../review/Skeleton';
+import { AuthContext } from '../../../../context/context';
 
 
 function srcset(image: string, width: number, height: number, rows = 1, cols = 1) {
@@ -27,6 +28,7 @@ function srcset(image: string, width: number, height: number, rows = 1, cols = 1
 
 
 export default function PopularAds() {
+    const {loginData} = useContext(AuthContext)
     const navigation = useNavigate()
     const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
     const[rooms, setRooms]= useState([]);
@@ -177,6 +179,7 @@ export default function PopularAds() {
 
 
 
+               
 
                     <ImageListItemBar
                     
@@ -197,27 +200,31 @@ export default function PopularAds() {
                         
                         }}
                         >
-                            <Box sx={{display:'flex',alignItems:'center', justifyContent:'center'}}>
+                             
+                                <Box sx={{display:'flex',alignItems:'center', justifyContent:'center'}}>
+                                        {loginData?.role&&(
+                                            <Checkbox 
+                                                onChange={(event)=>{
+                                                    const isChecked = event.target.checked;
+                                                    addFavorite(room._id,isChecked)
+                                                    
+                                                }}
+                                            {...label} icon={
+                                            <FavoriteIcon 
+                                                sx={{fontSize:'2rem',color:'#fff' }}/>} checkedIcon={
+                                            <Favorite 
+                                                sx={{fontSize:'2rem' }} />} />
+                                        )}
+                                        < VisibilityIcon  sx={{fontSize:'2rem' }} onClick={()=>{ navigation('/MasterUser/Details/',{state:room})}}/>
                                 
-                                    <Checkbox 
-                                        onChange={(event)=>{
-                                            const isChecked = event.target.checked;
-                                            addFavorite(room._id,isChecked)
-                                            
-                                        }}
-                                    {...label} icon={
-                                    <FavoriteIcon 
-                                        sx={{fontSize:'2rem',color:'#fff' }}/>} checkedIcon={
-                                    <Favorite 
-                                        sx={{fontSize:'2rem' }} />} />
-                            
-                                    < VisibilityIcon  sx={{fontSize:'2rem' }} onClick={()=>{ navigation('/MasterUser/Details/',{state:room})}}/>
-                            
-                            </Box>
+                                </Box>
+                           
                         </IconButton>
                     }
                     actionPosition="right"
                     />
+                
+
 
 
 

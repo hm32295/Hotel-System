@@ -1,4 +1,4 @@
-import * as React from 'react';
+
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -10,11 +10,12 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { AuthContext } from '../../context/context';
 
-const isLoggedIn = Boolean(localStorage.getItem("token"));
+
 const userRole = localStorage.getItem("role") || "user";
 
 const guestPages = [
@@ -28,9 +29,27 @@ const userPages = [
   { name: 'Favorites', path: '/MasterUser/Favorites' },
 ];
 
-const pages = isLoggedIn ? userPages : guestPages;
+
 
 const Nav_User = () => {
+
+const [isLoggedIn,setIsLoggedIn] = useState(false)
+  const [pages,setPages] = useState([])
+  const {loginData} = useContext(AuthContext)
+
+
+  useEffect(()=>{
+    if(loginData?.role === 'user' || localStorage.getItem('token')){
+      setPages(userPages)
+      setIsLoggedIn(true)
+    }else{
+
+      setPages( guestPages);
+    }
+    
+  },[loginData,isLoggedIn])
+
+
   const [anchorElNav, setAnchorElNav] = useState(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));

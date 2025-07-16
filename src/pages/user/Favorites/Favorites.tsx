@@ -13,14 +13,17 @@ import img3 from '../../../assets/images/Rectangle 3 (3).svg';
 import img4 from '../../../assets/images/Rectangle 3 (4).svg';
 import img5 from '../../../assets/images/Rectangle 3 (5).svg';
 import { axiosInstance, FAVORITE_URL, PORTAL_URLS } from '../../../services/Url';
+import { Skeleton_Loader } from '../Home/review/Skeleton';
 
 const Favourits = () => {
   const defaultImages = [img1, img2, img3, img4, img5];
+  const[loader , setLoader] = useState(false)
   const fallbackImg = useRef(
     defaultImages[Math.floor(Math.random() * defaultImages.length)]
   );
   let [data_Kollow, setdata_Kollow] = useState([]);
  const FUN_GET_DATA_DETAILS = async () => {
+  setLoader(true)
   try {
       const res = await axiosInstance.get(
         FAVORITE_URL.GET,
@@ -29,6 +32,8 @@ const Favourits = () => {
     
   } catch (error) {
     toast.error("Error in Showing Data");
+  }finally{
+    setLoader(false)
   }
 };
   useEffect(() => {
@@ -36,14 +41,10 @@ const Favourits = () => {
   }, []);
 
 const FAV_Delete = async (roomId:any) => {
-    console.log('[DEBUG] deleting roomId =', roomId); 
+   setLoader(true)
   try {
    
- let response=   await axiosInstance.delete(
-      FAVORITE_URL.DELETE(roomId),
-      { data: { roomId } }
-      
-    );
+      let response=   await axiosInstance.delete( FAVORITE_URL.DELETE(roomId),{ data: { roomId } });
      
       FUN_GET_DATA_DETAILS()
        toast.success('Product deleted successfully');
@@ -52,9 +53,10 @@ const FAV_Delete = async (roomId:any) => {
   } catch (err) {
       console.log('DELETE error response:', err?.response?.status, err?.response?.data);
     toast.error('Error removing item')
-  }
+  }finally{ setLoader(false)}
 }
 const roomsToDisplay = data_Kollow[0]?.rooms || [];
+if(loader) return <Skeleton_Loader />
   return (
     <div className="explore-container">
       <h2>Your Favorites</h2>

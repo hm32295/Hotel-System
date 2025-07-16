@@ -19,7 +19,6 @@ const Home = () => {
 
      
   <Interface/>
-  <Explore/>
   <PopularAds />
   <PopularChoice/>
   <AdsDiscounts/>

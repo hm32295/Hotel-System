@@ -16,6 +16,7 @@ import img4 from '../../../../../assets/images/Rectangle 3 (4).svg';
 import img5 from '../../../../../assets/images/Rectangle 3 (5).svg';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import { Skeleton_Loader } from '../../review/Skeleton';
 
 const EXpPLORE = () => {
   const defaultImages = [img1, img2, img3, img4, img5];
@@ -23,7 +24,7 @@ const EXpPLORE = () => {
     defaultImages[Math.floor(Math.random() * defaultImages.length)]
   );
 
- 
+  const [loader , setLoader] =useState(false)
   const [currentPage, setCurrentPage] = useState(1); 
   const [totalCount, setTotalCount] = useState(0); 
   const { BookingData } = useContext(AuthContext);
@@ -32,6 +33,7 @@ const EXpPLORE = () => {
   const size = 8; 
 
   const FUN_GET_DATA_DETAILS = async (page, size) => {
+    setLoader(true)
     try {
       if (BookingData?.startDate && BookingData?.endDate) {
         const res = await axiosInstance.get(
@@ -59,6 +61,8 @@ const EXpPLORE = () => {
       }
     } catch (error) {
       toast.error("Error");
+    }finally{
+      setLoader(false)
     }
   };
 
@@ -68,7 +72,7 @@ const EXpPLORE = () => {
 
   const roomsToDisplay = data_Mohada?.data?.rooms || data_Kollow?.data?.rooms || [];
   const totalPages = Math.ceil(totalCount / size);
-
+  if(loader) return <Skeleton_Loader />
   return (
     <div className="explore-container">
       <h2>Explore ALL Rooms</h2>
