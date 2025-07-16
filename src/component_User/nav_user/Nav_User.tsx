@@ -1,4 +1,3 @@
-
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -9,17 +8,11 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MenuIcon from '@mui/icons-material/Menu';
- import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
- 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
- import { useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { AuthContext } from '../../context/context';
-
-
-const userRole = localStorage.getItem("role") || "user";
 
 const guestPages = [
   { name: 'Home', path: '/MasterUser/Home' },
@@ -32,31 +25,24 @@ const userPages = [
   { name: 'Favorites', path: '/MasterUser/Favorites' },
 ];
 
-
-
 const Nav_User = () => {
-
-const [isLoggedIn,setIsLoggedIn] = useState(false)
-  const [pages,setPages] = useState([])
-  const {loginData} = useContext(AuthContext)
-
-
-  useEffect(()=>{
-    if(loginData?.role === 'user' || localStorage.getItem('token')){
-      setPages(userPages)
-      setIsLoggedIn(true)
-    }else{
-      setIsLoggedIn(false)
-      setPages( guestPages);
-    }
-    
-  },[loginData,isLoggedIn])
-
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [pages, setPages] = useState([]);
+  const { loginData } = useContext(AuthContext);
   const [anchorElNav, setAnchorElNav] = useState(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (loginData?.role === 'user' || localStorage.getItem('token')) {
+      setPages(userPages);
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+      setPages(guestPages);
+    }
+  }, [loginData]);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -74,16 +60,9 @@ const [isLoggedIn,setIsLoggedIn] = useState(false)
   };
 
   return (
-    <AppBar
-      position="static"
-      sx={{
-        backgroundColor: 'white',
-        boxShadow: '0px 2px 4px rgba(0,0,0,0.1)',
-      }}
-    >
+    <AppBar position="static" sx={{ backgroundColor: 'white', boxShadow: '0px 2px 4px rgba(0,0,0,0.1)' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
-          {/* Logo */}
           <Typography
             variant="h5"
             noWrap
@@ -104,7 +83,6 @@ const [isLoggedIn,setIsLoggedIn] = useState(false)
             <span style={{ color: '#152C5B' }}>cation.</span>
           </Typography>
 
-          {/* Desktop Navigation */}
           <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2, alignItems: 'center' }}>
             {pages.map((page) => (
               <Button
@@ -128,7 +106,6 @@ const [isLoggedIn,setIsLoggedIn] = useState(false)
                 {page.name}
               </Button>
             ))}
-
             {isLoggedIn ? (
               <Button
                 onClick={handleLogout}
@@ -141,7 +118,6 @@ const [isLoggedIn,setIsLoggedIn] = useState(false)
                   fontWeight: 500,
                   fontFamily: 'Poppins, sans-serif',
                   boxShadow: 'none',
-                  transition: 'box-shadow 0.3s ease',
                   '&:hover': {
                     backgroundColor: '#c62828',
                     boxShadow: '0px 8px 15px rgba(211, 47, 47, 0.3)',
@@ -164,17 +140,14 @@ const [isLoggedIn,setIsLoggedIn] = useState(false)
                     fontWeight: 500,
                     fontFamily: 'Poppins, sans-serif',
                     boxShadow: 'none',
-                    transition: 'box-shadow 0.3s ease',
                     '&:hover': {
                       backgroundColor: '#3252DF',
                       boxShadow: '0px 8px 15px rgba(50, 82, 223, 0.3)',
-                      color: '#fff',
                     },
                   }}
                 >
                   Register
                 </Button>
-
                 <Button
                   component={Link}
                   to="/Login"
@@ -188,11 +161,9 @@ const [isLoggedIn,setIsLoggedIn] = useState(false)
                     fontWeight: 500,
                     fontFamily: 'Poppins, sans-serif',
                     boxShadow: 'none',
-                    transition: 'box-shadow 0.3s ease',
                     '&:hover': {
                       backgroundColor: '#3252DF',
                       boxShadow: '0px 8px 15px rgba(50, 82, 223, 0.3)',
-                      color: '#fff',
                     },
                   }}
                 >
@@ -202,13 +173,9 @@ const [isLoggedIn,setIsLoggedIn] = useState(false)
             )}
           </Box>
 
-          {/* Mobile Menu Button */}
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
               onClick={handleOpenNavMenu}
               color="inherit"
               sx={{ color: '#152c5b' }}
@@ -216,27 +183,16 @@ const [isLoggedIn,setIsLoggedIn] = useState(false)
               <MenuIcon />
             </IconButton>
             <Menu
-              id="menu-appbar"
               anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
-                display: { xs: 'block', md: 'none' },
                 '& .MuiPaper-root': {
                   minWidth: '200px',
                   mt: 1,
                   borderRadius: '8px',
                   boxShadow: '0px 8px 32px rgba(0, 0, 0, 0.1)',
-                }
+                },
               }}
             >
               {pages.map((page) => (
@@ -251,13 +207,12 @@ const [isLoggedIn,setIsLoggedIn] = useState(false)
                     '&:hover': {
                       backgroundColor: '#f5f5f5',
                       color: '#4e6ae3',
-                    }
+                    },
                   }}
                 >
                   {page.name}
                 </MenuItem>
               ))}
-
               {isLoggedIn ? (
                 <MenuItem
                   onClick={() => {
@@ -270,7 +225,7 @@ const [isLoggedIn,setIsLoggedIn] = useState(false)
                     fontWeight: 500,
                     '&:hover': {
                       backgroundColor: '#f5f5f5',
-                    }
+                    },
                   }}
                 >
                   Logout
@@ -287,7 +242,7 @@ const [isLoggedIn,setIsLoggedIn] = useState(false)
                       fontWeight: 500,
                       '&:hover': {
                         backgroundColor: '#f5f5f5',
-                      }
+                      },
                     }}
                   >
                     Register
@@ -302,7 +257,7 @@ const [isLoggedIn,setIsLoggedIn] = useState(false)
                       fontWeight: 500,
                       '&:hover': {
                         backgroundColor: '#f5f5f5',
-                      }
+                      },
                     }}
                   >
                     Login

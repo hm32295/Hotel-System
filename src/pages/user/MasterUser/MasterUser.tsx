@@ -6,13 +6,9 @@ import { Container, Box } from "@mui/material";
 const MasterUser = () => {
   return (
     <>
-<<<<<<< Updated upstream
+
     <Nav_User/>
-        
-        <Outlet/>
-    <Footer_User/>
-=======
-      <Nav_User />
+
 
       <Box sx={{ backgroundColor: '#f9f9f9', minHeight: '100vh' }}>
         <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -21,7 +17,7 @@ const MasterUser = () => {
       </Box>
 
       <Footer_User />
->>>>>>> Stashed changes
+
     </>
   );
 };
