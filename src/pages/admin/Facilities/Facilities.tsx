@@ -31,7 +31,12 @@ type HeadCell = {
   numeric: boolean;
   disablePadding: boolean;
 };
-
+const headCells =[
+        { id: "name", label: 'Facility Name', numeric: false, disablePadding: false },
+        { id: "createdByUserName", label: "Created By", numeric: false, disablePadding: false },
+        { id: "createdAt", label: "Creation Date", numeric: false, disablePadding: false },
+        { id: "updatedAt", label: "Update Date", numeric: false, disablePadding: false },
+      ]
 // Delete Modal
 function DeleteConfirmation({ open, onClose, onConfirm, name }) {
 
@@ -54,7 +59,6 @@ function DeleteConfirmation({ open, onClose, onConfirm, name }) {
 
 const Facilities = () => {
   const [rows, setRows] = useState<any[]>([]);
-  const [headCells, setHeadCells] = useState<HeadCell[]>([]);
   const [loading, setLoading] = useState(true);
 
   const [openUpdate, setOpenUpdate] = useState(false);
@@ -63,7 +67,6 @@ const Facilities = () => {
 
   const [openDelete, setOpenDelete] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<any>(null);
-  const [refresh,setRefresh]=useState(0);
   const [facilities,setFacilities]=useState(0);
 
 
@@ -71,8 +74,8 @@ const Facilities = () => {
     const getData = async ()=>{
       setLoading(false)
           try {
-            const response = await axiosInstance(FacilitesUrls.GET_ALL);
-            const totalData = response?.data?.data?.totalCount;
+            const response = await axiosInstance(FacilitesUrls.GET_ALL,{params:{page:1,size:1}});
+            const totalData = response?.data?.data?.totalCount || 100;
               fetchFacilities(1,totalData)
           } catch (error) {
             console.log(error);
@@ -97,12 +100,7 @@ const Facilities = () => {
         updatedAt: facility.updatedAt,
       }));
       setRows(facilitiesData);
-      setHeadCells([
-        { id: "name", label: 'Facility Name', numeric: false, disablePadding: false },
-        { id: "createdByUserName", label: "Created By", numeric: false, disablePadding: false },
-        { id: "createdAt", label: "Creation Date", numeric: false, disablePadding: false },
-        { id: "updatedAt", label: "Update Date", numeric: false, disablePadding: false },
-      ]);
+    
       
     } catch (error) {
       console.log(error);
