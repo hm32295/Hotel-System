@@ -8,29 +8,29 @@ const AdsDiscounts = () => {
      const hotels = [
     {
       id: 1,
-      name: "Green Park",
-      location: "Tangerang, Indonesia",
+      name: "PS Wood",
+      location: "Depok, Indonesia",
    image: picads2,
       isPopular: false
     },
     {
       id: 2,
-      name: "Poco Wae",
-      location: "Malang, Indonesia",
+      name: "One Five",
+      location: "Jakarta, Indonesia",
       image: picads1, 
       isPopular: false
     },
     {
       id: 3,
-      name: "Silver Rain",
-      location: "Bandung, Indonesia",
+      name: "Minimal",
+      location: "Bogor, Indonesia",
      image: picads4, 
       isPopular: false
     },
     {
       id: 4,
-      name: "Cashville",
-      location: "Kemang, Indonesia",
+      name: "Stays Home",
+      location: "Wonosobo, Indonesia",
       image:picads3, 
       isPopular: true
     }
@@ -47,7 +47,7 @@ const AdsDiscounts = () => {
         
         <div className="row">
           {hotels.map((hotel) => (
-            <div key={hotel.id} className="col-lg-3 col-md-6 col-sm-6 col-12">
+            <div key={hotel.id} className="col-lg-3 col-md-6 col-sm-6 col-6">
               <div className="hotel-card">
                 <div className="hotel-image-container">
                   <img 
@@ -56,7 +56,7 @@ const AdsDiscounts = () => {
                     className="hotel-image"
                   />
                   {hotel.isPopular && (
-                    <span className="popular-badge">Popular Choice</span>
+                    <span className="popular-badge">20% Off</span>
                   )}
                 </div>
                 <div className="hotel-info">

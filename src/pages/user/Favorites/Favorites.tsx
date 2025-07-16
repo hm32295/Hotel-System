@@ -1,23 +1,18 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import '../Home/CoMPO_Home/ExPlore/explore.css';
-import axios from 'axios';
+
 
 import { toast } from 'react-toastify';
 import HeartBrokenIcon from '@mui/icons-material/HeartBroken';
 import PeopleIcon from '@mui/icons-material/People';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import StarIcon from '@mui/icons-material/Star';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import PersonIcon from '@mui/icons-material/Person';
 import img1 from '../../../assets/images/Rectangle 3 (1).svg';
 import img2 from '../../../assets/images/Rectangle 3 (2).svg';
 import img3 from '../../../assets/images/Rectangle 3 (3).svg';
 import img4 from '../../../assets/images/Rectangle 3 (4).svg';
 import img5 from '../../../assets/images/Rectangle 3 (5).svg';
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
 import { axiosInstance, FAVORITE_URL, PORTAL_URLS } from '../../../services/Url';
-import { AuthContext } from '../../../context/context';
 
 const Favourits = () => {
   const defaultImages = [img1, img2, img3, img4, img5];
@@ -44,10 +39,16 @@ const FAV_Delete = async (roomId:any) => {
     console.log('[DEBUG] deleting roomId =', roomId); 
   try {
    
-    await axiosInstance.delete(
-      FAVORITE_URL.DELETE,
-      { data: { roomId: roomId } }
+ let response=   await axiosInstance.delete(
+      FAVORITE_URL.DELETE(roomId),
+      { data: { roomId } }
+      
     );
+     
+      FUN_GET_DATA_DETAILS()
+       toast.success('Product deleted successfully');
+
+
   } catch (err) {
       console.log('DELETE error response:', err?.response?.status, err?.response?.data);
     toast.error('Error removing item')
