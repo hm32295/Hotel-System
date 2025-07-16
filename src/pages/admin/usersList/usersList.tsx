@@ -46,34 +46,43 @@ export default function UserList() {
   const [loading, setLoading] = useState(true);
 
   const [totalUsers,setTotalUsers] = useState(0)
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        setLoading(true);
-        const { data } = await axiosInstance.get(ADMIN_URL.GET_ALL_USERS);
-        const formattedUsers: User[] = data?.data?.users?.map((item: any) => ({
-          id: item._id,
-          userName: item.userName,
-          email: item.email,
-          phoneNumber: item.phoneNumber?.toString() || 'N/A',
-          country: item.country || 'N/A',
-          role: item.role || 'N/A',
-          verified: item.verified,
-          createdAt: new Date(item.createdAt).toLocaleDateString(),
-          profileImage: item.profileImage,
-        })) || [];
-        setTotalUsers(data.data.totalCount);
-        
-        setUsers(formattedUsers);
-      } catch (error) {
-        console.error('Error fetching users:', error);
-      } finally {
-        setLoading(false);
+const getData = async ()=>{
+        try {
+          const response = await axiosInstance(ADMIN_URL.GET_ALL_USERS);
+          const totalData = response?.data?.data?.totalCount;
+            fetchUsers(1,totalData)
+        } catch (error) {
+          console.log(error);
+          
+        }
       }
-    };
+      const fetchUsers = async (page:number, size:number) => {
+        try {
+          setLoading(true);
+          const { data } = await axiosInstance.get(ADMIN_URL.GET_ALL_USERS,{params:{page,size}});
+          const formattedUsers: User[] = data?.data?.users?.map((item: any) => ({
+            id: item._id,
+            userName: item.userName,
+            email: item.email,
+            phoneNumber: item.phoneNumber?.toString() || 'N/A',
+            country: item.country || 'N/A',
+            role: item.role || 'N/A',
+            verified: item.verified,
+            createdAt: new Date(item.createdAt).toLocaleDateString(),
+            profileImage: item.profileImage,
+          })) || [];
+          setTotalUsers(data.data.totalCount);
+          
+          setUsers(formattedUsers);
+        } catch (error) {
+          console.error('Error fetching users:', error);
+        } finally {
+          setLoading(false);
+        }
+      };
+  useEffect(() => {
 
-    fetchUsers();
+    getData();
   }, []);
 
   const handleOpenView = (row: User) => {

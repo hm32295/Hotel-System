@@ -38,8 +38,22 @@ export default function Rooms() {
     const [row , setRow] = useState({})
     
       const [totalRooms,setTotalRooms] = useState(0)
+
+
+      const getData = async ()=>{
+        setLoader(true)
+        try {
+          const response = await axiosInstance(ROOMS_URL.GET);
+          const totalData = response?.data?.data?.totalCount;
+            getRooms(1,totalData)
+        } catch (error) {
+          console.log(error);
+          
+        }finally{setLoader(false)}
+      }
+  /// Get Room Function
     const getRooms = async (page:number,size:number) =>{
-      setLoader(true)
+      setLoader(true);
       try {
         const response = await axiosInstance(ROOMS_URL.GET,{params:{page,size}})
         const data = response?.data?.data
@@ -69,22 +83,22 @@ export default function Rooms() {
       }
     }
     useEffect(()=>{
-      getRooms(1,5)
+      getData()
     },[])
+// Delete Function
+    const deleteRoom =async (data)=>{
 
-  const deleteRoom =async (data)=>{
-
-    try {
-      const response = await axiosInstance.delete(ROOMS_URL.DELETE(data.id))
-      console.log(response);
-      
-    } catch (error) {
-      console.log(error);
-      
-    }
-    finally{
-      getRooms(1,5)
-    }
+      try {
+        const response = await axiosInstance.delete(ROOMS_URL.DELETE(data.id))
+        console.log(response);
+        
+      } catch (error) {
+        console.log(error);
+        
+      }
+      finally{
+        getData()
+      }
   }
 
 
@@ -92,15 +106,18 @@ export default function Rooms() {
     const { image, ...cleanRow } = row;
     navigation('/MasterAdmin/rooms-data', { state: cleanRow });
   };
+
   if(loader) return <Skeleton_Loader />
   return (
     <Box className='rooms'>
+      <Box sx={{display:'flex',justifyContent:'flex-end'}}>
 
+          <Button onClick={()=>navigation('/MasterAdmin/rooms-data')} sx={{background:"#3252DF" ,color:'#fff',marginRight:'1rem'}}>Add New Room</Button>
+      </Box>
         <GenericTable
                 rows={product}
                 headCells={productHeadCells}
                 title="Room List"
-                // getData ={getRooms}
                 totalData={totalRooms}
                 renderActions={(row) => (
                     <>
@@ -111,7 +128,6 @@ export default function Rooms() {
                         return 
                           }}/>
                         <DeleteConfirmation data={row} deleteFun={deleteRoom}/>
-                     
                     </Box>
                       
                       

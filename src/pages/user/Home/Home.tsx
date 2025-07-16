@@ -1,6 +1,5 @@
 
 import PopularAds from "./popularAds/popularAds"
-import { Explore } from "@mui/icons-material"
 
 import Interface from "./CoMPO_Home/Interface_Home/Interface"
 import Ads from "./ads/Ads"
@@ -13,12 +12,11 @@ const Home = () => {
     <div>
 
       <Interface />
-      <Explore />
       <PopularAds />
       <Ads />
       <Review />
 
-    </div>
+</div>
   )
 }
 

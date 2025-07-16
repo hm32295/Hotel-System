@@ -102,16 +102,13 @@ let navigation=useNavigate()
               
           }
 
-          {/* {location!='/MasterAdmin/HomeAdmin' ?  <h4 className={isDarkMode?"dark_WE":''}>You can check all details</h4>:null} */}
-        
 
             </div>
              <div className="Header_Right">
                 {location==='/MasterAdmin/Facilities'?
-             <button onClick={handleOpenUpdate}>Add New Facility</button>: location==='/MasterAdmin/Ads'
-              ?<Button >Add New Ads</Button>:location==='/MasterAdmin/Explore'?<button>Add New Explore</button>
-              :location==='/MasterAdmin/ListBooking'?null
-              :location==='/MasterAdmin/Rooms'&&<Button onClick={()=>navigation('/MasterAdmin/rooms-data')}>Add New Room</Button>
+             <Button sx={{background:'#3252DF !important'}} onClick={handleOpenUpdate}>Add New Facility</Button>:location==='/MasterAdmin/Explore'?<Button>Add New Explore</Button>
+              :location==='/MasterAdmin/ListBooking'&&null
+              
 
               
           }

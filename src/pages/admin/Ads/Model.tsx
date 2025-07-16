@@ -137,7 +137,7 @@ export default function Model({ getAds, icon, row }: { row: any, getAds: any, ic
   return (
     <Box onClick={handleClickOpen}>
       
-      {icon ? <EditNoteIcon sx={{display:'flex' , justifyContent:'center',alignItems:'center'}} /> : 'add ads'}
+      {icon ? <EditNoteIcon sx={{display:'flex' , justifyContent:'center',alignItems:'center'}} /> : 'add new ads'}
       <BootstrapDialog
         onClick={e => e.stopPropagation()}
         onClose={handleClose}
