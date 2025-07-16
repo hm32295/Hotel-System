@@ -45,7 +45,7 @@ export default function Rooms() {
         try {
           const response = await axiosInstance(ROOMS_URL.GET);
           const totalData = response?.data?.data?.totalCount;
-            getRooms(1,totalData)
+           await getRooms(1,totalData)
         } catch (error) {
           console.log(error);
           

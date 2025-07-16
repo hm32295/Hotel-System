@@ -15,9 +15,10 @@ const App = () => {
   const routes=createBrowserRouter(
     [
       {
-        path:'',
+        path:'/',
+        element:<MasterUser />,
         children:[
-          { index: true,element : <RedirectIfLoggedIn> < Login/></RedirectIfLoggedIn> },
+          {index: true,element :  <Home/>},
           {path:'login',element:<RedirectIfLoggedIn> < Login/></RedirectIfLoggedIn>},
           {path:'Register',element:<RedirectIfLoggedIn><Register/></RedirectIfLoggedIn>},
           {path:'Reset',element:<RedirectIfLoggedIn><Reset/></RedirectIfLoggedIn>},
@@ -26,13 +27,12 @@ const App = () => {
         ]
       },{
         path:'/MasterUser',
-        element:<ProtectedRoute allowedRole ={'user'}><MasterUser/></ProtectedRoute>,
+        element:<MasterUser />,
         children:[
           {index:true,element:<Home/>},
           {path:'Home',element:<Home/>},
           {path:'Explore',element:<Explore/>},
           {path:'Favorites',element:<Favorites/>},
-          
           {path:'booking',element:<Booking/>},
           {path:'Explore_USER',element:<EXpPLORE/>},
           {path:'Details',element:<Details/>},
