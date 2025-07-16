@@ -11,6 +11,7 @@ import Model from './Model';
 import DeleteConfirmation from '../../../component_Admin/deleteConfirmation/DeleteConfirmation';
 import { Skeleton_Loader } from '../../../component_Admin/loader/Skeleton';
 import ViewData from "./ViewData";
+import { toast } from "react-toastify";
 interface Product {
   id: number;
   name: string;
@@ -46,7 +47,7 @@ export default function Ads() {
           }
         }
   const getAds = async(page:number,size:number)=>{
-    setLoader(true)
+   
     try {
         const response = await axiosInstance(ADS_URL.GET,{params:{page,size}})
         const data = response.data.data;
@@ -67,8 +68,6 @@ export default function Ads() {
     } catch (error) {
         console.log(error);
         
-    }finally{
-      setLoader(false)
     }
   }
 
@@ -76,7 +75,7 @@ export default function Ads() {
     const id =ads.id
         try {
           const response =await axiosInstance.delete(ADS_URL.DELETE(id))
-          console.log(response);
+          toast.success(response.data.message);
           
         } catch (error) {
           console.log(error);

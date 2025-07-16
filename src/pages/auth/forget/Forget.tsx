@@ -13,6 +13,7 @@ import { EMAIL_VALIDATION } from '../../../services/Validation';
 import { ADMIN_URL, axiosInstance, USERS_URL } from '../../../services/Url';
 import type { resetPassword } from '../../../services/interface';
 import Progress from '../../../component_Admin/loader/Progress';
+import { toast } from 'react-toastify';
 export default  function Forget(){
   const [loader , setLoader]= useState(false)
   const navigation = useNavigate();
@@ -36,8 +37,10 @@ export default  function Forget(){
         }
       )
       navigation('/reset')
+      toast.success(response?.data?.message || 'Password reset token sent successfully');
+      
     } catch (error) {
-        console.log(error);
+        toast.error(error?.response?.data?.message || 'check your data');
         
     }finally{
       setLoader(false)

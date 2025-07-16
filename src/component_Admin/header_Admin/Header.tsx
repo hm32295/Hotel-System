@@ -33,9 +33,8 @@ const Header = () => {
        
         await axiosInstance.post(`${FacilitesUrls.CREATE}`, { name: value });
          toast.success(`Added  successfully.`)
-        window.location.reload()
-      } catch (error) {
-        console.error('Delete Error:', error);
+        } catch (error) {
+        toast.error(error?.response?.data?.message || 'Sorry Check your data')
         
       }
     }
@@ -66,7 +65,7 @@ let navigation=useNavigate()
                   width: 400 
                 }}>
                   <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                    <h2 style={{ margin: 0 }}>Edit Facility</h2>
+                    <h2 style={{ margin: 0 }}>Add Facility</h2>
                     <IconButton size="small" onClick={handleCloseUpdate}>
                       <CloseIcon />
                     </IconButton>

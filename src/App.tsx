@@ -10,6 +10,7 @@ import ListBooking from './pages/admin/ListBooking/ListBooking';
 import EXpPLORE from './pages/user/Home/CoMPO_Home/ExPlore/EXpPLORE';
 import ProtectedRoute from './services/Protected_route';
 import RedirectIfLoggedIn from './services/RedirectIfLoggedIn';
+import { ToastContainer } from 'react-toastify';
 const App = () => {
   const routes=createBrowserRouter(
     [
@@ -66,6 +67,7 @@ const App = () => {
           <RouterProvider router={routes}>
           </RouterProvider>
         </React.Fragment>
+        <ToastContainer />
     </SnackbarProvider>
 
   )

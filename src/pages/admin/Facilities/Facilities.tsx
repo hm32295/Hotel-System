@@ -83,11 +83,10 @@ const Facilities = () => {
           }
         }
     const fetchFacilities = async(page:number,size:number) => {
-      setLoading(true)
+      
     try {
       const res = await axiosInstance.get(FacilitesUrls.GET_ALL,{params:{page,size}});
-      console.log(res.data.data.totalCount);
-      
+     
       setFacilities(res.data.data.totalCount)
       
       const facilitiesData = res.data.data.facilities.map(facility => ({
@@ -104,11 +103,10 @@ const Facilities = () => {
         { id: "createdAt", label: "Creation Date", numeric: false, disablePadding: false },
         { id: "updatedAt", label: "Update Date", numeric: false, disablePadding: false },
       ]);
+      
     } catch (error) {
-      console.log("Fetch Error:", error);
-    } finally {
-      setLoading(false);
-    }
+      console.log(error);
+    } 
   };
 
   useEffect(() => {
@@ -157,16 +155,15 @@ const Facilities = () => {
     if (itemToDelete) {
       try {
         await axiosInstance.delete(FacilitesUrls.DELETE(itemToDelete.id));
-        toast.error(`Deleted ${itemToDelete.name} successfully.`);
+        toast.error(`Deleted ${itemToDelete?.name} successfully.`);
         getData();
       } catch (error) {
         console.error("Delete Error:", error);
-      }finally{////
       }
     }
     handleCloseDelete();
   };
-  // حطّ دي قبل الـ return:
+  
 const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 const [selectedRow, setSelectedRow] = useState<any>(null);
 
@@ -202,7 +199,7 @@ const handleMenuClose = () => {
             width: 400
           }}>
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-              <h2 style={{ margin: 0 }}>Edit Facility</h2>
+              <Box component={'h2'} style={{ margin: 0 }}>Edit Facility</Box>
               <IconButton size="small" onClick={handleCloseUpdate}>
                 <CloseIcon />
               </IconButton>

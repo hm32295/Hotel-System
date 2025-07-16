@@ -16,6 +16,7 @@ import { EMAIL_VALIDATION } from '../../../services/Validation';
 import { ADMIN_URL, axiosInstance, USERS_URL } from '../../../services/Url';
 import type { resetPassword } from '../../../services/interface';
 import Progress from '../../../component_Admin/loader/Progress';
+import { toast } from 'react-toastify';
 export default  function Reset(){
   const [loader, setLoader] = useState(false)
   const navigation = useNavigate();
@@ -36,10 +37,11 @@ export default  function Reset(){
         password:'',
         confirmPassword: ''}
       )
-      navigation('/login')
+      navigation('/login');
+      toast.success(response?.data?.message || 'Please Log in with new password')
     } catch (error) {
-        console.log(error);
-        
+        toast.error(error?.response?.data?.message || 'check your data');
+   
     }finally{
       setLoader(false)
       

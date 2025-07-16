@@ -17,6 +17,7 @@ import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { useLocation, useNavigate } from "react-router-dom";
 import Progress from "../../../component_Admin/loader/Progress";
+import { toast } from "react-toastify";
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -125,12 +126,14 @@ const RoomData = () => {
         }else{
           response = await axiosInstance.post(ROOMS_URL.CREATE, handelData);
         }
-        console.log(response.data);
+        toast.success(response?.data?.data?.message || 'Room created successfully');
+        
         reset();
         setPersonName([])
         navigate('/MasterAdmin/rooms')
       } catch (error) {
-        console.log(error?.response?.data?.message);
+        console.log();
+        toast.error(error?.response?.data?.message || 'price must be a number')
       }finally{
         setLoader(false)
       }

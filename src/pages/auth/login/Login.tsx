@@ -16,6 +16,7 @@ import { ADMIN_URL, axiosInstance } from '../../../services/Url';
 import type { resetPassword } from '../../../services/interface';
 import Progress from '../../../component_Admin/loader/Progress';
 import { AuthContext } from '../../../context/context';
+import { toast } from 'react-toastify';
 export default  function Login(){
   const [loader, setLoader] = useState(false)
   const navigation = useNavigate();
@@ -41,8 +42,10 @@ export default  function Login(){
         navigation('/MasterUser')
 
       }
+      
+      toast.success(response?.data?.message || 'Welcome ' + response?.data?.user?.userName)
     } catch (error) {
-        console.log(error?.response?.data?.message);
+      toast.error(error?.response?.data?.message || 'check your data')
         
     }finally{
       setLoader(false)

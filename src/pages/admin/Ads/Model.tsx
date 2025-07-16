@@ -1,4 +1,4 @@
-import * as React from 'react';
+
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
@@ -18,6 +18,8 @@ import { Box, TextField } from '@mui/material';
 import { ADS_URL, axiosInstance, ROOMS_URL } from '../../../services/Url';
 import { useForm } from 'react-hook-form';
 import Progress from '../../../component_Admin/loader/Progress';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -45,12 +47,12 @@ const activeName = [
 ];
 
 export default function Model({ getAds, icon, row }: { row: any, getAds: any, icon: boolean }) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const { handleSubmit, register, formState: { errors }, reset } = useForm();
-  const [dataRooms, setDataRooms] = React.useState<string[]>([]);
-  const [rooms, setRooms] = React.useState<string>('');
-  const [active, setActive] = React.useState<string>('false');
-  const [loader , setLoader] = React.useState(false)
+  const [dataRooms, setDataRooms] = useState<string[]>([]);
+  const [rooms, setRooms] = useState<string>('');
+  const [active, setActive] = useState<string>('false');
+  const [loader , setLoader] = useState(false)
   const getRooms = async (page: number, size: number) => {
     try {
       const response = await axiosInstance(ROOMS_URL.GET, { params: { page, size } });
@@ -60,11 +62,11 @@ export default function Model({ getAds, icon, row }: { row: any, getAds: any, ic
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     getRooms(1, 500);
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (open && icon && row && dataRooms.length > 0) {
       const matchedRoom = dataRooms.find((room: any) => {
         return room.roomNumber === row.name || room._id === row.room?._id || room._id === row.room;
@@ -117,7 +119,7 @@ export default function Model({ getAds, icon, row }: { row: any, getAds: any, ic
       }else{
         response = await axiosInstance.post(ADS_URL.CREATE, preparedData);
       }
-      console.log(response.data);
+      toast.success(response?.data?.data?.message || 'Ads created successfully');
       reset({
         room: '',
         discount: '',
@@ -126,7 +128,7 @@ export default function Model({ getAds, icon, row }: { row: any, getAds: any, ic
       setActive('')
       setRooms('')
     } catch (error) {
-      console.log(error.response?.data);
+      toast.error( error?.response?.data?.message || "sorry the discount not available ");
     }finally{
       setLoader(false)
     }

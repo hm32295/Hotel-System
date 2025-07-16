@@ -53,11 +53,10 @@ export default function Rooms() {
       }
   /// Get Room Function
     const getRooms = async (page:number,size:number) =>{
-      setLoader(true);
+      
       try {
         const response = await axiosInstance(ROOMS_URL.GET,{params:{page,size}})
         const data = response?.data?.data
-        console.log(response);
        
         setTotalRooms(data.totalCount)
         setProduct(data.rooms.map((ele)=>{
@@ -78,8 +77,6 @@ export default function Rooms() {
       } catch (error) {
         console.log(error);
         
-      }finally{
-        setLoader(false)
       }
     }
     useEffect(()=>{

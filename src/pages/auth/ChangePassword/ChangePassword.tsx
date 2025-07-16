@@ -12,6 +12,7 @@ import { Link } from '@mui/material';
 import { ADMIN_URL, axiosInstance, USERS_URL } from '../../../services/Url';
 import type { changePassword } from '../../../services/interface';
 import Progress from '../../../component_Admin/loader/Progress';
+import { toast } from 'react-toastify';
 
 
 export default  function ChangePassword(){
@@ -35,11 +36,11 @@ export default  function ChangePassword(){
         confirmPassword: ''
       }
       )
-      console.log(response);
       
-      navigation('/login')
+      toast.success(response?.data?.data?.message || 'Password changed successfully')
+      
     } catch (error) {
-        console.log(error);
+        toast.error(error?.response?.data.message || 'please make sure old password is correct!');
         
     }finally{
       setLoader(false)
