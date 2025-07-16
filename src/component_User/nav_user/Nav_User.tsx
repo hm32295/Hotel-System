@@ -9,9 +9,12 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MenuIcon from '@mui/icons-material/Menu';
+ import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+ 
 import { Link } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
-import { useTheme } from '@mui/material/styles';
+ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { AuthContext } from '../../context/context';
 
@@ -53,6 +56,7 @@ const [isLoggedIn,setIsLoggedIn] = useState(false)
   const [anchorElNav, setAnchorElNav] = useState(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -60,6 +64,13 @@ const [isLoggedIn,setIsLoggedIn] = useState(false)
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    navigate('/Login');
+    window.location.reload();
   };
 
   return (
@@ -94,11 +105,7 @@ const [isLoggedIn,setIsLoggedIn] = useState(false)
           </Typography>
 
           {/* Desktop Navigation */}
-          <Box sx={{ 
-            display: { xs: 'none', md: 'flex' }, 
-            gap: 2, 
-            alignItems: 'center' 
-          }}>
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2, alignItems: 'center' }}>
             {pages.map((page) => (
               <Button
                 key={page.name}
@@ -122,7 +129,28 @@ const [isLoggedIn,setIsLoggedIn] = useState(false)
               </Button>
             ))}
 
-            {!isLoggedIn && (
+            {isLoggedIn ? (
+              <Button
+                onClick={handleLogout}
+                sx={{
+                  backgroundColor: '#d32f2f',
+                  color: '#fff',
+                  textTransform: 'none',
+                  px: 3,
+                  borderRadius: '8px',
+                  fontWeight: 500,
+                  fontFamily: 'Poppins, sans-serif',
+                  boxShadow: 'none',
+                  transition: 'box-shadow 0.3s ease',
+                  '&:hover': {
+                    backgroundColor: '#c62828',
+                    boxShadow: '0px 8px 15px rgba(211, 47, 47, 0.3)',
+                  },
+                }}
+              >
+                Logout
+              </Button>
+            ) : (
               <>
                 <Button
                   component={Link}
@@ -168,7 +196,7 @@ const [isLoggedIn,setIsLoggedIn] = useState(false)
                     },
                   }}
                 >
-                  Login 
+                  Login
                 </Button>
               </>
             )}
@@ -212,8 +240,8 @@ const [isLoggedIn,setIsLoggedIn] = useState(false)
               }}
             >
               {pages.map((page) => (
-                <MenuItem 
-                  key={page.name} 
+                <MenuItem
+                  key={page.name}
                   onClick={handleCloseNavMenu}
                   component={Link}
                   to={page.path}
@@ -229,10 +257,27 @@ const [isLoggedIn,setIsLoggedIn] = useState(false)
                   {page.name}
                 </MenuItem>
               ))}
-              
-              {!isLoggedIn && (
+
+              {isLoggedIn ? (
+                <MenuItem
+                  onClick={() => {
+                    handleCloseNavMenu();
+                    handleLogout();
+                  }}
+                  sx={{
+                    fontFamily: 'Poppins, sans-serif',
+                    color: '#d32f2f',
+                    fontWeight: 500,
+                    '&:hover': {
+                      backgroundColor: '#f5f5f5',
+                    }
+                  }}
+                >
+                  Logout
+                </MenuItem>
+              ) : (
                 <>
-                  <MenuItem 
+                  <MenuItem
                     onClick={handleCloseNavMenu}
                     component={Link}
                     to="/Register"
@@ -247,7 +292,7 @@ const [isLoggedIn,setIsLoggedIn] = useState(false)
                   >
                     Register
                   </MenuItem>
-                  <MenuItem 
+                  <MenuItem
                     onClick={handleCloseNavMenu}
                     component={Link}
                     to="/Login"
