@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -9,7 +9,7 @@ import 'swiper/css/effect-cards';
 import './review.css';
 
 // import required modules
-import { Autoplay, EffectCards, Pagination } from 'swiper/modules';
+import { Autoplay, EffectCards } from 'swiper/modules';
 import { Box, Rating } from '@mui/material';
 import {  axiosInstance, ROOM_REVIEW_URL, ROOMS_USER_URL } from '../../../../services/Url';
 import { Skeleton_Loader } from './Skeleton';
@@ -25,12 +25,12 @@ export default function Review() {
       const response = await axiosInstance(ROOMS_USER_URL.GET);
       const rooms = response?.data?.data?.rooms;
 
-      const roomsWithReviewsPromises = rooms.map(async (room) => {
+      const roomsWithReviewsPromises = rooms.map(async (room:any) => {
         const reviews = await getReviews(room._id);
         return { id: room._id, reviews };
       });
 
-      const results = await Promise.all(roomsWithReviewsPromises);
+      const results:any = await Promise.all(roomsWithReviewsPromises);
       setRoomsWithReviews(results);
     } catch (error:any) {
       console.log(error);
@@ -39,7 +39,7 @@ export default function Review() {
     }
   };
 
-  const getReviews = async(id)=>{
+  const getReviews = async(id:string)=>{
     let data =[];
     try {
         const response = await axiosInstance(ROOM_REVIEW_URL.GET(id))
@@ -70,8 +70,8 @@ export default function Review() {
                 }}
                 modules={[EffectCards, Autoplay]}
             >
-              {roomsWithReviews.flatMap((room) =>
-                  room.reviews.map((rev, idx) => (
+              {roomsWithReviews.flatMap((room:any) =>
+                  room?.reviews?.map((rev:any, idx:number) => (
                     <SwiperSlide key={`${room.id}-${idx}`}>
                       <Box
                       className="review_Box"

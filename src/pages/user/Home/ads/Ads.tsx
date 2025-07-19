@@ -1,11 +1,9 @@
 
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 import image1 from '../../../../assets/images/slider/slider1.png'
-import image2 from '../../../../assets/images/slider/slider2.png'
-import image3 from '../../../../assets/images/slider/slider3.png'
-import image4 from '../../../../assets/images/slider/slider4.png'
+
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -78,7 +76,7 @@ export default function Ads() {
       >
 
         {ads.length?(
-            ads.map((ads)=>{
+            ads.map((ads:any)=>{
                 return(
                     <SwiperSlide key={ads._id} onClick={()=>{navigation('/MasterUser/Details',{state:ads.room})}}>
                         <img src={ads?.room?.images[0] || image1} alt="imgs" />

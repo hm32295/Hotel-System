@@ -9,7 +9,7 @@ import './PopularAds.css';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Favorite from '@mui/icons-material/Favorite';
 import { axiosInstance, FAVORITE_URL, ROOMS_USER_URL } from '../../../../services/Url';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import {   useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Skeleton_Loader } from '../review/Skeleton';
 import img1 from '../../../../assets/images/adsPopular/1.png';
@@ -17,7 +17,6 @@ import img2 from '../../../../assets/images/adsPopular/2.png';
 import img3 from '../../../../assets/images/adsPopular/3.png';
 import img4 from '../../../../assets/images/adsPopular/4.png';
 import img5 from '../../../../assets/images/adsPopular/5.png';
-import { AuthContext } from '../../../../context/context';
 import { toast } from 'react-toastify';
 
 function srcset(image: string, width: number, height: number, rows = 1, cols = 1) {
@@ -28,7 +27,6 @@ function srcset(image: string, width: number, height: number, rows = 1, cols = 1
 }
 
 export default function PopularAds() {
-  const { loginData } = useContext(AuthContext);
   const navigation = useNavigate();
   const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
   const [rooms, setRooms] = useState([]);
@@ -113,7 +111,7 @@ export default function PopularAds() {
         cols={4}
       >
         {rooms.length ?(
-          rooms.map((room, index) => {
+          rooms.map((room:any, index:any) => {
             let cols = 1;
             let rows = 1;
             if (!index) {
@@ -178,13 +176,7 @@ export default function PopularAds() {
                           addFavorite(room._id, isChecked);
                         }}
                         {...label}
-                        // {
-                        //   favorite.length ?(
-                        //     favorite.map((roomFavorite)=>{
-                              
-                        //     })
-                        //   ) : null
-                        // }
+                       
                         icon={<FavoriteIcon sx={{ fontSize: '2.5rem', color: '#fff' }} />}
                         checkedIcon={<Favorite sx={{ fontSize: '2.5rem', color: '#ff1744' }} />}
                       />

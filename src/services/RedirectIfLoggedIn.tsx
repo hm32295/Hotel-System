@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/context";
 import { Skeleton_Loader } from "../component_Admin/loader/Skeleton";
 
-export default function RedirectIfLoggedIn({ children }) {
+export default function RedirectIfLoggedIn({ children }:{children:any}) {
   const authContext = useContext(AuthContext);
   const navigate = useNavigate();
 
