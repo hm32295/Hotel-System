@@ -13,7 +13,7 @@ const Header = () => {
   const [openUpdate, setOpenUpdate] = useState(false);
   const [value, setValue] = useState('');
 //  Modal Edit 
-  const handleOpenUpdate = (row) => {
+  const handleOpenUpdate = (row:any) => {
     setItemToUpdate(row);
     setValue(row.name);
     setOpenUpdate(true);

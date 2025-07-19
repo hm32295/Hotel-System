@@ -25,7 +25,7 @@ function PaperComponent(props: PaperProps) {
   );
 }
 
-export default function DeleteConfirmation({data,deleteFun}) {
+export default function DeleteConfirmation({data,deleteFun}:{data:any, deleteFun:any}) {
   const [open, setOpen] = React.useState(false);
  
   const handleClickOpen = () => {
