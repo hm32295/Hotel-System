@@ -1,5 +1,6 @@
-import React from 'react';
-import { Box, Container, Grid, Typography, Link as MuiLink } from '@mui/material';
+
+import { Box, Container, Typography, Link as MuiLink } from '@mui/material';
+import {Grid} from '@mui/material'; 
 import { Link as RouterLink } from 'react-router-dom';
 
 const Footer_User = () => {
@@ -11,8 +12,8 @@ const Footer_User = () => {
     }}>
       <Container maxWidth="xl">
         <Grid container spacing={3} justifyContent="space-between" alignItems="flex-start">
-          {/* Logo and Description */}
-          <Grid item xs={12} sm={12} md={3}>
+  
+          <Grid  item xs={12} sm={12} md={3}>
              <Typography
               variant="h5"
               sx={{

@@ -14,7 +14,6 @@ interface Product {
   name : string;
   image:  JSX.Element;
   price: string;
-  // Category: string;
   capacity: string;
   discount: string;
 }

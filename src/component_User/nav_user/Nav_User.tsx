@@ -10,8 +10,6 @@ import MenuItem from '@mui/material/MenuItem';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link, useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import { AuthContext } from '../../context/context';
 
 const guestPages = [
@@ -30,8 +28,7 @@ const Nav_User = () => {
   const [pages, setPages] = useState([]);
   const { loginData } = useContext(AuthContext);
   const [anchorElNav, setAnchorElNav] = useState(null);
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+ 
   const navigate = useNavigate();
 
   useEffect(() => {
