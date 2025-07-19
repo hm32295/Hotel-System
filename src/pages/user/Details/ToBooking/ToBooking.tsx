@@ -43,7 +43,7 @@ export default function ToBooking({data,isLogged}) {
 
               <Box sx={{mt:'20px', display:'flex', justifyContent:'center'}} >
 
-                <Button onClick={()=>{navigation('/MasterUser/booking', {state:data._id})}} sx={{background:"#3252DF",fontSize:'18px',padding:'10px 20px', color:"#fff",boxShadow: '0px 8px 15px 0px #3252DF4D'}} variant="contained">
+                <Button onClick={()=>{navigation('/MasterUser/booking', {state:data})}} sx={{background:"#3252DF",fontSize:'18px',padding:'10px 20px', color:"#fff",boxShadow: '0px 8px 15px 0px #3252DF4D'}} variant="contained">
                       Continue Book 
               </Button>
               </Box>

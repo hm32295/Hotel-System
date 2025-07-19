@@ -37,25 +37,33 @@ export default function PopularAds() {
   const isXs = useMediaQuery(theme.breakpoints.down('sm'));
   const isSm = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   const isLg = useMediaQuery(theme.breakpoints.up('lg'));
+  const [favorite, setFavorite] = useState([])
 
   const addFavorite = async (roomId: string, isChecked: boolean) => {
     try {
       let response;
       if (isChecked) {
         response = await axiosInstance.post(FAVORITE_URL.CREATE, { roomId });
-        setTimeout(() => {
-          navigation('/MasterUser/Favorites');
-        }, 500);
+        setTimeout(() => { navigation('/MasterUser/Favorites');}, 500);
       } else {
-        response = await axiosInstance.delete(FAVORITE_URL.DELETE(roomId), {
-          data: { roomId },
-        });
+        response = await axiosInstance.delete(FAVORITE_URL.DELETE(roomId), { data: { roomId },});
       }
     } catch (error) {
       console.log("Favorite error:", error);
     }
   };
 
+  const getFavorite = async()=>{
+    try {
+      
+      const response = await axiosInstance(FAVORITE_URL.GET);
+      setFavorite(response?.data?.data?.favoriteRooms[0]?.rooms);
+    } catch (error) {
+      console.log(error);
+      
+    }
+    
+  }
   const getRooms = async () => {
     setLoader(true);
     try {
@@ -70,6 +78,7 @@ export default function PopularAds() {
 
   useEffect(() => {
     getRooms();
+    getFavorite()
   }, []);
 
   const widthImages = () => {
@@ -97,7 +106,7 @@ export default function PopularAds() {
         rowHeight={200}
         cols={4}
       >
-        {rooms.length &&
+        {rooms.length ?(
           rooms.map((room, index) => {
             let cols = 1;
             let rows = 1;
@@ -119,7 +128,7 @@ export default function PopularAds() {
                 <Box sx={{ position: 'relative', width: '100%', height: '100%' }}>
                   <img
                     {...srcset(itemData[index].img, 250, 200, rows, cols)}
-                    alt={room.roomNumber}
+                    alt={room?.roomNumber}
                     loading="lazy"
                     style={{
                       borderRadius: '1rem',
@@ -158,13 +167,20 @@ export default function PopularAds() {
                       <Checkbox
                         onChange={(event) => {
                           const isChecked = event.target.checked;
+
                           addFavorite(room._id, isChecked);
                         }}
                         {...label}
+                        // {
+                        //   favorite.length ?(
+                        //     favorite.map((roomFavorite)=>{
+                              
+                        //     })
+                        //   ) : null
+                        // }
                         icon={<FavoriteIcon sx={{ fontSize: '2.5rem', color: '#fff' }} />}
                         checkedIcon={<Favorite sx={{ fontSize: '2.5rem', color: '#ff1744' }} />}
                       />
-
                       <IconButton
                         onClick={() => navigation('/MasterUser/Details/', { state: room })}
                         sx={{
@@ -201,7 +217,7 @@ export default function PopularAds() {
                 </Box>
               </ImageListItem>
             );
-          })}
+          })):<></>}
       </ImageList>
     </Box>
   );

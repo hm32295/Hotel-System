@@ -21,17 +21,13 @@ const Favourits = () => {
   const navigation = useNavigate()
   const defaultImages = [img1, img2, img3, img4, img5];
   const[loader , setLoader] = useState(false)
-  const fallbackImg = useRef(
-    defaultImages[Math.floor(Math.random() * defaultImages.length)]
-  );
+  const fallbackImg = useRef(defaultImages[Math.floor(Math.random() * defaultImages.length)]);
   let [data_Kollow, setdata_Kollow] = useState([]);
  const FUN_GET_DATA_DETAILS = async () => {
   setLoader(true)
   try {
-      const res = await axiosInstance.get(
-        FAVORITE_URL.GET,
-      );
-      setdata_Kollow(res.data.data.favoriteRooms);
+      const  response = await axiosInstance.get(FAVORITE_URL.GET);
+      setdata_Kollow( response.data.data.favoriteRooms);
     
   } catch (error) {
     toast.error("Error in Showing Data");
@@ -47,14 +43,14 @@ const FAV_Delete = async (roomId:any) => {
    setLoader(true)
   try {
    
-      let response=   await axiosInstance.delete( FAVORITE_URL.DELETE(roomId),{ data: { roomId } });
+      let response = await axiosInstance.delete( FAVORITE_URL.DELETE(roomId),{ data: { roomId } });
      
       FUN_GET_DATA_DETAILS()
        toast.success('Product deleted successfully');
 
 
   } catch (err) {
-      console.log('DELETE error response:', err?.response?.status, err?.response?.data);
+      console.log('DELETE error  :', err?.status, err?.data);
     toast.error('Error removing item')
   }finally{ setLoader(false)}
 }

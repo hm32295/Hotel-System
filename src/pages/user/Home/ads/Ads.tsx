@@ -77,7 +77,7 @@ export default function Ads() {
         className="mySwiper"
       >
 
-        {ads.length&&(
+        {ads.length?(
             ads.map((ads)=>{
                 return(
                     <SwiperSlide key={ads._id} onClick={()=>{navigation('/MasterUser/Details',{state:ads.room})}}>
@@ -97,7 +97,7 @@ export default function Ads() {
                     </SwiperSlide>
                 )
             })
-        )}
+        ):null}
   
       </Swiper>
     </Box>

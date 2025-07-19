@@ -104,3 +104,10 @@ export const FAVORITE_URL ={
 export const  PORTAL_URLS={
     AVAILABLE_ROOMS:'/portal/rooms/'
 }
+
+export const BOOKING_URL ={
+    CREATE:"/portal/booking", // the Body :{"startDate": "2023-01-20","endDate":"2023-01-30","room": "65a1b57341ab48a30d06375f", "totalPrice": 2000}
+    PAY:(id:string)=> `/portal/booking/${id}/pay`, // the body {"token": "tok_1OaH1DBQWp069pqTZ4RzPl0x"}
+    GET_MY_BOOKING:'/portal/booking/my', // 
+    GET_BOOKING_DETAILS :(id:string)=> `/portal/booking/${id}` 
+}

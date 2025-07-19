@@ -31,14 +31,14 @@ const Details = () => {
             <ToBooking data={data} isLogged={loginData?.role}/>
           
         </Box>
-        {loginData?.role === 'user'|| localStorage.getItem('token') &&(
+        {loginData?.role === 'user'|| localStorage.getItem('token') ?(
 
             <Box sx={{mt:'2rem',border:' 1px solid #E5E5E5',p:'8px' , display:'flex',flexWrap:'wrap' ,alignItems:'center' ,justifyContent:'center',gap:'2rem'}}>
                 <Rate id={data?._id} />
                 <Box className='border-comment' sx={{width:'1px' , background:'#203FC7', height:'180px'}}></Box>
                 <Comment id={data?._id} />
             </Box>
-        )}
+        ):null}
     </Box>
   )
 }
