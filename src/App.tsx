@@ -1,5 +1,5 @@
 
-import {createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createHashRouter, RouterProvider } from 'react-router-dom';
 import 'react-pro-sidebar/dist/css/styles.css';
 import 'antd/dist/antd.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -15,7 +15,7 @@ import RedirectIfLoggedIn from './services/RedirectIfLoggedIn';
 import { ToastContainer } from 'react-toastify';
 import { Fragment } from 'react';
 const App = () => {
-  const routes=createBrowserRouter(
+  const routes=createHashRouter(
     [
       {
         path:'/',
