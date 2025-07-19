@@ -21,7 +21,7 @@ export default function Booking() {
        const booking = response.data.data.booking
       navigation('/masterUser/payment',{state:booking});
 
-    } catch (error) {
+    } catch (error:any) {
       console.log(error);
       
     }

@@ -66,7 +66,7 @@ export default function Dashboard() {
           { value: booking.pending, label: 'pending' ,color:'#5368F0'},
         ]);
       }
-    } catch (error) {
+    } catch (error:any) {
       console.log('Error loading chart data:', error);
     }
   };

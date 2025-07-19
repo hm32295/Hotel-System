@@ -82,9 +82,10 @@ export default function Register() {
       toast.success(response?.data?.data?.message || 'Success Create User Please Log in ')
      
       navigation('/login')
-    } catch (error) {
-     
-      toast.error(error.response.data.message || 'please check your data')
+    } catch (error:any) {
+     if(error.response){
+       toast.error(error.response.data.message || 'please check your data')
+     }
       
     }finally{
       setLoader(false)

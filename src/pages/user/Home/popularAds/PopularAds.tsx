@@ -52,7 +52,7 @@ export default function PopularAds() {
         
       }
       getFavorite();
-    } catch (error) {
+    } catch (error:any) {
       console.log("Favorite error:", error);
     }
   };
@@ -63,7 +63,7 @@ export default function PopularAds() {
       const response = await axiosInstance(FAVORITE_URL.GET);
       setFavorite(response?.data?.data?.favoriteRooms[0]?.rooms);
       
-    } catch (error) {
+    } catch (error:any) {
       console.log(error);
       
     }
@@ -75,7 +75,7 @@ export default function PopularAds() {
       const response = await axiosInstance(ROOMS_USER_URL.GET, { params: { page: 1, size: 5 } });
       setRooms(response.data.data.rooms);
       
-    } catch (error) {
+    } catch (error:any) {
       console.log(error);
     } finally {
       setLoader(false);

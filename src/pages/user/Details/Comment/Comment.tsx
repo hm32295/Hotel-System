@@ -36,9 +36,10 @@ export default function Comment({id}) {
         const response = await axiosInstance.post(ROOM_COMMENT_URL.CREATE,data)
         toast.success(response?.data?.data?.message || 'Comment created successfully');
         reset()
-      } catch (error) {
-        console.log(error);
-        toast.success(error?.response?.data?.message || 'Sorry Comment No Crated');
+      } catch (error:any) {
+        if(error.response){
+          toast.success(error?.response?.data?.message || 'Sorry Comment No Crated');
+        }
       
     }finally{
       setLoader(false)

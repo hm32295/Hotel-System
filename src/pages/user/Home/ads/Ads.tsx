@@ -37,7 +37,7 @@ export default function Ads() {
             setAds(response?.data?.data?.ads)
             
             
-        } catch (error) {
+        } catch (error:any) {
             console.log(error);
             
         }finally{

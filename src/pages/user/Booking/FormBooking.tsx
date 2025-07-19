@@ -34,9 +34,10 @@ try {
   const response = await axiosInstance.post(BOOKING_URL.PAY(booking._id),{token:token.id});
   toast.success(response?.data?.message || 'booking payed successfully')
   navigation('/MasterUser/Completed')
-} catch (error) {
-  
-  toast.error(error?.response?.data?.message || 'This booking has already been paid')
+} catch (error:any) {
+  if(error.response){
+    toast.error(error?.response?.data?.message || 'This booking has already been paid')
+  }
 }finally{
   
   setLoading(false)

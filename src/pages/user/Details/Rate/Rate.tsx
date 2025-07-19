@@ -39,8 +39,10 @@ export default function Rate({id}) {
       const response = await axiosInstance.post(ROOM_REVIEW_URL.CREATE,data)
       toast.success(response.data.data.message || 'Review created successfully');
       reset()
-    } catch (error) {
-      toast.error(error.response.data.message || 'User has already added a review for this room')
+    } catch (error:any) {
+      if(error.response){
+        toast.error(error.response.data.message || 'User has already added a review for this room')
+      }
       
     }finally{
       setLoader(false)

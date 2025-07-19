@@ -42,7 +42,7 @@ export default function Ads() {
             const response = await axiosInstance(ADS_URL.GET);
             const totalData = response?.data?.data?.totalCount;
              await getAds(1,totalData)
-          } catch (error) {
+          } catch (error:any) {
             console.log(error);
             
           }finally{setLoader(false)}
@@ -66,7 +66,7 @@ export default function Ads() {
       
        
         
-    } catch (error) {
+    } catch (error:any) {
         console.log(error);
         
     }
@@ -78,7 +78,7 @@ export default function Ads() {
           const response =await axiosInstance.delete(ADS_URL.DELETE(id))
           toast.success(response.data.message);
           
-        } catch (error) {
+        } catch (error:any) {
           console.log(error);
           
         }

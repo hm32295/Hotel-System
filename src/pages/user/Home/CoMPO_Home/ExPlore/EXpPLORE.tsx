@@ -55,12 +55,16 @@ const EXpPLORE = () => {
           );
           setdata_Kollow(res.data);
           setTotalCount(res.data.totalCount);
-        } catch (error) {
-          toast.error("Error in Showing Data");
+        } catch (error:any) {
+            if(error.response){
+              toast.error("Error in Showing Data");
+            }
         }
       }
-    } catch (error) {
-      toast.error("Error");
+    } catch (error:any) {
+      if(error.response){
+        toast.error("Error");
+      }
     }finally{
       setLoader(false)
     }

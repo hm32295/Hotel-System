@@ -45,7 +45,7 @@ export default function Rooms() {
           const response = await axiosInstance(ROOMS_URL.GET);
           const totalData = response?.data?.data?.totalCount;
            await getRooms(1,totalData)
-        } catch (error) {
+        } catch (error:any) {
           console.log(error);
           
         }finally{setLoader(false)}
@@ -73,7 +73,7 @@ export default function Rooms() {
         }))
         
         
-      } catch (error) {
+      } catch (error:any) {
         console.log(error);
         
       }
@@ -88,7 +88,7 @@ export default function Rooms() {
         const response = await axiosInstance.delete(ROOMS_URL.DELETE(data.id))
         console.log(response);
         
-      } catch (error) {
+      } catch (error:any) {
         console.log(error);
         
       }

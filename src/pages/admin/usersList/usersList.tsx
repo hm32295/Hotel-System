@@ -51,7 +51,7 @@ const getData = async ()=>{
           const response = await axiosInstance(ADMIN_URL.GET_ALL_USERS);
           const totalData = response?.data?.data?.totalCount;
             fetchUsers(1,totalData)
-        } catch (error) {
+        } catch (error:any) {
           console.log(error);
           
         }
@@ -74,7 +74,7 @@ const getData = async ()=>{
           setTotalUsers(data.data.totalCount);
           
           setUsers(formattedUsers);
-        } catch (error) {
+        } catch (error:any) {
           console.error('Error fetching users:', error);
         } finally {
           setLoading(false);

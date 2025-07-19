@@ -77,7 +77,7 @@ const Facilities = () => {
             const response = await axiosInstance(FacilitesUrls.GET_ALL,{params:{page:1,size:1}});
             const totalData = response?.data?.data?.totalCount || 100;
              await fetchFacilities(1,totalData)
-          } catch (error) {
+          } catch (error:any) {
             console.log(error);
             
           }
@@ -102,7 +102,7 @@ const Facilities = () => {
           setRows(facilitiesData);
         
           
-        } catch (error) {
+        } catch (error:any) {
           console.log(error);
         } 
       };
@@ -130,7 +130,7 @@ const Facilities = () => {
         await axiosInstance.put(FacilitesUrls.UPDATE(itemToUpdate.id), { name: value });
         toast.success(`Updated ${itemToUpdate.name} successfully.`);
         getData();
-      } catch (error) {
+      } catch (error:any) {
         console.error("Update Error:", error);
       }finally{
         setLoading(true)

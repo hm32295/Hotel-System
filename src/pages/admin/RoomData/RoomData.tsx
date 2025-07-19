@@ -88,7 +88,7 @@ const RoomData = () => {
         const response = await axiosInstance(FacilitesUrls.GET_ALL);
         const data = response.data.data;
         setFacilities(data.facilities.map((ele) => ({ name: ele.name, id: ele._id })));
-      } catch (error) {
+      } catch (error:any) {
         console.log(error);
       }
     };
@@ -131,9 +131,11 @@ const RoomData = () => {
         reset();
         setPersonName([])
         navigate('/MasterAdmin/rooms')
-      } catch (error) {
-        console.log();
-        toast.error(error?.response?.data?.message || 'price must be a number')
+      } catch (error:any) {
+        if(error.response){
+
+          toast.error(error?.response?.data?.message || 'price must be a number')
+        }
       }finally{
         setLoader(false)
       }

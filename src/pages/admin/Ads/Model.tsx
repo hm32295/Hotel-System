@@ -57,7 +57,7 @@ export default function Model({ getAds, icon, row }: { row: any, getAds: any, ic
     try {
       const response = await axiosInstance(ROOMS_URL.GET, { params: { page, size } });
       setDataRooms(response.data.data.rooms);
-    } catch (error) {
+    } catch (error:any) {
       console.log(error);
     }
   };
@@ -127,8 +127,11 @@ export default function Model({ getAds, icon, row }: { row: any, getAds: any, ic
       })
       setActive('')
       setRooms('')
-    } catch (error) {
-      toast.error( error?.response?.data?.message || "sorry the discount not available ");
+    } catch (error:any) {
+      if(error.response){
+
+        toast.error( error?.response?.data?.message || "sorry the discount not available ");
+      }
     }finally{
       setLoader(false)
     }

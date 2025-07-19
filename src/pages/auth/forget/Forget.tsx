@@ -39,8 +39,10 @@ export default  function Forget(){
       navigation('/reset')
       toast.success(response?.data?.message || 'Password reset token sent successfully');
       
-    } catch (error) {
+    } catch (error:any) {
+      if(error.response){
         toast.error(error?.response?.data?.message || 'check your data');
+      }
         
     }finally{
       setLoader(false)

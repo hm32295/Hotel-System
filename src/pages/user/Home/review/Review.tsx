@@ -32,7 +32,7 @@ export default function Review() {
 
       const results = await Promise.all(roomsWithReviewsPromises);
       setRoomsWithReviews(results);
-    } catch (error) {
+    } catch (error:any) {
       console.log(error);
     }finally{
       setLoader(false)
@@ -47,7 +47,7 @@ export default function Review() {
         data = response?.data?.data?.roomReviews;
         
         
-    } catch (error) {
+    } catch (error:any) {
         console.log(error);
         
     }
