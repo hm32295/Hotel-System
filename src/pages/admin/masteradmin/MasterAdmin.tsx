@@ -34,6 +34,7 @@ import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import Header from '../../../component_Admin/header_Admin/Header';
 import { AuthContext } from '../../../context/context';
 import { Skeleton } from '@mui/material';
+import ScrollToTop from '../../../services/ScrollToTop';
 
 const NAVIGATION: Navigation = [
   { kind: 'header', title: 'Main items' },
@@ -243,6 +244,7 @@ export default function Sidepar_Admin(props: { window?: () => Window }) {
 
   return (
     <DemoProvider window={demoWindow}>
+           <ScrollToTop />
       <AppProvider
         navigation={NAVIGATION}
         router={router}

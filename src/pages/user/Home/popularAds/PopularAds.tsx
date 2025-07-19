@@ -18,6 +18,7 @@ import img3 from '../../../../assets/images/adsPopular/3.png';
 import img4 from '../../../../assets/images/adsPopular/4.png';
 import img5 from '../../../../assets/images/adsPopular/5.png';
 import { AuthContext } from '../../../../context/context';
+import { toast } from 'react-toastify';
 
 function srcset(image: string, width: number, height: number, rows = 1, cols = 1) {
   return {
@@ -44,10 +45,13 @@ export default function PopularAds() {
       let response;
       if (isChecked) {
         response = await axiosInstance.post(FAVORITE_URL.CREATE, { roomId });
-        setTimeout(() => { navigation('/MasterUser/Favorites');}, 500);
+        toast.success(response.data.data.message || 'Room added to favorites successfully');
       } else {
         response = await axiosInstance.delete(FAVORITE_URL.DELETE(roomId), { data: { roomId },});
+        toast.error(response.data.data.message || 'Room removed from favorites successfully');
+        
       }
+      getFavorite();
     } catch (error) {
       console.log("Favorite error:", error);
     }
@@ -58,6 +62,7 @@ export default function PopularAds() {
       
       const response = await axiosInstance(FAVORITE_URL.GET);
       setFavorite(response?.data?.data?.favoriteRooms[0]?.rooms);
+      
     } catch (error) {
       console.log(error);
       
@@ -69,6 +74,7 @@ export default function PopularAds() {
     try {
       const response = await axiosInstance(ROOMS_USER_URL.GET, { params: { page: 1, size: 5 } });
       setRooms(response.data.data.rooms);
+      
     } catch (error) {
       console.log(error);
     } finally {
@@ -100,7 +106,7 @@ export default function PopularAds() {
           width: widthImages(),
           maxWidth: '1670px',
           padding: '1rem',
-          height: isLg ? 500 : 'auto',
+          height:  'auto',
           transform: 'translateZ(0)',
         }}
         rowHeight={200}
@@ -165,6 +171,7 @@ export default function PopularAds() {
 
                     <Box sx={{ display: 'flex', gap: 3 }}>
                       <Checkbox
+                        checked={favorite.some((roomFavorite) => roomFavorite._id === room._id)}
                         onChange={(event) => {
                           const isChecked = event.target.checked;
 

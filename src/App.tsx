@@ -1,16 +1,19 @@
-import React from 'react'
+
 import {createBrowserRouter, RouterProvider } from 'react-router-dom';
 import 'react-pro-sidebar/dist/css/styles.css';
 import 'antd/dist/antd.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { SnackbarProvider } from 'notistack';
-import { Login,Register,Reset,Forget,Verify,Home,Favorites,Explore,Details,MasterUser,MasterAdmin,Ads,Facilities, UsersList, Dashboard, RoomData, Rooms, ChangePassword, Booking, NotFound, Completed, Payment } from './pages/index';
+import { Login,Register,Reset,Forget,Verify,Home,Favorites,Explore,Details,MasterUser,
+  MasterAdmin,Ads,Facilities, UsersList, Dashboard, RoomData, Rooms, ChangePassword, Booking,
+   NotFound, Completed, Payment } from './pages/index';
 import ListBooking from './pages/admin/ListBooking/ListBooking';
 import EXpPLORE from './pages/user/Home/CoMPO_Home/ExPlore/EXpPLORE';
 import ProtectedRoute from './services/Protected_route';
 import RedirectIfLoggedIn from './services/RedirectIfLoggedIn';
 import { ToastContainer } from 'react-toastify';
+import { Fragment } from 'react';
 const App = () => {
   const routes=createBrowserRouter(
     [
@@ -64,11 +67,11 @@ const App = () => {
   )
   return (
     <SnackbarProvider>
-
-        <React.Fragment>
+        <Fragment>
           <RouterProvider router={routes}>
+   
           </RouterProvider>
-        </React.Fragment>
+        </Fragment>
         <ToastContainer />
     </SnackbarProvider>
 

@@ -17,6 +17,7 @@ import { Typography } from '@mui/material';
 import { axiosInstance, ROOM_COMMENT_URL } from '../../../../services/Url';
 import { useState } from 'react';
 import Progress from '../Progress';
+import { toast } from 'react-toastify';
 
 export default function Comment({id}) {
   const [loader ,setLoader] = useState(false)
@@ -33,10 +34,11 @@ export default function Comment({id}) {
     
     try {
         const response = await axiosInstance.post(ROOM_COMMENT_URL.CREATE,data)
-        console.log(response);
+        toast.success(response?.data?.data?.message || 'Comment created successfully');
         reset()
-    } catch (error) {
-      console.log(error);
+      } catch (error) {
+        console.log(error);
+        toast.success(error?.response?.data?.message || 'Sorry Comment No Crated');
       
     }finally{
       setLoader(false)

@@ -8,6 +8,7 @@ import Textarea from '@mui/joy/Textarea';
 import { useForm } from 'react-hook-form';
 import { axiosInstance, ROOM_REVIEW_URL } from '../../../../services/Url';
 import Progress from '../Progress';
+import { toast } from 'react-toastify';
 
 const labels: { [index: string]: string } = {
   0.5: 'Useless',
@@ -36,10 +37,10 @@ export default function Rate({id}) {
     setLoader(true)
     try {
       const response = await axiosInstance.post(ROOM_REVIEW_URL.CREATE,data)
-      console.log(response);
+      toast.success(response.data.data.message || 'Review created successfully');
       reset()
     } catch (error) {
-      console.log(error);
+      toast.error(error.response.data.message || 'User has already added a review for this room')
       
     }finally{
       setLoader(false)
