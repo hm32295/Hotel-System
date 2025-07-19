@@ -23,6 +23,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Progress from '../../../component_Admin/loader/Progress';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
+import SignUpImage from '../../../assets/images/SignUp.png'; // ✅ عدلت المسار ليعمل بشكل صحيح
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -36,7 +37,6 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
-// ✅ Define type for form data
 type RegisterFormData = {
   userName: string;
   phoneNumber: string;
@@ -65,45 +65,43 @@ export default function Register() {
   const password = watch('password');
 
   const handelDataToForm = (data: RegisterFormData) => {
-    const registerForm = new FormData();
-    registerForm.append('userName', data.userName);
-    registerForm.append('email', data.email);
-    registerForm.append('country', data.country);
-    registerForm.append('confirmPassword', data.confirmPassword);
-    registerForm.append('password', data.password);
-    registerForm.append('phoneNumber', data.phoneNumber);
-    registerForm.append('profileImage', data.profileImage[0]);
-    registerForm.append('role', data.role);
-    return registerForm;
+    const form = new FormData();
+    form.append('userName', data.userName);
+    form.append('email', data.email);
+    form.append('country', data.country);
+    form.append('confirmPassword', data.confirmPassword);
+    form.append('password', data.password);
+    form.append('phoneNumber', data.phoneNumber);
+    form.append('role', data.role);
+
+    // ✅ تأكد أن الصورة موجودة
+    if (data.profileImage && data.profileImage.length > 0) {
+      form.append('profileImage', data.profileImage[0]);
+    }
+
+    return form;
   };
 
   const onSubmit = async (data: RegisterFormData) => {
     setLoader(true);
-    const handelData = handelDataToForm(data);
+    const formData = handelDataToForm(data);
 
     try {
-      let response;
-      if (data.role === 'admin') {
-        response = await axiosInstance.post(ADMIN_URL.CREATE_USER, handelData);
-      } else {
-        response = await axiosInstance.post(USERS_URL.CREATE_USER, handelData);
-      }
-
-      toast.success(response?.data?.data?.message || 'Success Create User Please Log in');
+      const url = data.role === 'admin' ? ADMIN_URL.CREATE_USER : USERS_URL.CREATE_USER;
+      const response = await axiosInstance.post(url, formData);
+      toast.success(response?.data?.data?.message || 'User created successfully!');
       navigation('/login');
     } catch (error: any) {
-      if (error.response) {
-        toast.error(error.response.data.message || 'please check your data');
-      }
+      const msg = error?.response?.data?.message || 'Please check your data';
+      toast.error(msg);
     } finally {
       setLoader(false);
     }
   };
 
   return (
-    <Grid  container className="register" sx={{ minHeight: '100vh' }} alignItems="center" justifyContent="center">
-      {/* Left Side */}
-      <Grid  item xs={12} sm={6} md={6} sx={{ display: 'grid', minHeight: '100vh', px: { xs: 2, md: 4 }, py: { xs: 4, md: 0 } }}>
+    <Grid container className="register" sx={{ minHeight: '100vh' }} alignItems="center" justifyContent="center">
+      <Grid item xs={12} sm={6} md={6} sx={{ display: 'grid', minHeight: '100vh', px: { xs: 2, md: 4 }, py: { xs: 4, md: 0 } }}>
         <Box sx={{ width: '100%', maxWidth: 500, justifySelf: 'start', alignSelf: 'center' }}>
           <Typography variant="h5" fontWeight="bold" sx={{ mt: 3, mb: 1 }}>
             Sign up
@@ -125,6 +123,7 @@ export default function Register() {
               error={!!errors.userName}
               helperText={errors.userName?.message}
             />
+
             <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', sm: 'row' } }}>
               <TextField
                 label="Phone Number"
@@ -186,6 +185,7 @@ export default function Register() {
                 ),
               }}
             />
+
             <TextField
               label="Confirm Password"
               type={showConfirm ? 'text' : 'password'}
@@ -208,15 +208,21 @@ export default function Register() {
             />
 
             <Button component="label" variant="contained" tabIndex={-1} startIcon={<CloudUploadIcon />}>
-              Upload files
+              Upload profile image
               <VisuallyHiddenInput
                 type="file"
+                accept="image/*"
                 {...register('profileImage', {
-                  required: 'Please add profile image',
+                  required: 'Please upload a profile image',
                 })}
-                multiple
               />
             </Button>
+
+            {errors.profileImage && (
+              <Typography variant="caption" color="error">
+                {errors.profileImage.message}
+              </Typography>
+            )}
 
             <Button type="submit" disabled={loader} sx={{ background: '#3252DF', color: '#fff' }} variant="contained">
               {loader ? <Progress /> : 'Send'}
@@ -226,10 +232,17 @@ export default function Register() {
       </Grid>
 
       {/* Right Side */}
-      <Grid className="img" item xs={12} sm={6} md={6} sx={{ display: { xs: 'none', sm: 'flex' }, alignItems: 'center', justifyContent: 'center', px: 2 }}>
+      <Grid
+        className="img"
+        item
+        xs={12}
+        sm={6}
+        md={6}
+        sx={{ display: { xs: 'none', sm: 'flex' }, alignItems: 'center', justifyContent: 'center', px: 2 }}
+      >
         <Box sx={{ width: '100%', maxWidth: 600, mt: { xs: 2, md: 2 } }}>
           <img
-            src="/src/assets/images/SignUp.png"
+            src={SignUpImage}
             alt="signup"
             style={{
               width: '100%',

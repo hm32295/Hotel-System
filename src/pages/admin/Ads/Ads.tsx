@@ -13,17 +13,17 @@ interface Product {
   id: string;
   name: string;
   Price: number;
-  Capacity: string;
-  Discount: string;
+  Capacity: number;
+  Discount: number;
   Active: string;
 }
 
 const productHeadCells: HeadCell<Product>[] = [
   { id: "name", label: 'Room Name', numeric: false, disablePadding: false },
-  { id: "Capacity", label: "Capacity", numeric: false, disablePadding: false },
-  { id: "Discount", label: "Discount", numeric: false, disablePadding: false },
+  { id: "Capacity", label: "Capacity", numeric: true, disablePadding: false },
+  { id: "Discount", label: "Discount", numeric: true, disablePadding: false },
   { id: "Price", label: "Price", numeric: true, disablePadding: false },
-  { id: "Active", label: "Active", numeric: true, disablePadding: false },
+  { id: "Active", label: "Active", numeric: false, disablePadding: false },
 ];
 
 export default function Ads() {
@@ -51,16 +51,16 @@ export default function Ads() {
       const response = await axiosInstance(ADS_URL.GET, { params: { page, size } });
       const data = response.data.data;
       setTotalAds(data.totalCount);
-      setProduct(data.ads.map((product: any) => {
-        return {
+      setProduct(
+        data.ads.map((product: any) => ({
           id: product._id,
           name: product.room.roomNumber,
-          Price: product.room.price,
-          Capacity: product.room.capacity,
-          Discount: product.room.discount,
-          Active: product.isActive ? "Active" : 'No Active',
-        };
-      }));
+          Price: Number(product.room.price),
+          Capacity: Number(product.room.capacity),
+          Discount: Number(product.room.discount),
+          Active: product.isActive ? "Active" : "No Active",
+        }))
+      );
     } catch (error: any) {
       console.log(error);
     }
@@ -71,11 +71,10 @@ export default function Ads() {
     try {
       const response = await axiosInstance.delete(ADS_URL.DELETE(id));
       toast.success(response.data.message);
+      getData();
     } catch (error: any) {
       console.log(error);
     }
-
-    getData();
   };
 
   useEffect(() => {
@@ -88,7 +87,7 @@ export default function Ads() {
     <>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
         <Button sx={{ background: "#3252DF", color: '#fff', marginRight: '1rem' }}>
-          <Model icon={false} getAds={getData} row={{}} /> {/* row={} to satisfy required prop */}
+          <Model icon={false} getAds={getData} row={{} as Product} />
         </Button>
       </Box>
 
