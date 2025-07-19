@@ -1,5 +1,4 @@
-
-import './register.css'
+import './register.css';
 import {
   Grid,
   Box,
@@ -37,85 +36,75 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
+// ✅ Define type for form data
+type RegisterFormData = {
+  userName: string;
+  phoneNumber: string;
+  country: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  role: 'admin' | 'user';
+  profileImage: FileList;
+};
+
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-  const [loader, setLoader] = useState(false)
-  const navigation = useNavigate()
+  const [loader, setLoader] = useState(false);
+  const navigation = useNavigate();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
-    control
-  } = useForm();
-
-  const handelDataToForm = (data:any) =>{
-    
-    const registerForm = new FormData();
-    registerForm.append('userName', data.userName)
-    registerForm.append('email', data.email)
-    registerForm.append('country', data.country)
-    registerForm.append('confirmPassword', data.confirmPassword)
-    registerForm.append('password', data.password)
-    registerForm.append('phoneNumber', data.phoneNumber)
-    registerForm.append('profileImage', data.profileImage[0])
-    registerForm.append('role' ,data.role)
-   
-    return registerForm
-  
-  }
-
-
-  const onSubmit =async (data : any) => {
-   
-    setLoader(true)
-    const handelData = handelDataToForm(data);
-    
-    try {
-      let response;
-      if(data.role === 'admin'){
-        response = await axiosInstance.post(ADMIN_URL.CREATE_USER,handelData)
-      }else if(data.role === 'user'){
-        response = await axiosInstance.post(USERS_URL.CREATE_USER,handelData)
-      }
-      toast.success(response?.data?.data?.message || 'Success Create User Please Log in ')
-     
-      navigation('/login')
-    } catch (error:any) {
-     if(error.response){
-       toast.error(error.response.data.message || 'please check your data')
-     }
-      
-    }finally{
-      setLoader(false)
-      
-    }
-  };
+    control,
+  } = useForm<RegisterFormData>();
 
   const password = watch('password');
 
+  const handelDataToForm = (data: RegisterFormData) => {
+    const registerForm = new FormData();
+    registerForm.append('userName', data.userName);
+    registerForm.append('email', data.email);
+    registerForm.append('country', data.country);
+    registerForm.append('confirmPassword', data.confirmPassword);
+    registerForm.append('password', data.password);
+    registerForm.append('phoneNumber', data.phoneNumber);
+    registerForm.append('profileImage', data.profileImage[0]);
+    registerForm.append('role', data.role);
+    return registerForm;
+  };
+
+  const onSubmit = async (data: RegisterFormData) => {
+    setLoader(true);
+    const handelData = handelDataToForm(data);
+
+    try {
+      let response;
+      if (data.role === 'admin') {
+        response = await axiosInstance.post(ADMIN_URL.CREATE_USER, handelData);
+      } else {
+        response = await axiosInstance.post(USERS_URL.CREATE_USER, handelData);
+      }
+
+      toast.success(response?.data?.data?.message || 'Success Create User Please Log in');
+      navigation('/login');
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message || 'please check your data');
+      }
+    } finally {
+      setLoader(false);
+    }
+  };
+
   return (
     <Grid container className="register" sx={{ minHeight: '100vh' }} alignItems="center" justifyContent="center">
-      {/*  Left Side (Form) */}
-      <Grid
-        item
-        xs={12}
-        sm={6}
-        md={6}
-        sx={{
-        display: 'grid',
-          minHeight: '100vh',
-          px: { xs: 2, md: 4 },
-          py: { xs: 4, md: 0 },
-        }}
-      >
-        <Box sx={{
-          width: '100%', maxWidth: 500,
-          justifySelf: 'start',
-          alignSelf: 'center',
-        }}>
-
+      {/* Left Side */}
+      <Grid item xs={12} sm={6} md={6} sx={{ display: 'grid', minHeight: '100vh', px: { xs: 2, md: 4 }, py: { xs: 4, md: 0 } }}>
+        <Box sx={{ width: '100%', maxWidth: 500, justifySelf: 'start', alignSelf: 'center' }}>
           <Typography variant="h5" fontWeight="bold" sx={{ mt: 3, mb: 1 }}>
             Sign up
           </Typography>
@@ -124,7 +113,7 @@ export default function Register() {
             <br />
             You can{' '}
             <Link to="/login" style={{ color: 'red', fontWeight: 600 }}>
-              Login here !
+              Login here!
             </Link>
           </Typography>
 
@@ -152,27 +141,22 @@ export default function Register() {
                 helperText={errors.country?.message}
               />
             </Box>
-           
+
             <FormControl fullWidth error={!!errors.role}>
-            <InputLabel id="role-label">Type User</InputLabel>
-            <Controller
-              name="role"
-              control={control}
-              rules={{ required: 'User type is required' }}
-              render={({ field }) => (
-                <Select
-                  {...field}
-                  labelId="role-label"
-                  label="Type User"
-                >
-                  <MenuItem value="admin">Admin</MenuItem>
-                  <MenuItem value="user">User</MenuItem>
-                </Select>
-              )}
-            />
-            <FormHelperText>{errors.role?.message}</FormHelperText>
-          </FormControl>
-           
+              <InputLabel id="role-label">Type User</InputLabel>
+              <Controller
+                name="role"
+                control={control}
+                rules={{ required: 'User type is required' }}
+                render={({ field }) => (
+                  <Select {...field} labelId="role-label" label="Type User">
+                    <MenuItem value="admin">Admin</MenuItem>
+                    <MenuItem value="user">User</MenuItem>
+                  </Select>
+                )}
+              />
+              <FormHelperText>{errors.role?.message}</FormHelperText>
+            </FormControl>
 
             <TextField
               label="Email Address"
@@ -223,47 +207,26 @@ export default function Register() {
               }}
             />
 
-              <Button
-                  component="label"
-                  
-                  role={undefined}
-                  variant="contained"
-                  tabIndex={-1}
-                  startIcon={<CloudUploadIcon />}
-                >
-                  Upload files
-                  <VisuallyHiddenInput
-                    type="file"
-                    {...register('profileImage', {
-                      required: 'Please add profile image',
-                    
-                    })}
-                    onChange={(event) => console.log(event.target.files)}
-                    multiple
-                  />
-                </Button>
-            
-            <Button type='submit' disabled={loader} sx={{background:"#3252DF", color:"#fff"}} variant="contained">
-                    {loader ?<Progress /> : 'send' }   
+            <Button component="label" variant="contained" tabIndex={-1} startIcon={<CloudUploadIcon />}>
+              Upload files
+              <VisuallyHiddenInput
+                type="file"
+                {...register('profileImage', {
+                  required: 'Please add profile image',
+                })}
+                multiple
+              />
+            </Button>
+
+            <Button type="submit" disabled={loader} sx={{ background: '#3252DF', color: '#fff' }} variant="contained">
+              {loader ? <Progress /> : 'Send'}
             </Button>
           </Box>
         </Box>
       </Grid>
 
-      {/* Right Side  */}
-      <Grid
-        className="img"
-        item
-        xs={12}
-        sm={6}
-        md={6}
-        sx={{
-          display: { xs: 'none', sm: 'flex' },
-          alignItems: 'center',
-          justifyContent: 'center',
-          px: 2,
-        }}
-      >
+      {/* Right Side */}
+      <Grid className="img" item xs={12} sm={6} md={6} sx={{ display: { xs: 'none', sm: 'flex' }, alignItems: 'center', justifyContent: 'center', px: 2 }}>
         <Box sx={{ width: '100%', maxWidth: 600, mt: { xs: 2, md: 2 } }}>
           <img
             src="/src/assets/images/SignUp.png"

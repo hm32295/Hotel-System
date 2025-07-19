@@ -1,4 +1,3 @@
-
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 import FormControl from '@mui/joy/FormControl';
@@ -19,40 +18,52 @@ import { useState } from 'react';
 import Progress from '../Progress';
 import { toast } from 'react-toastify';
 
-export default function Comment({id}) {
-  const [loader ,setLoader] = useState(false)
-  const [italic, setItalic] = useState(false);
-  const [fontWeight, setFontWeight] = useState('normal');
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const {register,formState:{errors}, reset,handleSubmit} = useForm()
+// أنواع البيانات
+interface CommentFormProps {
+  id: string; // أو number لو عندك الأرقام فقط
+}
 
-  const setComment =async (data)=>{
-   
-    data = {...data, roomId:id}
-    setLoader(true)
-    
-    
+interface CommentData {
+  comment: string;
+  roomId?: string; // نضيف roomId أثناء الإرسال
+}
+
+export default function Comment({ id }: CommentFormProps) {
+  const [loader, setLoader] = useState(false);
+  const [italic, setItalic] = useState(false);
+  const [fontWeight, setFontWeight] = useState<'200' | 'normal' | 'bold'>('normal');
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const {
+    register,
+    formState: { errors },
+    reset,
+    handleSubmit,
+  } = useForm<CommentData>();
+
+  const setComment = async (data: CommentData) => {
+    const payload = { ...data, roomId: id };
+    setLoader(true);
     try {
-        const response = await axiosInstance.post(ROOM_COMMENT_URL.CREATE,data)
-        toast.success(response?.data?.data?.message || 'Comment created successfully');
-        reset()
-      } catch (error:any) {
-        if(error.response){
-          toast.success(error?.response?.data?.message || 'Sorry Comment No Crated');
-        }
-      
-    }finally{
-      setLoader(false)
+      const response = await axiosInstance.post(ROOM_COMMENT_URL.CREATE, payload);
+      toast.success(response?.data?.data?.message || 'Comment created successfully');
+      reset();
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message || 'Sorry, comment not created');
+      }
+    } finally {
+      setLoader(false);
     }
-    
-  }
+  };
+
   return (
-    <FormControl component={'form'} onSubmit={handleSubmit(setComment)} sx={{overflow:'hidden'}} >
-      <FormLabel sx={{marginBottom:'2rem'}}>Your comment</FormLabel>
+    <FormControl component="form" onSubmit={handleSubmit(setComment)} sx={{ overflow: 'hidden' }}>
+      <FormLabel sx={{ marginBottom: '2rem' }}>Your comment</FormLabel>
       <Textarea
         placeholder=""
         minRows={3}
-        {...register('comment',{required:'required'})}
+        {...register('comment', { required: 'required' })}
         endDecorator={
           <Box
             sx={{
@@ -64,7 +75,6 @@ export default function Comment({id}) {
               flex: 'auto',
             }}
           >
-
             <IconButton
               variant="plain"
               color="neutral"
@@ -86,7 +96,7 @@ export default function Comment({id}) {
                   key={weight}
                   selected={fontWeight === weight}
                   onClick={() => {
-                    setFontWeight(weight);
+                    setFontWeight(weight as '200' | 'normal' | 'bold');
                     setAnchorEl(null);
                   }}
                   sx={{ fontWeight: weight }}
@@ -106,11 +116,20 @@ export default function Comment({id}) {
             >
               <FormatItalic />
             </IconButton>
-           <Button type='submit' disabled={loader} sx={{background:'#3252DF',color:'#fff', padding:'.6rem .9rem',textTransform:'uppercase', ml: 'auto'}}>
-                {loader ? <Progress /> :'send'}
+            <Button
+              type="submit"
+              disabled={loader}
+              sx={{
+                background: '#3252DF',
+                color: '#fff',
+                padding: '.6rem .9rem',
+                textTransform: 'uppercase',
+                ml: 'auto',
+              }}
+            >
+              {loader ? <Progress /> : 'send'}
             </Button>
           </Box>
-          
         }
         sx={[
           {
@@ -120,8 +139,11 @@ export default function Comment({id}) {
           italic ? { fontStyle: 'italic' } : { fontStyle: 'initial' },
         ]}
       />
-      {errors.comment&&<Typography sx={{color:'red',textTransform:'capitalize'}}>{errors?.comment?.message}</Typography>}
+      {errors.comment && (
+        <Typography sx={{ color: 'red', textTransform: 'capitalize' }}>
+          {errors.comment.message}
+        </Typography>
+      )}
     </FormControl>
   );
-
 }

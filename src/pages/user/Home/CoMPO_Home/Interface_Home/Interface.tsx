@@ -27,9 +27,9 @@ const Interface = () => {
     }
     return 'Select dates';
   };
-  let Navigate=useNavigate()
-  let {setBookingData}=useContext(AuthContext)
-  let EXPLORE=()=>{
+  const Navigate=useNavigate()
+  const {setBookingData}:any=useContext(AuthContext)
+  const EXPLORE=()=>{
     
    setBookingData({ startDate, endDate, capacity });
    Navigate('/MasterUser/Explore_USER')
