@@ -21,6 +21,7 @@ const Home = () => {
   <PopularAds />
   <PopularChoice/>
   <AdsDiscounts/>
+  
 
 
   
