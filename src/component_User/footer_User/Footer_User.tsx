@@ -1,6 +1,6 @@
 import { Box, Container, Typography, Link as MuiLink } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
-import { FC, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
 
 interface FooterLink {
   label: string;

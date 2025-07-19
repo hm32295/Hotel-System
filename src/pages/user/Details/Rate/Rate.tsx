@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
-import { useState, MouseEvent } from 'react';
+import { useState, type MouseEvent } from 'react';
 import {
   Check,
   FormatBold,
@@ -18,12 +18,11 @@ import {
 } from '@mui/material';
 import ListItemDecorator from '@mui/joy/ListItemDecorator';
 import Textarea from '@mui/joy/Textarea';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm, type SubmitHandler } from 'react-hook-form';
 import { axiosInstance, ROOM_REVIEW_URL } from '../../../../services/Url';
 import Progress from '../Progress';
 import { toast } from 'react-toastify';
-import { AxiosError } from 'axios';
-
+import type { AxiosError } from 'axios';
 
 interface ReviewFormInputs {
   review: string;
@@ -32,7 +31,6 @@ interface ReviewFormInputs {
 interface RateProps {
   id: string;
 }
-
 
 const labels: { [index: number]: string } = {
   0.5: 'Useless',
@@ -97,7 +95,6 @@ export default function Rate({ id }: RateProps) {
         justifyContent: 'center',
       }}
     >
-     
       <Box sx={{ display: 'flex', gap: '.5rem' }}>
         <Box>Rate</Box>
         <Rating
@@ -109,7 +106,6 @@ export default function Rate({ id }: RateProps) {
         />
         <Box sx={{ ml: 2 }}>{value && labels[value]}</Box>
       </Box>
-
 
       <FormControl component="form" onSubmit={handleSubmit(setRating)}>
         <FormLabel>Message</FormLabel>
@@ -128,10 +124,7 @@ export default function Rate({ id }: RateProps) {
                 flex: 'auto',
               }}
             >
-              
               <IconButton
-                variant="plain"
-                color="neutral"
                 onClick={(event: MouseEvent<HTMLElement>) =>
                   setAnchorEl(event.currentTarget)
                 }
@@ -139,13 +132,11 @@ export default function Rate({ id }: RateProps) {
                 <FormatBold />
                 <KeyboardArrowDown fontSize="small" />
               </IconButton>
+
               <Menu
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl)}
                 onClose={() => setAnchorEl(null)}
-                size="sm"
-                placement="bottom-start"
-                sx={{ '--ListItemDecorator-size': '24px' }}
               >
                 {['200', 'normal', 'bold'].map((weight) => (
                   <MenuItem
@@ -166,15 +157,11 @@ export default function Rate({ id }: RateProps) {
               </Menu>
 
               <IconButton
-                variant={italic ? 'soft' : 'plain'}
-                color={italic ? 'primary' : 'neutral'}
-                aria-pressed={italic}
                 onClick={() => setItalic((prev) => !prev)}
               >
                 <FormatItalic />
               </IconButton>
 
-              {/* زر الإرسال */}
               <Button
                 type="submit"
                 disabled={loader}

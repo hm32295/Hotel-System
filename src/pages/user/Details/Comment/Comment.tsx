@@ -18,14 +18,13 @@ import { useState } from 'react';
 import Progress from '../Progress';
 import { toast } from 'react-toastify';
 
-// أنواع البيانات
 interface CommentFormProps {
-  id: string; // أو number لو عندك الأرقام فقط
+  id: string;
 }
 
 interface CommentData {
   comment: string;
-  roomId?: string; // نضيف roomId أثناء الإرسال
+  roomId?: string;
 }
 
 export default function Comment({ id }: CommentFormProps) {
@@ -81,7 +80,7 @@ export default function Comment({ id }: CommentFormProps) {
               onClick={(event) => setAnchorEl(event.currentTarget)}
             >
               <FormatBold />
-              <KeyboardArrowDown fontSize="md" />
+              <KeyboardArrowDown fontSize="small" />
             </IconButton>
             <Menu
               anchorEl={anchorEl}
@@ -102,7 +101,7 @@ export default function Comment({ id }: CommentFormProps) {
                   sx={{ fontWeight: weight }}
                 >
                   <ListItemDecorator>
-                    {fontWeight === weight && <Check fontSize="sm" />}
+                    {fontWeight === weight && <Check fontSize="small" />}
                   </ListItemDecorator>
                   {weight === '200' ? 'lighter' : weight}
                 </MenuItem>

@@ -8,7 +8,7 @@ import image1 from '../../../../assets/images/slider/slider1.png'
 import 'swiper/css';
 import 'swiper/css/pagination';
 
-import './ads.css';
+import './ads.css'; 
 
 // import required modules
 import { Autoplay, Pagination } from 'swiper/modules';

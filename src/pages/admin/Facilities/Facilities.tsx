@@ -4,7 +4,7 @@ import { axiosInstance, FacilitesUrls } from "../../../services/Url";
 import AutoDeleteIcon from '@mui/icons-material/AutoDelete';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import Fade from '@mui/material/Fade';
-import Button from '@mui/material/Button';
+import Button from '@mui/material/Button'; 
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import CloseIcon from '@mui/icons-material/Close';
@@ -256,7 +256,7 @@ const handleMenuClose = () => {
               >
                 <MenuItem
                   onClick={() => {
-                    handleOpenView(selectedRow);
+                   
                     handleMenuClose();
                   }}
                 >

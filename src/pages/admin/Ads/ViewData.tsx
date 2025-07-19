@@ -47,7 +47,7 @@ export default function ViewData({setShowData,showData ,data}:ViewDataProps) {
                 borderBottom: '1px solid #e0e0e0',
                 padding: '20px 24px',
                 display: 'flex',
-                justifyContent: 'space-between',
+                justifyContent: 'space-between', 
                 alignItems: 'center',
               }}>
                 <Typography variant="h6" sx={{ fontWeight: 600, color: '#333' }}>Ads Details</Typography>
