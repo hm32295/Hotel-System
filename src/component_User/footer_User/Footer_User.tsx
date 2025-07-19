@@ -1,332 +1,207 @@
-
 import { Box, Container, Typography, Link as MuiLink } from '@mui/material';
-import {Grid} from '@mui/material'; 
 import { Link as RouterLink } from 'react-router-dom';
+import { FC, ReactNode } from 'react';
 
-const Footer_User = () => {
+interface FooterLink {
+  label: string;
+  to: string;
+}
+
+interface FooterSectionProps {
+  title: string;
+  links: FooterLink[];
+}
+
+interface FooterTextLinkProps {
+  href: string;
+  children: ReactNode;
+}
+
+const Footer_User: FC = () => {
   return (
-    <Box sx={{ 
-      borderTop: '1px solid #eee', 
-      mt: { xs: 6, sm: 8, md: 10 }, 
-      py: { xs: 3, sm: 4, md: 6 },
-    }}>
+    <Box
+      component="footer"
+      sx={{
+        borderTop: '1px solid #eee',
+        mt: { xs: 6, sm: 8, md: 10 },
+        py: { xs: 3, sm: 4, md: 6 },
+      }}
+    >
       <Container maxWidth="xl">
-        <Grid container spacing={3} justifyContent="space-between" alignItems="flex-start">
-  
-          <Grid  item xs={12} sm={12} md={3}>
-             <Typography
+        <Box
+          sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'space-between',
+            gap: 3,
+          }}
+        >
+          {/* Logo and Description */}
+          <Box
+            sx={{
+              flexBasis: { xs: '100%', sm: '100%', md: '23%' },
+              textAlign: { xs: 'center', md: 'left' },
+            }}
+          >
+            <Typography
               variant="h5"
               sx={{
                 fontWeight: 500,
                 fontSize: { xs: '20px', sm: '24px', md: '26px' },
                 letterSpacing: '.05rem',
-                textDecoration: 'none',
                 display: 'flex',
-                alignItems: 'center',
-                color: 'black',
-                fontFamily: 'Poppins, sans-serif',
                 justifyContent: { xs: 'center', md: 'flex-start' },
-                mb: { xs: 2, md: 0 },
+                alignItems: 'center',
+                fontFamily: 'Poppins, sans-serif',
               }}
             >
               <span style={{ color: '#4e6ae3' }}>Stay</span>
               <span style={{ color: '#152C5B' }}>cation.</span>
             </Typography>
-            <Typography 
-              variant="body2" 
-              color="text.secondary" 
-              sx={{ 
-                mt: 1,
-                textAlign: { xs: 'center', md: 'left' },
-                fontSize: { xs: '14px', sm: '14px' },
-                mb: { xs: 3, md: 0 },
-              }}
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{ mt: 1, fontSize: '14px' }}
             >
               We kaboom your beauty holiday instantly and memorable.
             </Typography>
-          </Grid>
-           
-          {/* For Beginners */}
-          <Grid item xs={12} sm={4} md={3}>
-            <Typography 
-              variant="subtitle1" 
-              sx={{ 
-                fontWeight: 600, 
-                color: '#152C5B',
-                textAlign: { xs: 'center', md: 'left' },
-                fontSize: { xs: '16px', sm: '16px', md: '18px' },
-                mb: { xs: 1, md: 0 },
-              }}
-            >
-              For Beginners
-            </Typography>
-            <Box sx={{ 
-              mt: 1,
-              textAlign: { xs: 'center', md: 'left' },
-            }}>
-              <Typography 
-                variant="body2" 
-                color="text.secondary" 
-                sx={{ 
-                  mt: 0.5,
-                  fontSize: { xs: '14px', sm: '14px' },
-                }}
-              >
-                <MuiLink 
-                  component={RouterLink} 
-                  to="/Register" 
-                  underline="none" 
-                  color="text.secondary" 
-                  sx={{
-                    color: 'text.secondary',
-                    fontSize: { xs: '14px', sm: '14px' },
-                    '&:hover': {
-                      color: '#4e6ae3',
-                    },
-                  }}
-                >
-                  New Account
-                </MuiLink>
-              </Typography>
-              <Typography 
-                variant="body2" 
-                color="text.secondary" 
-                sx={{ 
-                  mt: 0.5,
-                  fontSize: { xs: '14px', sm: '14px' },
-                }}
-              >
-                <MuiLink 
-                  component={RouterLink} 
-                  to="/MasterUser/booking" 
-                  underline="none" 
-                  color="text.secondary" 
-                  sx={{
-                    color: 'text.secondary',
-                    fontSize: { xs: '14px', sm: '14px' },
-                    '&:hover': {
-                      color: '#4e6ae3',
-                    },
-                  }}
-                >
-                  Start Booking a Room
-                </MuiLink>
-              </Typography>
-              <Typography 
-                variant="body2" 
-                color="text.secondary" 
-                sx={{ 
-                  mt: 0.5,
-                  fontSize: { xs: '14px', sm: '14px' },
-                }}
-              >
-                <MuiLink 
-                  component={RouterLink} 
-                  to="/MasterUser/booking" 
-                  underline="none" 
-                  color="text.secondary" 
-                  sx={{
-                    color: 'text.secondary',
-                    fontSize: { xs: '14px', sm: '14px' },
-                    '&:hover': {
-                      color: '#4e6ae3',
-                    },
-                  }}
-                >
-                  Use Payments
-                </MuiLink>
-              </Typography>
-            </Box>
-          </Grid>
-           
+          </Box>
+
+          {/* Beginners Section */}
+          <FooterSection
+            title="For Beginners"
+            links={[
+              { label: 'New Account', to: '/Register' },
+              { label: 'Start Booking a Room', to: '/MasterUser/booking' },
+              { label: 'Use Payments', to: '/MasterUser/booking' },
+            ]}
+          />
+
           {/* Explore Us */}
-          <Grid item xs={12} sm={4} md={3}>
-            <Typography 
-              variant="subtitle1" 
-              sx={{ 
-                fontWeight: 600, 
-                color: '#152C5B',
-                textAlign: { xs: 'center', md: 'left' },
-                fontSize: { xs: '16px', sm: '16px', md: '18px' },
-                mb: { xs: 1, md: 0 },
-              }}
-            >
-              Explore Us
-            </Typography>
-            <Box sx={{ 
-              mt: 1,
+          <FooterSection
+            title="Explore Us"
+            links={[
+              { label: 'Our Careers', to: '/MasterAdmin/users-list' },
+              { label: 'Privacy', to: '#' },
+              { label: 'Terms & Conditions', to: '#' },
+            ]}
+          />
+
+          {/* Contact Section */}
+          <Box
+            sx={{
+              flexBasis: { xs: '100%', sm: '48%', md: '23%' },
               textAlign: { xs: 'center', md: 'left' },
-            }}>
-              <Typography 
-                variant="body2" 
-                color="text.secondary" 
-                sx={{ 
-                  mt: 0.5,
-                  fontSize: { xs: '14px', sm: '14px' },
-                }}
-              >
-                <MuiLink 
-                  component={RouterLink} 
-                  to="/MasterAdmin/users-list" 
-                  underline="none" 
-                  color="text.secondary" 
-                  sx={{
-                    color: 'text.secondary',
-                    fontSize: { xs: '14px', sm: '14px' },
-                    '&:hover': {
-                      color: '#4e6ae3',
-                    },
-                  }}
-                >
-                  Our Careers
-                </MuiLink>
-              </Typography>
-              <Typography 
-                variant="body2" 
-                color="text.secondary" 
-                sx={{ 
-                  mt: 0.5,
-                  fontSize: { xs: '14px', sm: '14px' },
-                }}
-              >
-                <MuiLink 
-                  href="#" 
-                  underline="none" 
-                  color="text.secondary" 
-                  sx={{
-                    color: 'text.secondary',
-                    fontSize: { xs: '14px', sm: '14px' },
-                    '&:hover': {
-                      color: '#4e6ae3',
-                    },
-                  }}
-                >
-                  Privacy
-                </MuiLink>
-              </Typography>
-              <Typography 
-                variant="body2" 
-                color="text.secondary" 
-                sx={{ 
-                  mt: 0.5,
-                  fontSize: { xs: '14px', sm: '14px' },
-                }}
-              >
-                <MuiLink 
-                  href="#" 
-                  underline="none" 
-                  color="text.secondary" 
-                  sx={{
-                    color: 'text.secondary',
-                    fontSize: { xs: '14px', sm: '14px' },
-                    '&:hover': {
-                      color: '#4e6ae3',
-                    },
-                  }}
-                >
-                  Terms & Conditions
-                </MuiLink>
-              </Typography>
-            </Box>
-          </Grid>
-           
-          {/* Contact */}
-          <Grid item xs={12} sm={4} md={3}>
-            <Typography 
-              variant="subtitle1" 
-              sx={{ 
-                fontWeight: 600, 
+            }}
+          >
+            <Typography
+              variant="subtitle1"
+              sx={{
+                fontWeight: 600,
                 color: '#152C5B',
-                textAlign: { xs: 'center', md: 'left' },
-                fontSize: { xs: '16px', sm: '16px', md: '18px' },
-                mb: { xs: 1, md: 0 },
+                fontSize: '18px',
+                mb: 1,
               }}
             >
               Connect Us
             </Typography>
-            <Box sx={{ 
-              mt: 1,
-              textAlign: { xs: 'center', md: 'left' },
-            }}>
-              <Typography 
-                variant="body2" 
+            <Box>
+              <FooterTextLink href="mailto:support@staycation.id">
+                support@staycation.id
+              </FooterTextLink>
+              <FooterTextLink href="tel:021-2208-1996">
+                021 - 2208 - 1996
+              </FooterTextLink>
+              <Typography
+                variant="body2"
                 color="text.secondary"
-                sx={{ 
-                  fontSize: { xs: '14px', sm: '14px' },
-                  mb: 0.5,
-                }}
-              >
-                <MuiLink 
-                  href="mailto:support@staycation.id"
-                  underline="none" 
-                  color="text.secondary" 
-                  sx={{
-                    color: 'text.secondary',
-                    fontSize: { xs: '14px', sm: '14px' },
-                    '&:hover': {
-                      color: '#4e6ae3',
-                    },
-                  }}
-                >
-                  support@staycation.id
-                </MuiLink>
-              </Typography>
-              <Typography 
-                variant="body2" 
-                color="text.secondary"
-                sx={{ 
-                  fontSize: { xs: '14px', sm: '14px' },
-                  mb: 0.5,
-                }}
-              >
-                <MuiLink 
-                  href="tel:021-2208-1996"
-                  underline="none" 
-                  color="text.secondary" 
-                  sx={{
-                    color: 'text.secondary',
-                    fontSize: { xs: '14px', sm: '14px' },
-                    '&:hover': {
-                      color: '#4e6ae3',
-                    },
-                  }}
-                >
-                  021 - 2208 - 1996
-                </MuiLink>
-              </Typography>
-              <Typography 
-                variant="body2" 
-                color="text.secondary"
-                sx={{ 
-                  fontSize: { xs: '14px', sm: '14px' },
-                }}
+                sx={{ fontSize: '14px' }}
               >
                 Staycation, Kemang, Jakarta
               </Typography>
             </Box>
-          </Grid>
-        </Grid>
-         
-        {/* Copyright */}
-        <Box sx={{ 
-          textAlign: 'center', 
-          mt: { xs: 4, sm: 5, md: 6 },
-          pt: { xs: 3, sm: 4 },
-          borderTop: { xs: '1px solid #eee', sm: 'none' },
-        }}>
-          <Typography 
-            variant="caption" 
+          </Box>
+        </Box>
+
+        {/* Footer Bottom */}
+        <Box
+          sx={{
+            textAlign: 'center',
+            mt: { xs: 4, sm: 5, md: 6 },
+            pt: { xs: 3, sm: 4 },
+            borderTop: { xs: '1px solid #eee', sm: 'none' },
+          }}
+        >
+          <Typography
+            variant="caption"
             color="text.secondary"
-            sx={{ 
-              fontSize: { xs: '11px', sm: '12px' },
-            }}
+            sx={{ fontSize: { xs: '11px', sm: '12px' } }}
           >
             Copyright 2019 • All rights reserved • Staycation
           </Typography>
         </Box>
       </Container>
     </Box>
-  )
-}
+  );
+};
 
-export default Footer_User
+const FooterSection: FC<FooterSectionProps> = ({ title, links }) => (
+  <Box
+    sx={{
+      flexBasis: { xs: '100%', sm: '48%', md: '23%' },
+      textAlign: { xs: 'center', md: 'left' },
+    }}
+  >
+    <Typography
+      variant="subtitle1"
+      sx={{
+        fontWeight: 600,
+        color: '#152C5B',
+        fontSize: '18px',
+        mb: 1,
+      }}
+    >
+      {title}
+    </Typography>
+    <Box>
+      {links.map((link, index) => (
+        <Typography
+          key={index}
+          variant="body2"
+          sx={{ fontSize: '14px', mb: 0.5 }}
+        >
+          <MuiLink
+            component={RouterLink}
+            to={link.to}
+            underline="none"
+            color="text.secondary"
+            sx={{
+              '&:hover': { color: '#4e6ae3' },
+            }}
+          >
+            {link.label}
+          </MuiLink>
+        </Typography>
+      ))}
+    </Box>
+  </Box>
+);
+
+const FooterTextLink: FC<FooterTextLinkProps> = ({ href, children }) => (
+  <Typography
+    variant="body2"
+    color="text.secondary"
+    sx={{ fontSize: '14px', mb: 0.5 }}
+  >
+    <MuiLink
+      href={href}
+      underline="none"
+      color="text.secondary"
+      sx={{ '&:hover': { color: '#4e6ae3' } }}
+    >
+      {children}
+    </MuiLink>
+  </Typography>
+);
+
+export default Footer_User;

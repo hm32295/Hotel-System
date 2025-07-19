@@ -101,9 +101,9 @@ export default function Register() {
   };
 
   return (
-    <Grid container className="register" sx={{ minHeight: '100vh' }} alignItems="center" justifyContent="center">
+    <Grid  container className="register" sx={{ minHeight: '100vh' }} alignItems="center" justifyContent="center">
       {/* Left Side */}
-      <Grid item xs={12} sm={6} md={6} sx={{ display: 'grid', minHeight: '100vh', px: { xs: 2, md: 4 }, py: { xs: 4, md: 0 } }}>
+      <Grid  item xs={12} sm={6} md={6} sx={{ display: 'grid', minHeight: '100vh', px: { xs: 2, md: 4 }, py: { xs: 4, md: 0 } }}>
         <Box sx={{ width: '100%', maxWidth: 500, justifySelf: 'start', alignSelf: 'center' }}>
           <Typography variant="h5" fontWeight="bold" sx={{ mt: 3, mb: 1 }}>
             Sign up
