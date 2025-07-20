@@ -1,67 +1,25 @@
-import { useEffect, useState } from "react";
-import { axiosInstance, FacilitesUrls, ROOMS_URL } from "../../../services/Url";
+import React, { useEffect, useState } from "react";
 import {
   Box,
+  Button,
+  MenuItem,
   TextField,
+  Typography,
+  Select,
   FormControl,
   InputLabel,
-  MenuItem,
-  Select,
   OutlinedInput,
-  Button,
 } from "@mui/material";
-import { useForm } from "react-hook-form";
-import { useTheme } from "@mui/material/styles";
-import { useLocation, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import Progress from "../../../component_Admin/loader/Progress";
-import type { SelectChangeEvent } from "@mui/material/Select";
+import { useForm, Controller } from "react-hook-form";
+import { axiosInstance, FacilitesUrls, ROOMS_URL } from "../../../services/Url";
+import { useNavigate, useParams } from "react-router-dom";
 
-// Hidden input for file upload
-const VisuallyHiddenInput = (props: any) => (
-  <input
-    style={{
-      clip: "rect(0 0 0 0)",
-      clipPath: "inset(50%)",
-      height: 1,
-      overflow: "hidden",
-      position: "absolute",
-      bottom: 0,
-      left: 0,
-      whiteSpace: "nowrap",
-      width: 1,
-    }}
-    {...props}
-  />
-);
-
-// Styles for multiple select
-const getStyles = (name: string, selected: string[], theme: any) => ({
-  fontWeight:
-    selected.indexOf(name) === -1
-      ? theme.typography.fontWeightRegular
-      : theme.typography.fontWeightMedium,
-});
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-
-// ----------- Types -----------
-interface FacilityType {
-  name: string;
+interface Facility {
   id: string;
+  name: string;
 }
 
-interface RoomFormInputs {
+interface RoomFormData {
   roomNumber: string;
   price: string;
   discount: string;
@@ -69,34 +27,18 @@ interface RoomFormInputs {
   facilities: string[];
 }
 
-interface ProjectItemType {
-  id: string;
-  name: string;
-  price: string;
-  discount: string;
-  capacity: string;
-  facilities: { _id: string; name: string }[];
-}
-
-// ----------- Component -----------
-const RoomData = () => {
-  const theme = useTheme();
+export default function RoomData() {
+  const { id } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
-  const projectItem = location.state as ProjectItemType | null;
-
-  const [facilities, setFacilities] = useState<FacilityType[]>([]);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [loader, setLoader] = useState(false);
-  const [personName, setPersonName] = useState<string[]>([]);
 
   const {
     register,
     handleSubmit,
-    reset,
+    control,
     setValue,
+    reset,
     formState: { errors },
-  } = useForm<RoomFormInputs>({
+  } = useForm<RoomFormData>({
     defaultValues: {
       roomNumber: "",
       price: "",
@@ -106,166 +48,149 @@ const RoomData = () => {
     },
   });
 
-  // Get all facilities and prefill form if editing
+  const [facilities, setFacilities] = useState<Facility[]>([]);
+  const [projectItem, setProjectItem] = useState<any>(null);
+
+  const getFacilities = async () => {
+    try {
+      const res = await axiosInstance.get(FacilitesUrls.LIST);
+      setFacilities(res.data.data);
+    } catch (err) {
+      console.error("Error fetching facilities:", err);
+    }
+  };
+
+  const getSingleRoom = async () => {
+    try {
+      const res = await axiosInstance.get(`${ROOMS_URL.LIST}/${id}`);
+      const data = res.data.data;
+      setProjectItem(data);
+    } catch (err) {
+      console.error("Error fetching room data:", err);
+    }
+  };
+
   useEffect(() => {
-    const fetchFacilities = async () => {
-      try {
-        const res = await axiosInstance(FacilitesUrls.GET_ALL);
-        const data = res.data.data?.facilities || [];
-        const formatted = data.map((f: any): FacilityType => ({
-          id: f._id,
-          name: f.name,
-        }));
-        setFacilities(formatted);
-      } catch (err) {
-        console.error("Error fetching facilities", err);
-      }
-    };
+    getFacilities();
+    if (id) getSingleRoom();
+  }, [id]);
 
-    fetchFacilities();
-
+  useEffect(() => {
     if (projectItem) {
       reset({
         roomNumber: projectItem.name || "",
         price: projectItem.price || "",
         discount: projectItem.discount || "",
         capacity: projectItem.capacity || "",
-        facilities: projectItem.facilities?.map((f) => f._id) || [],
+        facilities: projectItem.facilities?.map((f: any) => f._id) || [],
       });
-      setPersonName(projectItem.facilities?.map((f) => f._id) || []);
     }
   }, [projectItem, reset]);
 
-  // Handle facilities change
-  const handleChange = (event: SelectChangeEvent<string[]>) => {
-    const value = typeof event.target.value === "string"
-      ? event.target.value.split(",")
-      : event.target.value;
-    setPersonName(value);
-    setValue("facilities", value);
-  };
-
-  // Create FormData
-  const prepareFormData = (data: RoomFormInputs): FormData => {
-    const form = new FormData();
-    form.append("roomNumber", data.roomNumber);
-    form.append("price", data.price);
-    form.append("discount", data.discount);
-    form.append("capacity", data.capacity);
-    data.facilities.forEach((id) => form.append("facilities", id));
-    if (selectedFile) form.append("imgs", selectedFile);
-    return form;
-  };
-
-  // Submit data
-  const onSubmit = async (data: RoomFormInputs) => {
-    setLoader(true);
-    const formData = prepareFormData(data);
+  const onSubmit = async (data: RoomFormData) => {
     try {
-      const res = projectItem
-        ? await axiosInstance.put(ROOMS_URL.UPDATE(projectItem.id), formData)
-        : await axiosInstance.post(ROOMS_URL.CREATE, formData);
-      toast.success(res?.data?.data?.message || "Room saved successfully");
-      reset();
-      setPersonName([]);
-      navigate("/MasterAdmin/rooms");
-    } catch (err: any) {
-      toast.error(err?.response?.data?.message || "Something went wrong");
-    } finally {
-      setLoader(false);
+      if (id) {
+        await axiosInstance.put(`${ROOMS_URL.LIST}/${id}`, data);
+      } else {
+        await axiosInstance.post(ROOMS_URL.CREATE, data);
+      }
+      navigate("/rooms");
+    } catch (error) {
+      console.error("Error saving room:", error);
     }
   };
 
   return (
-    <Box
-      component="form"
-      onSubmit={handleSubmit(onSubmit)}
-      sx={{ p: 4, display: "flex", flexDirection: "column", gap: 2 }}
-    >
-      {/* Room Number */}
-      <TextField
-        label="Room Number"
-        {...register("roomNumber", { required: "Room number is required" })}
-      />
-      {errors.roomNumber && <Box sx={{ color: "red" }}>{errors.roomNumber.message}</Box>}
+    <Box p={4}>
+      <Typography variant="h5" mb={3}>
+        {id ? "Edit Room" : "Add New Room"}
+      </Typography>
 
-      {/* Price & Capacity */}
-      <Box sx={{ display: "flex", gap: 2 }}>
-        <TextField
-          fullWidth
-          label="Price"
-          {...register("price", { required: "Price is required" })}
-        />
-        <TextField
-          fullWidth
-          label="Capacity"
-          {...register("capacity", { required: "Capacity is required" })}
-        />
-      </Box>
-      {errors.price && <Box sx={{ color: "red" }}>{errors.price.message}</Box>}
-      {errors.capacity && <Box sx={{ color: "red" }}>{errors.capacity.message}</Box>}
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Box mb={2}>
+          <TextField
+            label="Room Number"
+            fullWidth
+            {...register("roomNumber", { required: "Room number is required" })}
+            error={!!errors.roomNumber}
+            helperText={errors.roomNumber?.message}
+          />
+        </Box>
 
-      {/* Discount & Facilities */}
-      <Box sx={{ display: "flex", gap: 2 }}>
-        <TextField
-          fullWidth
-          label="Discount"
-          {...register("discount", { required: "Discount is required" })}
-        />
-        <FormControl fullWidth>
-          <InputLabel>Facilities</InputLabel>
-          <Select
-            multiple
-            value={personName}
-            onChange={handleChange}
-            input={<OutlinedInput label="Facilities" />}
-            MenuProps={MenuProps}
-          >
-            {facilities.map((f) => (
-              <MenuItem
-                key={f.id}
-                value={f.id}
-                style={getStyles(f.name, personName, theme)}
-              >
-                {f.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Box>
-      {errors.facilities && <Box sx={{ color: "red" }}>{errors.facilities.message}</Box>}
+        <Box mb={2}>
+          <TextField
+            label="Price"
+            fullWidth
+            type="number"
+            {...register("price", { required: "Price is required" })}
+            error={!!errors.price}
+            helperText={errors.price?.message}
+          />
+        </Box>
 
-      {/* Upload */}
-      <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
-        Upload File
-        <VisuallyHiddenInput
-          type="file"
-          onChange={(e) => {
-            const file = e.target.files?.[0];
-            if (file) setSelectedFile(file);
-          }}
-        />
-      </Button>
+        <Box mb={2}>
+          <TextField
+            label="Discount (%)"
+            fullWidth
+            type="number"
+            {...register("discount")}
+          />
+        </Box>
 
-      {/* Submit & Cancel */}
-      <Button
-        type="submit"
-        variant="contained"
-        disabled={loader}
-        sx={{ bgcolor: "#3252DF", color: "#fff" }}
-      >
-        {loader ? <Progress /> : projectItem ? "Edit" : "Save"}
-      </Button>
+        <Box mb={2}>
+          <TextField
+            label="Capacity"
+            fullWidth
+            type="number"
+            {...register("capacity", { required: "Capacity is required" })}
+            error={!!errors.capacity}
+            helperText={errors.capacity?.message}
+          />
+        </Box>
 
-      <Button
-        onClick={() => navigate("/MasterAdmin/rooms")}
-        variant="outlined"
-        sx={{ color: "#3252DF" }}
-      >
-        Cancel
-      </Button>
+        <Box mb={2}>
+          <Controller
+            name="facilities"
+            control={control}
+            rules={{ required: "Please select at least one facility" }}
+            render={({ field }) => (
+              <FormControl fullWidth>
+                <InputLabel id="facilities-label">Facilities</InputLabel>
+                <Select
+                  labelId="facilities-label"
+                  multiple
+                  value={field.value || []}
+                  onChange={field.onChange}
+                  input={<OutlinedInput label="Facilities" />}
+                  renderValue={(selected) =>
+                    facilities
+                      .filter((f) => selected.includes(f.id))
+                      .map((f) => f.name)
+                      .join(", ")
+                  }
+                >
+                  {facilities.map((f) => (
+                    <MenuItem key={f.id} value={f.id}>
+                      {f.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            )}
+          />
+          {errors.facilities && (
+            <Typography color="error" mt={1}>
+              {errors.facilities.message}
+            </Typography>
+          )}
+        </Box>
+
+        <Box>
+          <Button variant="contained" type="submit">
+            {id ? "Update" : "Create"}
+          </Button>
+        </Box>
+      </form>
     </Box>
   );
-};
-
-export default RoomData;
+}

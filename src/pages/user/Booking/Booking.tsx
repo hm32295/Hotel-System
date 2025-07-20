@@ -1,4 +1,4 @@
-import { Box, Button } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { axiosInstance, BOOKING_URL } from '../../../services/Url';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -44,7 +44,8 @@ export default function Booking() {
     if (location?.state) {
       const room = location.state as RoomType;
       const totalPrice = Math.round(
-        room.price * room.capacity - (room.capacity * room.price * room.discount) / 100
+        (room.price ?? 0) * (room.capacity ?? 0) -
+        ((room.capacity ?? 0) * (room.price ?? 0) * (room.discount ?? 0)) / 100
       );
 
       const data: BookingPayload = {
@@ -53,7 +54,15 @@ export default function Booking() {
         room: room._id,
         totalPrice,
       };
+
       setRoomData(data);
+    } else {
+      setRoomData({
+        startDate: '',
+        endDate: '',
+        room: '',
+        totalPrice: 0,
+      });
     }
   }, [location?.state]);
 
@@ -65,7 +74,13 @@ export default function Booking() {
     }
   };
 
-  if (!roomData) return null;
+  if (!roomData) {
+    return (
+      <Typography variant="h6" textAlign="center" mt={4}>
+        Loading booking information...
+      </Typography>
+    );
+  }
 
   const totalWithTax = roomData.totalPrice + 0.1 * roomData.totalPrice;
 
@@ -79,6 +94,7 @@ export default function Booking() {
         justifyContent: 'center',
       }}
     >
+      {/* Steps indicators */}
       <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'center', justifyContent: 'center', color: '#fff' }}>
         <Box
           component={'span'}
@@ -128,6 +144,7 @@ export default function Booking() {
         </Box>
       </Box>
 
+      {/* Title */}
       <Box component={'h2'} sx={{ color: '#152C5B', fontSize: '2rem' }}>
         Payment
       </Box>
@@ -135,28 +152,20 @@ export default function Booking() {
         Kindly follow the instructions below
       </Box>
 
+      {/* Payment Details */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem' }}>
         <Box sx={{ color: '#152C5B', fontSize: '1rem' }}>
           <Box component={'h2'} sx={{ mb: '1rem' }}>
             Transfer Pembayaran:
           </Box>
           <Box component={'p'}>
-            Tax:{' '}
-            <Box component={'span'} sx={{ fontWeight: '500' }}>
-              10%
-            </Box>
+            Tax: <Box component={'span'} sx={{ fontWeight: '500' }}>10%</Box>
           </Box>
           <Box component={'p'}>
-            Sub total:{' '}
-            <Box component={'span'} sx={{ fontWeight: '500' }}>
-              ${roomData.totalPrice} USD
-            </Box>
+            Sub total: <Box component={'span'} sx={{ fontWeight: '500' }}>${roomData.totalPrice} USD</Box>
           </Box>
           <Box component={'p'}>
-            Total:{' '}
-            <Box component={'span'} sx={{ fontWeight: '500' }}>
-              ${totalWithTax.toFixed(2)} USD
-            </Box>
+            Total: <Box component={'span'} sx={{ fontWeight: '500' }}>${totalWithTax.toFixed(2)} USD</Box>
           </Box>
 
           <Box sx={{ color: '#152C5B', display: 'flex', justifyContent: 'flex-start', gap: '.5rem', alignItems: 'flex-start' }}>
@@ -180,6 +189,7 @@ export default function Booking() {
         <Box></Box>
       </Box>
 
+      {/* Buttons */}
       <Button
         onClick={() => bookingRoom(roomData)}
         sx={{
