@@ -87,14 +87,13 @@ export  function CustomToolbarActions() {
   );
 }
 function DemoPageContent() {
-  const LOCATION = window?.location?.pathname;
   return (
     <>
-    <div className="" style={{marginTop:'10px'}}>
-       {LOCATION !== '/MasterAdmin/HomeAdmin' && LOCATION !== '/MasterAdmin' ? <Header /> : null}
-    </div>
-     
-      <Outlet />
+  
+     <Box sx={{marginTop:'30px'}}>
+
+        <Outlet />
+     </Box>
     </>
   );
 }

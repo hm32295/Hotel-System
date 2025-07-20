@@ -5,8 +5,8 @@ import { useState } from 'react';
 import { Box, Button, Fade, IconButton, Modal, TextField, useColorScheme} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import Backdrop from '@mui/material/Backdrop';
-const Header = () => {
-    let  location=window.location.pathname
+const Header = ({funData}:{funData:any}) => {
+    const  location=window.location.pathname
     // Start With Add Facilites
   const [itemToUpdate, setItemToUpdate] = useState(null);
   const [openUpdate, setOpenUpdate] = useState(false);
@@ -37,7 +37,7 @@ const Header = () => {
             toast.error(error?.response?.data?.message || 'Sorry Check your data')
           }
         
-      }
+      }finally{funData()}
     }
     handleCloseUpdate();
   };
@@ -100,18 +100,16 @@ const Header = () => {
               :location==='/MasterAdmin/Rooms'?<h3 >Rooms Table Details </h3>:null
 
               
-          }
-
-
+              }
             </div>
-             <div className="Header_Right">
-                {location==='/MasterAdmin/Facilities'?
-             <Button sx={{background:'#3252DF !important'}} onClick={handleOpenUpdate}>Add New Facility</Button>:location==='/MasterAdmin/Explore'?<Button>Add New Explore</Button>
-              :location==='/MasterAdmin/ListBooking'&&null
-              
 
+
+             <div className="Header_Right">
+                {
+                  <Button sx={{background:'#3252DF !important'}} onClick={handleOpenUpdate}>Add New Facility</Button>
+                  
               
-          }
+                }
                 
              </div>
        

@@ -21,6 +21,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Header from "../../../component_Admin/header_Admin/Header";
 import { Skeleton_Loader } from "../../../component_Admin/loader/Skeleton";
+import ViewData from "./ViewData";
 
 
 
@@ -68,7 +69,7 @@ const Facilities = () => {
   const [openDelete, setOpenDelete] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<any>(null);
   const [facilities,setFacilities]=useState(0);
-
+  const [viewData,setViewData] = useState(false)
 
 
     const getData = async ()=>{
@@ -178,6 +179,7 @@ const handleMenuClose = () => {
 
   return (
     <>
+    
       <Modal
         open={openUpdate}
         onClose={handleCloseUpdate}
@@ -223,8 +225,8 @@ const handleMenuClose = () => {
         onConfirm={handleConfirmDelete}
         name={itemToDelete ? itemToDelete.name : ''}
       />
-<div style={{display:'none'}}>
-  <Header />
+<div >
+  <Header funData={getData}/>
 </div>
 
    {!loading ? (
@@ -238,6 +240,7 @@ const handleMenuClose = () => {
           rows={rows}
           renderActions={(row) => (
             <>
+            <ViewData data={row} setShowData={setViewData} showData={viewData}/>
               <IconButton
                 aria-controls="action-menu"
                 aria-haspopup="true"
@@ -256,6 +259,7 @@ const handleMenuClose = () => {
               >
                 <MenuItem
                   onClick={() => {
+                  setViewData(true)
                    
                     handleMenuClose();
                   }}
