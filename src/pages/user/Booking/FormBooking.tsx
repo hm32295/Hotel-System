@@ -8,8 +8,8 @@ import Progress from "../Details/Progress";
 import { useNavigate } from "react-router-dom";
 
 interface Booking {
-  _id: string;
-  // يمكنك إضافة خصائص إضافية حسب الحاجة
+  _id?: string;
+  
 }
 
 export default function FormBooking({ booking }: { booking: Booking }) {

@@ -1,20 +1,23 @@
 import { useEffect, useState } from "react";
 import { axiosInstance, FacilitesUrls, ROOMS_URL } from "../../../services/Url";
-import { Box, TextField } from "@mui/material";
+import {
+  Box,
+  TextField,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  OutlinedInput,
+  Button,
+} from "@mui/material";
 import { useForm } from "react-hook-form";
-import { useTheme } from '@mui/material/styles';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import type { SelectChangeEvent } from '@mui/material/Select';
-import Button from '@mui/material/Button';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { useTheme } from "@mui/material/styles";
 import { useLocation, useNavigate } from "react-router-dom";
-import Progress from "../../../component_Admin/loader/Progress";
 import { toast } from "react-toastify";
-
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import Progress from "../../../component_Admin/loader/Progress";
+import { VisuallyHiddenInput, getStyles, MenuProps } from "./helper"; 
+import type { SelectChangeEvent } from "@mui/material/Select";
 
 interface FacilityType {
   name: string;
@@ -146,7 +149,7 @@ const RoomData = () => {
       />
       {errors.roomNumber && <Box sx={{ color: "red" }}>{errors.roomNumber.message}</Box>}
 
-      <Box sx={{ display: "flex", gap: 2 }}>
+      <Box sx={{ display: "flex", flexDirection: "row", gap: 2 }}>
         <TextField
           fullWidth
           label="Price"
@@ -161,7 +164,7 @@ const RoomData = () => {
       {errors.price && <Box sx={{ color: "red" }}>{errors.price.message}</Box>}
       {errors.capacity && <Box sx={{ color: "red" }}>{errors.capacity.message}</Box>}
 
-      <Box sx={{ display: "flex", gap: 2 }}>
+      <Box sx={{ display: "flex", flexDirection: "row", gap: 2 }}>
         <TextField
           fullWidth
           label="Discount"
