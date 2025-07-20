@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -53,7 +53,7 @@ export default function RoomData() {
 
   const getFacilities = async () => {
     try {
-      const res = await axiosInstance.get(FacilitesUrls.LIST);
+      const res = await axiosInstance.get(FacilitesUrls.GET_ALL);
       setFacilities(res.data.data);
     } catch (err) {
       console.error("Error fetching facilities:", err);
@@ -62,7 +62,7 @@ export default function RoomData() {
 
   const getSingleRoom = async () => {
     try {
-      const res = await axiosInstance.get(`${ROOMS_URL.LIST}/${id}`);
+      const res = await axiosInstance.get(`${ROOMS_URL.DETAILS(id)}`);
       const data = res.data.data;
       setProjectItem(data);
     } catch (err) {
@@ -90,7 +90,7 @@ export default function RoomData() {
   const onSubmit = async (data: RoomFormData) => {
     try {
       if (id) {
-        await axiosInstance.put(`${ROOMS_URL.LIST}/${id}`, data);
+        await axiosInstance.put(`${ROOMS_URL.UPDATE(id)}`, data);
       } else {
         await axiosInstance.post(ROOMS_URL.CREATE, data);
       }

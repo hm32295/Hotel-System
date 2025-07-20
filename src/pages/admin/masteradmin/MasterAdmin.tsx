@@ -11,7 +11,7 @@ interface Booking {
 }
 
 interface Props {
-  booking: Booking;
+  booking?: Booking;
 }
 
 export default function FormBooking({ booking }: Props) {
