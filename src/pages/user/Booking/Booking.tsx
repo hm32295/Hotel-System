@@ -7,19 +7,19 @@ import bank1 from '../../../assets/images/bank1.png';
 import bank2 from '../../../assets/images/bank2.png';
 
 interface RoomType {
-  _id: string;
-  price: number;
-  capacity: number;
-  discount: number;
-  createdAt: string;
-  updatedAt: string;
+  _id?: string;
+  price?: number;
+  capacity?: number;
+  discount?: number;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 interface BookingPayload {
-  startDate: string;
-  endDate: string;
-  room: string;
-  totalPrice: number;
+  startDate?: string;
+  endDate?: string;
+  room?: string;
+  totalPrice?: number;
 }
 
 export default function Booking() {
