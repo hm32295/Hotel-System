@@ -9,6 +9,7 @@ import DeleteConfirmation from '../../../component_Admin/deleteConfirmation/Dele
 import { useNavigate } from 'react-router-dom';
 import { Skeleton_Loader } from '../../../component_Admin/loader/Skeleton';
 import ViewData from '../ViewData/ViewData';
+import { toast } from 'react-toastify';
 
 interface Product {
   id: string;
@@ -88,7 +89,7 @@ export default function Rooms() {
   const deleteRoom = async (data: Product) => {
     try {
       const response = await axiosInstance.delete(ROOMS_URL.DELETE(data.id));
-      console.log(response);
+      toast.error(response?.data.data.message || "Delete Succuss")
     } catch (error: any) {
       console.log(error);
     } finally {
