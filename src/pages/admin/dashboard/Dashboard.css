@@ -1,3 +1,26 @@
 .dashboard .users ul{
     display: none !important;
 }
+.dashboard .toolpad-demo-app-1a1r0i9-MuiChartsWrapper-root{
+    display: flex;
+    flex-direction: column-reverse;
+}
+.dashboard .toolpad-demo-app-1a1r0i9-MuiChartsWrapper-root ul{
+    display: flex;
+    width: 100%;
+    margin-top: 1.3rem;
+}
+.dashboard .toolpad-demo-app-1a1r0i9-MuiChartsWrapper-root ul li{
+    width: 100%;
+}
+.dashboard .toolpad-demo-app-1a1r0i9-MuiChartsWrapper-root ul li .MuiChartsLegend-series{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1rem;
+    margin-top: 1rem;
+}
+.dashboard .toolpad-demo-app-1a1r0i9-MuiChartsWrapper-root ul li .MuiChartsLegend-series span{
+    font-size: 1rem;
+    text-transform: capitalize;
+}

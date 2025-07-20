@@ -1,12 +1,12 @@
 
 import * as React from 'react';
 import deleteConfirm from '../../assets/images/deleteConfirm.png'
+import AutoDeleteIcon from '@mui/icons-material/AutoDelete';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import DeleteIcon from '@mui/icons-material/Delete';
 import Paper from '@mui/material/Paper';
 import { Box, type PaperProps } from '@mui/material';
 import Draggable from 'react-draggable';
@@ -38,7 +38,10 @@ export default function DeleteConfirmation({data,deleteFun}:{data:any, deleteFun
 
   return (
     <Box>
-      <DeleteIcon sx={{display:'flex' ,justifyContent:'center',alignItems:'center'}}  onClick={handleClickOpen} />
+      <Box sx={{display:'flex',justifyContent:'space-between',gap:'.4rem', alignItems:'center'}} onClick={handleClickOpen}>
+        <AutoDeleteIcon sx={{display:'flex' ,justifyContent:'center',alignItems:'center'}}   />
+        <Box>Delete</Box>
+      </Box>
     
       <Dialog
         open={open}

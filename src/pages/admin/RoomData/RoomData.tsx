@@ -71,7 +71,6 @@ const RoomData = () => {
       registerForm.append('discount', data.discount);
       registerForm.append('price', data.price);
       registerForm.append('roomNumber', data.roomNumber);
-      // registerForm.append('facilities', JSON.stringify(personName));
       data.facilities.forEach((id) => {
         registerForm.append('facilities', id);
       });

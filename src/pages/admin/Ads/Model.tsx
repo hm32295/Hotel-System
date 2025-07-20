@@ -145,7 +145,10 @@ export default function Model({
   return (
     <Box onClick={handleClickOpen}>
       {icon ? (
-        <EditNoteIcon sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} />
+        <Box sx={{display:'flex',justifyContent:'space-between',alignItems:'center',gap:'.4rem'}}>
+          <EditNoteIcon sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} />
+            <Box component={'span'}> Edit</Box>
+        </Box>
       ) : (
         'add new ads'
       )}

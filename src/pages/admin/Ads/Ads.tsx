@@ -1,6 +1,6 @@
 import GenericTable, { type HeadCell } from "../../../component_Admin/GenericTable/GenericTable";
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { Box, Button } from '@mui/material';
+import { Box, Button, IconButton, Menu, MenuItem } from '@mui/material';
 import { ADS_URL, axiosInstance } from '../../../services/Url';
 import { useEffect, useState } from 'react';
 import Model from './Model';
@@ -9,6 +9,7 @@ import { Skeleton_Loader } from '../../../component_Admin/loader/Skeleton';
 import ViewData from "./ViewData";
 import { toast } from "react-toastify";
 
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 interface Product {
   id: string;
   name: string;
@@ -81,6 +82,19 @@ export default function Ads() {
     getData();
   }, []);
 
+
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [selectedRow, setSelectedRow] = useState<any>(null);
+
+const handleMenuOpen = (e: React.MouseEvent<HTMLElement>, row: any) => {
+  setAnchorEl(e.currentTarget);
+  setSelectedRow(row);
+};
+const handleMenuClose = () => {
+  setAnchorEl(null);
+  setSelectedRow(null);
+};
+
   if (loader) return <Skeleton_Loader />;
 
   return (
@@ -97,11 +111,53 @@ export default function Ads() {
         headCells={productHeadCells}
         title=""
         renderActions={(row) => (
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Model getAds={getData} icon={true} row={row} />
-            <DeleteConfirmation data={row} deleteFun={deleteAds} />
-            <VisibilityIcon onClick={() => { setRow(row); setShowData(true); }} />
-          </Box>
+          <>
+              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                
+                
+                
+              </Box>
+              <>
+              <IconButton
+                aria-controls="action-menu"
+                aria-haspopup="true"
+                onClick={(e) => handleMenuOpen(e, row)}
+              >
+                <MoreVertIcon />
+              </IconButton>
+
+              <Menu
+                id="action-menu"
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl) && selectedRow === row}
+                onClose={handleMenuClose}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+              >
+                <MenuItem
+                  onClick={() => {
+                    setShowData(true); setRow(row);
+                    handleMenuClose();
+                  }}
+                >
+                  <Box sx={{display:'flex' ,justifyContent:'flex-start',alignItems:'center',gap:'.4rem'}}>
+                    <VisibilityIcon  />
+                      <Box component={'span'}>View</Box>
+                  </Box>
+                </MenuItem>
+                <MenuItem
+                  
+                >
+                  <Model getAds={getData} icon={true} row={row} />
+                 
+                </MenuItem>
+                <MenuItem >
+                  <DeleteConfirmation data={row} deleteFun={deleteAds} />
+               
+                </MenuItem>
+              </Menu>
+            </>
+          </>
         )}
       />
 

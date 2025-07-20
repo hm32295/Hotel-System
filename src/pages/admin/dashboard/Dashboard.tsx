@@ -5,7 +5,7 @@ import WorkOutlineIcon from '@mui/icons-material/WorkOutline';
 import { Box } from '@mui/material';
 import './Dashboard.css';
 
-// ✅ 1. نوع البيانات المتوقع من الـ API
+
 interface DashboardData {
   rooms: number;
   ads: number;
