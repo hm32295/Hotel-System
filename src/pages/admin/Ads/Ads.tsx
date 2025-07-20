@@ -37,14 +37,15 @@ export default function Ads() {
   const [row ,setRow] = useState(false);
   const [totalAds ,setTotalAds] = useState(0)
   const getData = async ()=>{
+    setLoader(true)
           try {
             const response = await axiosInstance(ADS_URL.GET);
             const totalData = response?.data?.data?.totalCount;
-              getAds(1,totalData)
+             await getAds(1,totalData)
           } catch (error) {
             console.log(error);
             
-          }
+          }finally{setLoader(false)}
         }
   const getAds = async(page:number,size:number)=>{
    
@@ -94,8 +95,7 @@ export default function Ads() {
   if(loader) return <Skeleton_Loader />
   return (
     <>
-        <Box sx={{display:'flex',justifyContent:'flex-end'}}>
-           {/* <Box component={'button'}><Model icon={false} getAds={getData}/></Box> */}
+        <Box sx={{display:'flex',justifyContent:'flex-end',padding:'20px'}}>
           <Button sx={{background:"#3252DF" ,color:'#fff',marginRight:'1rem'}}><Model icon={false} getAds={getData}/></Button>
       </Box>
       <GenericTable
@@ -105,7 +105,7 @@ export default function Ads() {
         title=""
         renderActions={(row) => (
             <>
-              {/* <MoreVertIcon className='showList'/> */}
+           
               <Box sx={{display:'flex' ,justifyContent:'center',alignItems:'center'}}>
 
                   <Model getAds={getData} icon={true} row={row}/>
@@ -116,10 +116,7 @@ export default function Ads() {
     )}
 
   />
-  {showData&&(
-    <ViewData data={row} setShowData={setShowData} showData={showData}/>
-
-  )}
+  
      </>
   )
 }

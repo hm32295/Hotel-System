@@ -5,7 +5,7 @@ import 'antd/dist/antd.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { SnackbarProvider } from 'notistack';
-import { Login,Register,Reset,Forget,Verify,Home,Favorites,Explore,Details,MasterUser,MasterAdmin,Ads,Facilities, UsersList, Dashboard, RoomData, Rooms, ChangePassword, Booking, NotFound } from './pages/index';
+import { Login,Register,Reset,Forget,Verify,Home,Favorites,Explore,Details,MasterUser,MasterAdmin,Ads,Facilities, UsersList, Dashboard, RoomData, Rooms, ChangePassword, Booking, NotFound, Completed, Payment } from './pages/index';
 import ListBooking from './pages/admin/ListBooking/ListBooking';
 import EXpPLORE from './pages/user/Home/CoMPO_Home/ExPlore/EXpPLORE';
 import ProtectedRoute from './services/Protected_route';
@@ -15,9 +15,10 @@ const App = () => {
   const routes=createBrowserRouter(
     [
       {
-        path:'',
+        path:'/',
+        element:<MasterUser />,
         children:[
-          { index: true,element : <RedirectIfLoggedIn> < Login/></RedirectIfLoggedIn> },
+          {index: true,element :  <Home/>},
           {path:'login',element:<RedirectIfLoggedIn> < Login/></RedirectIfLoggedIn>},
           {path:'Register',element:<RedirectIfLoggedIn><Register/></RedirectIfLoggedIn>},
           {path:'Reset',element:<RedirectIfLoggedIn><Reset/></RedirectIfLoggedIn>},
@@ -26,16 +27,17 @@ const App = () => {
         ]
       },{
         path:'/MasterUser',
-        element:<ProtectedRoute allowedRole ={'user'}><MasterUser/></ProtectedRoute>,
+        element:<MasterUser />,
         children:[
           {index:true,element:<Home/>},
           {path:'Home',element:<Home/>},
           {path:'Explore',element:<Explore/>},
           {path:'Favorites',element:<Favorites/>},
-          
           {path:'booking',element:<Booking/>},
           {path:'Explore_USER',element:<EXpPLORE/>},
           {path:'Details',element:<Details/>},
+          {path:'Completed',element:<Completed/>},
+          {path:'Payment',element:<Payment/>},
 
       
         ]

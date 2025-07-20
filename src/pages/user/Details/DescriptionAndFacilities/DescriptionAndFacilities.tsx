@@ -8,46 +8,69 @@ import refigrator from '../../../../assets/images/roomDetails/refigrator.png'
 import mbps from '../../../../assets/images/roomDetails/mbps.png'
 import television from '../../../../assets/images/roomDetails/television.png'
 import readym from '../../../../assets/images/roomDetails/unit ready.png';
-import { useEffect } from 'react';
 
-let facilities = [
-  { img : bathroom,title:'bathroom'},
-  { img : bedroom,title:'bedroom'},
-  { img : dining ,title:'dining'},
-  { img : living ,title:'living'},
-  { img : refigrator ,title:'refigrator'},
-  { img : mbps ,title:'mbps'},
-  { img : television ,title:'television'},
-  { img : readym ,title:'readym'},
+const facilities = [
+  { img: bathroom, title: 'bathroom' },
+  { img: bedroom, title: 'bedroom' },
+  { img: dining, title: 'dining' },
+  { img: living, title: 'living' },
+  { img: refigrator, title: 'refigrator' },
+  { img: mbps, title: 'mbps' },
+  { img: television, title: 'television' },
+  { img: readym, title: 'readym' },
+   { img: bedroom, title: 'bedroom' },
+   { img: bathroom, title: 'bathroom' },
 ]
 
-
-export default function DescriptionAndFacilities({data}) {
-  useEffect(()=>{
-      facilities.length = data.facilities.length
-  },[])
+export default function DescriptionAndFacilities({ data }: { data: any }) {
   return (
-    <Box sx={{flex:'1',minWidth:'300px'}}>
-        <Box component={"p"} sx={{lineHeight:'1.7', color:'#B0B0B0' , fontSize:'16px'}}>
-            <Box component={'span'} sx={{display:'block'}}>
-              Minimal techno is a minimalist subgenre of techno music. It is characterized by a stripped-down aesthetic that exploits the use of repetition and understated development. Minimal techno is thought to have been originally developed in the early 1990s by Detroit-based producers Robert Hood and Daniel Bell.
-            </Box>
-            <Box component={'span'} sx={{display:'block' ,mt:'1rem' ,mb:'1rem'}}>
-              Minimal techno is a minimalist subgenre of techno music. It is characterized by a stripped-down aesthetic that exploits the use of repetition and understated development. Minimal techno is thought to have been originally developed in the early 1990s by Detroit-based producers Robert Hood and Daniel Bell.
-            </Box>
+    <Box sx={{ flex: '1', minWidth: '300px' }}>
+      <Box component="p" sx={{ lineHeight: '1.7', color: '#B0B0B0', fontSize: '16px' }}>
+        <Box component={'span'} sx={{ display: 'block' }}>
+          Minimal techno is a minimalist subgenre of techno music. It is characterized by a stripped-down aesthetic that exploits the use of repetition and understated development. Minimal techno is thought to have been originally developed in the early 1990s by Detroit-based producers Robert Hood and Daniel Bell.
         </Box>
-
-        <Box sx={{display:'flex',mt:'30px' , justifyContent:'space-between', flexWrap:'wrap' ,gap:'1rem'}}>
-            {facilities.map((item)=>{
-              return(
-
-                <Box key={item.title} sx={{width:'90px', display:'flex' , gap:'.5rem', flexDirection:'column'}}>
-                  <img style={{width:'40px', height:'40px'}} src={item.img} alt={item.title} />
-                  <Box component={'span'}>{item.title}</Box>
-                </Box>
-              )
-            })}
+        <Box component={'span'} sx={{ display: 'block', mt: '1rem', mb: '1rem' }}>
+          Minimal techno is a minimalist subgenre of techno music. It is characterized by a stripped-down aesthetic that exploits the use of repetition and understated development. Minimal techno is thought to have been originally developed in the early 1990s by Detroit-based producers Robert Hood and Daniel Bell.
         </Box>
+      </Box>
+
+    <Box
+  sx={{
+    display: 'none',         
+    mt: '30px',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+    gap: '1rem',
+    '@media (min-width:1025px)': {  
+      display: 'flex',
+    },
+  }}
+>
+  {facilities.map((item) => (
+    <Box
+      key={item.title}
+      sx={{
+        width: '90px',
+        display: 'flex',
+        gap: '.5rem',
+        flexDirection: 'column',
+      }}
+    >
+      <img
+        style={{ width: '40px', height: '40px' }}
+        src={item.img}
+        alt={item.title}
+      />
+      <Box
+        component="span"
+        sx={{ fontWeight: 600, color: 'rgba(21, 44, 91, 1)',fontSize:'12px' }}
+      >
+        {item.title}
+      </Box>
+    </Box>
+  ))}
+</Box>
+
     </Box>
   )
 }

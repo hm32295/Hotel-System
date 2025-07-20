@@ -18,6 +18,8 @@ export {default as RoomData  }from './admin/RoomData/RoomData'
 export {default as Rooms  }from './admin/Rooms/Rooms'
 export {default as Booking  }from './user/Booking/Booking'
 export {default as NotFound  }from './NotFound/NotFound'
+export {default as Payment  }from './user/Booking/Payment'
+export {default as Completed  }from './user/Booking/Completed'
 
 export {default as UsersList  }from './admin/usersList/usersList'
 export {default as DeleteConfirmation  }from '../component_Admin/deleteConfirmation/DeleteConfirmation'

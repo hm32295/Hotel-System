@@ -6,27 +6,30 @@ import Interface from "./CoMPO_Home/Interface_Home/Interface"
 import PopularAds from "./popularAds/PopularAds"
 import PopularChoice from "./CoMPO_Home/PopularChoice/PopularChoice"
 import AdsDiscounts from "./CoMPO_Home/AdsDiscounts/AdsDiscounts"
+import Ads from "./ads/Ads"
+import Review from "./review/Review"
+import { Box } from "@mui/material"
 
 const Home = () => {
   
   
   return (
-    <div>
+    <Box sx={{display:'flex' , flexDirection:'column',gap:'1rem'}}>
  
 
 
      
-  <Interface/>
-  <Explore/>
-  <PopularAds />
-  <PopularChoice/>
-  <AdsDiscounts/>
-  
+        <Interface/>
+        <PopularAds />
+        <PopularChoice/>
+        <AdsDiscounts/>
+        <Ads/>
+        <Review/>
 
 
   
 
-  </div>
+  </Box>
   )
 }
 

@@ -76,7 +76,7 @@ const Facilities = () => {
           try {
             const response = await axiosInstance(FacilitesUrls.GET_ALL,{params:{page:1,size:1}});
             const totalData = response?.data?.data?.totalCount || 100;
-              fetchFacilities(1,totalData)
+             await fetchFacilities(1,totalData)
           } catch (error) {
             console.log(error);
             
@@ -87,25 +87,25 @@ const Facilities = () => {
         }
     const fetchFacilities = async(page:number,size:number) => {
       
-    try {
-      const res = await axiosInstance.get(FacilitesUrls.GET_ALL,{params:{page,size}});
-     
-      setFacilities(res.data.data.totalCount)
-      
-      const facilitiesData = res.data.data.facilities.map(facility => ({
-        id: facility._id,
-        name: facility.name,
-        createdByUserName: facility.createdBy?.userName ?? 'N/f',
-        createdAt: facility.createdAt,
-        updatedAt: facility.updatedAt,
-      }));
-      setRows(facilitiesData);
-    
-      
-    } catch (error) {
-      console.log(error);
-    } 
-  };
+        try {
+          const res = await axiosInstance.get(FacilitesUrls.GET_ALL,{params:{page,size}});
+        
+          setFacilities(res.data.data.totalCount)
+          
+          const facilitiesData = res.data.data.facilities.map(facility => ({
+            id: facility._id,
+            name: facility.name,
+            createdByUserName: facility.createdBy?.userName ?? 'N/f',
+            createdAt: facility.createdAt,
+            updatedAt: facility.updatedAt,
+          }));
+          setRows(facilitiesData);
+        
+          
+        } catch (error) {
+          console.log(error);
+        } 
+      };
 
   useEffect(() => {
     getData();
@@ -227,7 +227,7 @@ const handleMenuClose = () => {
   <Header />
 </div>
 
-   {loading ? (
+   {!loading ? (
     
         <Skeleton_Loader />
       ) : (
