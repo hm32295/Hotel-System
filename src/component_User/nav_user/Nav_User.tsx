@@ -26,7 +26,7 @@ const userPages = [
 const Nav_User = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [pages, setPages] = useState([]);
-  const { loginData } = useContext(AuthContext);
+  const { loginData ,logout} = useContext(AuthContext);
   const [anchorElNav, setAnchorElNav] = useState(null);
  
   const navigate = useNavigate();
@@ -50,10 +50,7 @@ const Nav_User = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('role');
-    navigate('/Login');
-    window.location.reload();
+    logout()
   };
 
   return (
