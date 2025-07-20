@@ -140,20 +140,20 @@ const RoomData = () => {
     return (
       <Box sx={{padding:'2rem', flexDirection: 'row-reverse', display: 'flex', flexWrap: 'wrap', gap: '1rem' }} component={'form'} onSubmit={handleSubmit(setRoom)}>
         <TextField sx={{ width: '100%' }} label="Room Number" {...register("roomNumber", { required: 'required' })} />
-        {errors.roomNumber&&<Box sx={{color:'red',textTransform:'capitalize',width:'100%'}}>{errors?.roomNumber?.message}</Box>}
+        {errors.roomNumber&&<Box sx={{color:'red',textTransform:'capitalize',width:'100%'}}>{String(errors?.roomNumber?.message)}</Box>}
         <Box sx={{ gap: '1rem', width: '100%', display: 'flex' }}>
             <Box sx={{ flex:'1'}}>
                 <TextField sx={{width: '100%'}} label="price" {...register("price", { required: 'required' })} />
-                {errors.price&&<Box sx={{color:'red',textTransform:'capitalize'}}>{errors?.price?.message}</Box>}
+                {errors.price&&<Box sx={{color:'red',textTransform:'capitalize'}}>{String(errors?.price?.message)}</Box>}
             </Box>
             <Box sx={{ flex: '1' }}>
                 <TextField sx={{width: '100%'}} label="capacity" {...register("capacity", { required: 'required' })} />
-                {errors.capacity&&<Box sx={{color:'red',textTransform:'capitalize'}}>{errors?.capacity?.message}</Box>}
+                {errors.capacity&&<Box sx={{color:'red',textTransform:'capitalize'}}>{String(errors?.capacity?.message)}</Box>}
             </Box>
         </Box>
         <Box sx={{ gap: '1rem', width: '100%', display: 'flex' }}>
           <TextField sx={{ flex: '1' }} label="discount" {...register("discount", { required: 'required' })} />
-          {errors.discount&&<Box sx={{color:'red',textTransform:'capitalize'}}>{errors?.discount?.message}</Box>}
+          {errors.discount&&<Box sx={{color:'red',textTransform:'capitalize'}}>{String(errors?.discount?.message)}</Box>}
           <FormControl sx={{ width: 300, flex: '1' }}>
             <InputLabel id="demo-multiple-name-label">facilities</InputLabel>
             <Select
@@ -172,7 +172,7 @@ const RoomData = () => {
               ))}
             </Select>
           </FormControl>
-          {errors?.facilities&&<Box sx={{color:'red',textTransform:'capitalize'}}>{errors?.facilities?.message}</Box>}
+          {errors?.facilities&&<Box sx={{color:'red',textTransform:'capitalize'}}>{String(errors?.facilities?.message)}</Box>}
         </Box>
         <Button sx={{ width: '100%' }} component="label" role={undefined} variant="contained" tabIndex={-1} startIcon={<CloudUploadIcon />}>
           Upload files

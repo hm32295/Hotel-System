@@ -87,7 +87,7 @@ export  function CustomToolbarActions() {
   );
 }
 function DemoPageContent() {
-  const LOCATION = window.location.pathname;
+  const LOCATION = window?.location?.pathname;
   return (
     <>
     <div className="" style={{marginTop:'10px'}}>
