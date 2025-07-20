@@ -1,139 +1,172 @@
-// import MoreVertIcon from '@mui/icons-material/MoreVert';
-import GenericTable , { type HeadCell } from "../../../component_Admin/GenericTable/GenericTable";
-
-// import DeleteIcon from '@mui/icons-material/Delete';
-
+import GenericTable, { type HeadCell } from "../../../component_Admin/GenericTable/GenericTable";
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { Box, Button } from '@mui/material';
+import { Box, Button, IconButton, Menu, MenuItem } from '@mui/material';
 import { ADS_URL, axiosInstance } from '../../../services/Url';
-import {  useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Model from './Model';
 import DeleteConfirmation from '../../../component_Admin/deleteConfirmation/DeleteConfirmation';
 import { Skeleton_Loader } from '../../../component_Admin/loader/Skeleton';
 import ViewData from "./ViewData";
 import { toast } from "react-toastify";
+
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 interface Product {
-  id: number;
+  id: string;
   name: string;
   Price: number;
-  Capacity : string;
-  Discount: string;
+  Capacity: number;
+  Discount: number;
   Active: string;
-
 }
 
 const productHeadCells: HeadCell<Product>[] = [
-  { id: "name", label: 'room Name', numeric: false, disablePadding: false },
-  { id: "Capacity", label: "Capacity", numeric: false, disablePadding: false },
-  { id: "Discount", label: "Discount", numeric: false, disablePadding: false },
+  { id: "name", label: 'Room Name', numeric: false, disablePadding: false },
+  { id: "Capacity", label: "Capacity", numeric: true, disablePadding: false },
+  { id: "Discount", label: "Discount", numeric: true, disablePadding: false },
   { id: "Price", label: "Price", numeric: true, disablePadding: false },
-  { id: "Active", label: "Active", numeric: true, disablePadding: false },
+  { id: "Active", label: "Active", numeric: false, disablePadding: false },
 ];
 
 export default function Ads() {
-  const [product , setProduct] = useState<Product[]>([])
-  const [loader, setLoader] = useState(false)
-  const [showData ,setShowData] = useState(false);
-  const [row ,setRow] = useState(false);
-  const [totalAds ,setTotalAds] = useState(0)
-  const getData = async ()=>{
-    setLoader(true)
-          try {
-            const response = await axiosInstance(ADS_URL.GET);
-            const totalData = response?.data?.data?.totalCount;
-             await getAds(1,totalData)
-          } catch (error) {
-            console.log(error);
-            
-          }finally{setLoader(false)}
-        }
-  const getAds = async(page:number,size:number)=>{
-   
+  const [product, setProduct] = useState<Product[]>([]);
+  const [loader, setLoader] = useState(false);
+  const [showData, setShowData] = useState(false);
+  const [row, setRow] = useState<Product | null>(null);
+  const [totalAds, setTotalAds] = useState(0);
+
+  const getData = async () => {
+    setLoader(true);
     try {
-        const response = await axiosInstance(ADS_URL.GET,{params:{page,size}})
-        const data = response.data.data;
-        setTotalAds(data.totalCount)
-        setProduct(data.ads.map((product)=>{
-          return {
-            id: product._id,
-            name: product.room.roomNumber,
-            Price: product.room.price,
-            Capacity : product.room.capacity,
-            Discount: product.room.discount,
-            Active: product.isActive ? "Active" : 'No Active',
-          }
-        }))
-      
-       
-        
-    } catch (error) {
-        console.log(error);
-        
+      const response = await axiosInstance(ADS_URL.GET);
+      const totalData = response?.data?.data?.totalCount;
+      await getAds(1, totalData);
+    } catch (error: any) {
+      console.log(error);
+    } finally {
+      setLoader(false);
     }
-  }
+  };
 
-  const deleteAds = async(ads)=>{
-    const id =ads.id
-        try {
-          const response =await axiosInstance.delete(ADS_URL.DELETE(id))
-          toast.success(response.data.message);
-          
-        } catch (error) {
-          console.log(error);
-          
-        }
+  const getAds = async (page: number, size: number) => {
+    try {
+      const response = await axiosInstance(ADS_URL.GET, { params: { page, size } });
+      const data = response.data.data;
+      setTotalAds(data.totalCount);
+      setProduct(
+        data.ads.map((product: any) => ({
+          id: product._id,
+          name: product.room.roomNumber,
+          Price: Number(product.room.price),
+          Capacity: Number(product.room.capacity),
+          Discount: Number(product.room.discount),
+          Active: product.isActive ? "Active" : "No Active",
+        }))
+      );
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
 
-        getData()
-    
-  }
+  const deleteAds = async (ads: Product) => {
+    const id = ads.id;
+    try {
+      const response = await axiosInstance.delete(ADS_URL.DELETE(id));
+      toast.success(response.data.message);
+      getData();
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
 
-  useEffect(()=>{
-    getData()
-    
-  },[])
- 
-  if(loader) return <Skeleton_Loader />
+  useEffect(() => {
+    getData();
+  }, []);
+
+
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [selectedRow, setSelectedRow] = useState<any>(null);
+
+const handleMenuOpen = (e: React.MouseEvent<HTMLElement>, row: any) => {
+  setAnchorEl(e.currentTarget);
+  setSelectedRow(row);
+};
+const handleMenuClose = () => {
+  setAnchorEl(null);
+  setSelectedRow(null);
+};
+
+  if (loader) return <Skeleton_Loader />;
+
   return (
     <>
-        <Box sx={{display:'flex',justifyContent:'flex-end',padding:'20px'}}>
-          <Button sx={{background:"#3252DF" ,color:'#fff',marginRight:'1rem'}}><Model icon={false} getAds={getData}/></Button>
+
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <Button sx={{ background: "#3252DF", color: '#fff', marginRight: '1rem' }}>
+          <Model icon={false} getAds={getData} row={{} as Product} />
+        </Button>
+
       </Box>
+
       <GenericTable
-      totalData={totalAds}
+        totalData={totalAds}
         rows={product}
         headCells={productHeadCells}
         title=""
         renderActions={(row) => (
-            <>
-           
-              <Box sx={{display:'flex' ,justifyContent:'center',alignItems:'center'}}>
 
-                  <Model getAds={getData} icon={true} row={row}/>
-                  <DeleteConfirmation data={row} deleteFun={deleteAds}/>
-                  <VisibilityIcon onClick={()=>{setRow(row);setShowData(true)}}/>
+          <>
+              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                
               </Box>
+              <>
+              <IconButton
+                aria-controls="action-menu"
+                aria-haspopup="true"
+                onClick={(e) => handleMenuOpen(e, row)}
+              >
+                <MoreVertIcon />
+              </IconButton>
+
+              <Menu
+                id="action-menu"
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl) && selectedRow === row}
+                onClose={handleMenuClose}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+              >
+                <MenuItem
+                  onClick={() => {
+                    setShowData(true); setRow(row);
+                    handleMenuClose();
+                  }}
+                >
+                  <Box sx={{display:'flex' ,justifyContent:'flex-start',alignItems:'center',gap:'.4rem'}}>
+                    <VisibilityIcon  />
+                      <Box component={'span'}>View</Box>
+                  </Box>
+                </MenuItem>
+                <MenuItem
+                  
+                >
+                  <Model getAds={getData} icon={true} row={row} />
+                 
+                </MenuItem>
+                <MenuItem >
+                  <DeleteConfirmation data={row} deleteFun={deleteAds} />
+               
+                </MenuItem>
+              </Menu>
             </>
-    )}
+          </>
+        )}
+      />
 
-  />
-  
-     </>
-  )
+
+      {showData && row && (
+        <ViewData data={row} setShowData={setShowData} showData={showData} />
+      )}
+    </>
+  );
+
 }
-
-
-
-{/* <Box className='list'>
-
-<Fragment>
-  <Model getAds={getAds} icon={true} row={row}/>
-</Fragment>
-<Fragment>
-  <DeleteConfirmation data={row} deleteFun={deleteAds}/>
-</Fragment>
-<Fragment >
-    <Box onClick={() => console.log("view", row)}>
-      <VisibilityIcon />
-    </Box>
-</Fragment>
-</Box> */}

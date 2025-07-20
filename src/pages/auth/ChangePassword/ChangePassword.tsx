@@ -39,8 +39,10 @@ export default  function ChangePassword(){
       
       toast.success(response?.data?.data?.message || 'Password changed successfully')
       
-    } catch (error) {
+    } catch (error:any) {
+      if(error.response){
         toast.error(error?.response?.data.message || 'please make sure old password is correct!');
+      }
         
     }finally{
       setLoader(false)

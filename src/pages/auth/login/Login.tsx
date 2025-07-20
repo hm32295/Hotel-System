@@ -44,8 +44,10 @@ export default  function Login(){
       }
       
       toast.success(response?.data?.message || 'Welcome ' + response?.data?.user?.userName)
-    } catch (error) {
-      toast.error(error?.response?.data?.message || 'check your data')
+    } catch (error:any) {
+      if(error.response){
+        toast.error(error?.response?.data?.message || 'check your data')
+      }
         
     }finally{
       setLoader(false)

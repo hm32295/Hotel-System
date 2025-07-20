@@ -87,7 +87,7 @@ export  function CustomToolbarActions() {
   );
 }
 function DemoPageContent() {
-  const LOCATION = window.location.pathname;
+  const LOCATION = window?.location?.pathname;
   return (
     <>
     <div className="" style={{marginTop:'10px'}}>
@@ -207,17 +207,22 @@ const demoSession: Session = {
     image: 'https://avatars.githubusercontent.com/u/19550456',
   },
 };
-
-export default function Sidepar_Admin(props: { window?: () => Window }) {
+interface Props {
+  window?: () => Window;
+}
+export default function Sidepar_Admin(props:Props) {
   const { window } = props;
   const navigate = useNavigate();
-  const initialPathname =
+
+
+ const initialPathname =
     typeof window === 'function'
-      ? window()?.location.pathname ?? ''
-      : typeof window !== 'undefined' && window?.location
-      ? (window as Window).location.pathname
+      ? window()?.location?.pathname ?? ''
       : '';
+
   const [pathname, setPathname] = React.useState(initialPathname);
+
+
 
   const router = React.useMemo<Router>(
     () => ({
@@ -260,7 +265,7 @@ export default function Sidepar_Admin(props: { window?: () => Window }) {
               overflow: 'hidden',       
             },
           }}
-           branding={{ title: 'Reflex',logo: <img style={{borderRadius:"50%"}} src={'https://www.daleeeel.com/f/res/s05/locations-photos/000/891/0089179-269-4412de14ea85462e923e77887a343b55-r01.jpg'} /> }}
+           branding={{ title: '',logo: <img style={{borderRadius:"50%"}} src={''} alt="" /> }}
         
           slots={{ toolbarActions: CustomToolbarActions, sidebarFooter: SidebarFooterAccount }}
         >

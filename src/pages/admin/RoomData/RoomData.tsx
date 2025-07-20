@@ -1,17 +1,12 @@
 import { useEffect, useState } from "react";
 import { axiosInstance, FacilitesUrls, ROOMS_URL } from "../../../services/Url";
 import { Box, TextField } from "@mui/material";
-import FileUploadIcon from '@mui/icons-material/FileUpload';
-import { useForm } from "react-hook-form";
-import * as React from 'react';
-import { useTheme } from '@mui/material/styles';
-import type { Theme } from '@mui/material/styles';
+import { Controller, useForm } from "react-hook-form";
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import  type { SelectChangeEvent } from '@mui/material/Select';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -30,40 +25,20 @@ const VisuallyHiddenInput = styled('input')({
   whiteSpace: 'nowrap',
   width: 1,
 });
-function getStyles(name: string, personName: string[], theme: Theme) {
-    return {
-      fontWeight: personName.includes(name)
-        ? theme.typography.fontWeightMedium
-        : theme.typography.fontWeightRegular,
-    };
-  }
-  
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-
+ 
 
 
 const RoomData = () => {
-    const theme = useTheme();
     const navigate = useNavigate();
     const [personName, setPersonName] = useState<string[]>([]);
     const [facilities, setFacilities] = useState([]);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const[loader ,setLoader] =useState(false)
-    const { register, handleSubmit ,reset,formState: { errors },} = useForm();
+    const { register,control, handleSubmit ,reset,formState: { errors },} = useForm();
     const location = useLocation();
-    const projectItem = location.state;
+    const projectItem:any = location?.state;
     
-    const dataToEdit = (projectItem, reset)=>{
+    const dataToEdit = (projectItem:any, reset:any)=>{
       
       if(projectItem){
         reset({
@@ -75,19 +50,11 @@ const RoomData = () => {
       }
     }
 
-  
-    const handleChange = (event: SelectChangeEvent<typeof personName>) => {
-      const {
-        target: { value },
-      } = event;
-      setPersonName(typeof value === 'string' ? value.split(',') : value);
-    };
-  
     const getFacilities = async () => {
       try {
-        const response = await axiosInstance(FacilitesUrls.GET_ALL);
-        const data = response.data.data;
-        setFacilities(data.facilities.map((ele) => ({ name: ele.name, id: ele._id })));
+        const response:any = await axiosInstance(FacilitesUrls.GET_ALL);
+        const data:any = response.data.data;
+        setFacilities(data.facilities.map((ele:any) => ({ name: ele.name, id: ele._id })));
       } catch (error) {
         console.log(error);
       }
@@ -104,7 +71,7 @@ const RoomData = () => {
       registerForm.append('discount', data.discount);
       registerForm.append('price', data.price);
       registerForm.append('roomNumber', data.roomNumber);
-      personName.forEach((id) => {
+      data.facilities.forEach((id) => {
         registerForm.append('facilities', id);
       });
   
@@ -116,10 +83,13 @@ const RoomData = () => {
     };
   
     const setRoom = async (data: any) => {
+      
       const handelData = handelDataToForm(data);
+      
+      
       setLoader(true)
       try {
-        let response;
+        let response:any;
         if(projectItem){
           
           response = await axiosInstance.put(ROOMS_URL.UPDATE(projectItem.id), handelData);
@@ -131,7 +101,7 @@ const RoomData = () => {
         reset();
         setPersonName([])
         navigate('/MasterAdmin/rooms')
-      } catch (error) {
+      } catch (error:any) {
         console.log();
         toast.error(error?.response?.data?.message || 'price must be a number')
       }finally{
@@ -142,39 +112,49 @@ const RoomData = () => {
     return (
       <Box sx={{padding:'2rem', flexDirection: 'row-reverse', display: 'flex', flexWrap: 'wrap', gap: '1rem' }} component={'form'} onSubmit={handleSubmit(setRoom)}>
         <TextField sx={{ width: '100%' }} label="Room Number" {...register("roomNumber", { required: 'required' })} />
-        {errors.roomNumber&&<Box sx={{color:'red',textTransform:'capitalize',width:'100%'}}>{errors?.roomNumber?.message}</Box>}
+        {errors.roomNumber&&<Box sx={{color:'red',textTransform:'capitalize',width:'100%'}}>{String(errors?.roomNumber?.message)}</Box>}
         <Box sx={{ gap: '1rem', width: '100%', display: 'flex' }}>
             <Box sx={{ flex:'1'}}>
                 <TextField sx={{width: '100%'}} label="price" {...register("price", { required: 'required' })} />
-                {errors.price&&<Box sx={{color:'red',textTransform:'capitalize'}}>{errors?.price?.message}</Box>}
+                {errors.price&&<Box sx={{color:'red',textTransform:'capitalize'}}>{String(errors?.price?.message)}</Box>}
             </Box>
             <Box sx={{ flex: '1' }}>
                 <TextField sx={{width: '100%'}} label="capacity" {...register("capacity", { required: 'required' })} />
-                {errors.capacity&&<Box sx={{color:'red',textTransform:'capitalize'}}>{errors?.capacity?.message}</Box>}
+                {errors.capacity&&<Box sx={{color:'red',textTransform:'capitalize'}}>{String(errors?.capacity?.message)}</Box>}
             </Box>
         </Box>
         <Box sx={{ gap: '1rem', width: '100%', display: 'flex' }}>
           <TextField sx={{ flex: '1' }} label="discount" {...register("discount", { required: 'required' })} />
-          {errors.discount&&<Box sx={{color:'red',textTransform:'capitalize'}}>{errors?.discount?.message}</Box>}
+          {errors.discount&&<Box sx={{color:'red',textTransform:'capitalize'}}>{String(errors?.discount?.message)}</Box>}
           <FormControl sx={{ width: 300, flex: '1' }}>
             <InputLabel id="demo-multiple-name-label">facilities</InputLabel>
-            <Select
-              labelId="demo-multiple-name-label"
-              multiple
-              {...register('facilities',{required: 'required'})}
-              value={personName}
-              onChange={handleChange}
-              input={<OutlinedInput label="facilities" />}
-              MenuProps={MenuProps}
-            >
-              {facilities.map((item) => (
-                <MenuItem key={item.id} value={item.id} style={getStyles(item.name, personName, theme)}>
-                  {item.name}
-                </MenuItem>
-              ))}
-            </Select>
+           <Controller
+              name="facilities"
+              control={control}
+              defaultValue={[]}
+              rules={{ required: 'This field is required' }}
+              render={({ field }) => (
+                <Select
+                  multiple
+                  value={field.value}
+                  onChange={(e) => {
+                    const {
+                      target: { value },
+                    } = e;
+                    field.onChange(typeof value === 'string' ? value.split(',') : value);
+                  }}
+                  input={<OutlinedInput label="Facilities" />}
+                >
+                  {facilities.map((item) => (
+                    <MenuItem key={item.id} value={item.id}>
+                      {item.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
+/>
           </FormControl>
-          {errors.facilities&&<Box sx={{color:'red',textTransform:'capitalize'}}>{errors?.facilities?.message}</Box>}
+          {errors?.facilities&&<Box sx={{color:'red',textTransform:'capitalize'}}>{String(errors?.facilities?.message)}</Box>}
         </Box>
         <Button sx={{ width: '100%' }} component="label" role={undefined} variant="contained" tabIndex={-1} startIcon={<CloudUploadIcon />}>
           Upload files
