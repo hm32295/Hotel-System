@@ -1,6 +1,5 @@
 import './register.css';
 import {
-  Grid,
   Box,
   TextField,
   Button,
@@ -23,7 +22,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Progress from '../../../component_Admin/loader/Progress';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
-import SignUpImage from '../../../assets/images/SignUp.png'; // ✅ عدلت المسار ليعمل بشكل صحيح
+import SignUpImage from '../../../assets/images/SignUp.png';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -74,7 +73,6 @@ export default function Register() {
     form.append('phoneNumber', data.phoneNumber);
     form.append('role', data.role);
 
-    // ✅ تأكد أن الصورة موجودة
     if (data.profileImage && data.profileImage.length > 0) {
       form.append('profileImage', data.profileImage[0]);
     }
@@ -100,8 +98,26 @@ export default function Register() {
   };
 
   return (
-    <Grid container className="register" sx={{ minHeight: '100vh' }} alignItems="center" justifyContent="center">
-      <Grid item xs={12} sm={6} md={6} sx={{ display: 'grid', minHeight: '100vh', px: { xs: 2, md: 4 }, py: { xs: 4, md: 0 } }}>
+    <Box
+      className="register"
+      sx={{
+        minHeight: '100vh',
+        display: 'flex',
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      {/* Left Side - Form */}
+      <Box
+        sx={{
+          width: { xs: '100%', sm: '50%' },
+          minHeight: '100vh',
+          px: { xs: 2, md: 4 },
+          py: { xs: 4, md: 0 },
+          display: 'grid',
+        }}
+      >
         <Box sx={{ width: '100%', maxWidth: 500, justifySelf: 'start', alignSelf: 'center' }}>
           <Typography variant="h5" fontWeight="bold" sx={{ mt: 3, mb: 1 }}>
             Sign up
@@ -229,16 +245,18 @@ export default function Register() {
             </Button>
           </Box>
         </Box>
-      </Grid>
+      </Box>
 
-      {/* Right Side */}
-      <Grid
+      {/* Right Side - Image */}
+      <Box
         className="img"
-        item
-        xs={12}
-        sm={6}
-        md={6}
-        sx={{ display: { xs: 'none', sm: 'flex' }, alignItems: 'center', justifyContent: 'center', px: 2 }}
+        sx={{
+          width: { xs: '100%', sm: '50%' },
+          display: { xs: 'none', sm: 'flex' },
+          alignItems: 'center',
+          justifyContent: 'center',
+          px: 2,
+        }}
       >
         <Box sx={{ width: '100%', maxWidth: 600, mt: { xs: 2, md: 2 } }}>
           <img
@@ -252,7 +270,7 @@ export default function Register() {
             }}
           />
         </Box>
-      </Grid>
-    </Grid>
+      </Box>
+    </Box>
   );
 }

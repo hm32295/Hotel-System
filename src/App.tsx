@@ -47,7 +47,7 @@ const App = () => {
       }
       ,{
         path:'/MasterAdmin',
-        element: <ProtectedRoute allowedRole ='admin'> <MasterAdmin/></ProtectedRoute> ,
+        element: <ProtectedRoute allowedRole ='admin'> <MasterAdmin/> </ProtectedRoute> ,
         children:[
 
           {index:true,element:<Dashboard/> },

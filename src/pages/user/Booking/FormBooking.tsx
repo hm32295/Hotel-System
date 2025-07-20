@@ -1,5 +1,6 @@
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import { useState, FormEvent } from "react";
+import { useState } from "react";
+import type { FormEvent } from "react";
 import { axiosInstance, BOOKING_URL } from "../../../services/Url";
 import { toast } from "react-toastify";
 import { Box, Button } from "@mui/material";
@@ -48,7 +49,9 @@ export default function FormBooking({ booking }: { booking: Booking }) {
       navigate("/MasterUser/Completed");
     } catch (error: any) {
       if (error.response) {
-        toast.error(error?.response?.data?.message || "This booking has already been paid");
+        toast.error(
+          error?.response?.data?.message || "This booking has already been paid"
+        );
       }
     } finally {
       setLoading(false);
@@ -69,7 +72,7 @@ export default function FormBooking({ booking }: { booking: Booking }) {
       }}
       onSubmit={handleSubmit}
     >
-      <CardElement options={{ style: { base: { fontSize: '16px' } } }} />
+      <CardElement options={{ style: { base: { fontSize: "16px" } } }} />
       <Button
         sx={{
           boxShadow: "0px 8px 15px 0px #ccc",

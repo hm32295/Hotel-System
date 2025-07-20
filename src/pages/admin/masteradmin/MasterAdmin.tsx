@@ -3,8 +3,8 @@ import { useState } from "react";
 import { axiosInstance, BOOKING_URL } from "../../../services/Url";
 import { toast } from "react-toastify";
 import { Box, Button } from "@mui/material";
-import Progress from "../Details/Progress";
 import { useNavigate } from "react-router-dom";
+import Progress from "../../user/Details/Progress";
 
 interface Booking {
   _id: string;
