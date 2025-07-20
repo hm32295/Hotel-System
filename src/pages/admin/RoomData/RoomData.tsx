@@ -1,15 +1,12 @@
 import { useEffect, useState } from "react";
 import { axiosInstance, FacilitesUrls, ROOMS_URL } from "../../../services/Url";
 import { Box, TextField } from "@mui/material";
-import { useForm } from "react-hook-form";
-import { useTheme } from '@mui/material/styles';
-import type { Theme } from '@mui/material/styles';
+import { Controller, useForm } from "react-hook-form";
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import  type { SelectChangeEvent } from '@mui/material/Select';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -28,36 +25,16 @@ const VisuallyHiddenInput = styled('input')({
   whiteSpace: 'nowrap',
   width: 1,
 });
-function getStyles(name: string, personName: string[], theme: Theme) {
-    return {
-      fontWeight: personName.includes(name)
-        ? theme.typography.fontWeightMedium
-        : theme.typography.fontWeightRegular,
-    };
-  }
-  
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-
+ 
 
 
 const RoomData = () => {
-    const theme = useTheme();
     const navigate = useNavigate();
     const [personName, setPersonName] = useState<string[]>([]);
     const [facilities, setFacilities] = useState([]);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const[loader ,setLoader] =useState(false)
-    const { register, handleSubmit ,reset,formState: { errors },} = useForm();
+    const { register,control, handleSubmit ,reset,formState: { errors },} = useForm();
     const location = useLocation();
     const projectItem:any = location?.state;
     
@@ -73,14 +50,6 @@ const RoomData = () => {
       }
     }
 
-  
-    const handleChange = (event: SelectChangeEvent<typeof personName>) => {
-      const {
-        target: { value },
-      } = event;
-      setPersonName(typeof value === 'string' ? value.split(',') : value);
-    };
-  
     const getFacilities = async () => {
       try {
         const response:any = await axiosInstance(FacilitesUrls.GET_ALL);
@@ -102,7 +71,8 @@ const RoomData = () => {
       registerForm.append('discount', data.discount);
       registerForm.append('price', data.price);
       registerForm.append('roomNumber', data.roomNumber);
-      personName.forEach((id) => {
+      // registerForm.append('facilities', JSON.stringify(personName));
+      data.facilities.forEach((id) => {
         registerForm.append('facilities', id);
       });
   
@@ -114,7 +84,10 @@ const RoomData = () => {
     };
   
     const setRoom = async (data: any) => {
+      
       const handelData = handelDataToForm(data);
+      
+      
       setLoader(true)
       try {
         let response:any;
@@ -156,21 +129,31 @@ const RoomData = () => {
           {errors.discount&&<Box sx={{color:'red',textTransform:'capitalize'}}>{String(errors?.discount?.message)}</Box>}
           <FormControl sx={{ width: 300, flex: '1' }}>
             <InputLabel id="demo-multiple-name-label">facilities</InputLabel>
-            <Select
-              labelId="demo-multiple-name-label"
-              multiple
-              {...register('facilities',{required: 'required'})}
-              value={personName}
-              onChange={handleChange}
-              input={<OutlinedInput label="facilities" />}
-              MenuProps={MenuProps}
-            >
-              {facilities.map((item) => (
-                <MenuItem key={item.id} value={item.id} style={getStyles(item.name, personName, theme)}>
-                  {item.name}
-                </MenuItem>
-              ))}
-            </Select>
+           <Controller
+              name="facilities"
+              control={control}
+              defaultValue={[]}
+              rules={{ required: 'This field is required' }}
+              render={({ field }) => (
+                <Select
+                  multiple
+                  value={field.value}
+                  onChange={(e) => {
+                    const {
+                      target: { value },
+                    } = e;
+                    field.onChange(typeof value === 'string' ? value.split(',') : value);
+                  }}
+                  input={<OutlinedInput label="Facilities" />}
+                >
+                  {facilities.map((item) => (
+                    <MenuItem key={item.id} value={item.id}>
+                      {item.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
+/>
           </FormControl>
           {errors?.facilities&&<Box sx={{color:'red',textTransform:'capitalize'}}>{String(errors?.facilities?.message)}</Box>}
         </Box>
