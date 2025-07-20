@@ -207,17 +207,22 @@ const demoSession: Session = {
     image: 'https://avatars.githubusercontent.com/u/19550456',
   },
 };
-
-export default function Sidepar_Admin(props: { window?: () => Window }) {
+interface Props {
+  window?: () => Window;
+}
+export default function Sidepar_Admin(props:Props) {
   const { window } = props;
   const navigate = useNavigate();
-  const initialPathname =
+
+
+ const initialPathname =
     typeof window === 'function'
-      ? window()?.location.pathname ?? ''
-      : typeof window !== 'undefined' && window?.location
-      ? (window as Window).location.pathname
+      ? window()?.location?.pathname ?? ''
       : '';
+
   const [pathname, setPathname] = React.useState(initialPathname);
+
+
 
   const router = React.useMemo<Router>(
     () => ({
