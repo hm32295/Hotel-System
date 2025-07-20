@@ -16,8 +16,45 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Progress from "../../../component_Admin/loader/Progress";
-import { VisuallyHiddenInput, getStyles, MenuProps } from "./helper"; 
 import type { SelectChangeEvent } from "@mui/material/Select";
+
+
+const VisuallyHiddenInput = (props: any) => (
+  <input
+    style={{
+      clip: "rect(0 0 0 0)",
+      clipPath: "inset(50%)",
+      height: 1,
+      overflow: "hidden",
+      position: "absolute",
+      bottom: 0,
+      left: 0,
+      whiteSpace: "nowrap",
+      width: 1,
+    }}
+    {...props}
+  />
+);
+
+const getStyles = (name: string, personName: string[], theme: any) => ({
+  fontWeight:
+    personName.indexOf(name) === -1
+      ? theme.typography.fontWeightRegular
+      : theme.typography.fontWeightMedium,
+});
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+// -----------------------------------------------------
 
 interface FacilityType {
   name: string;
