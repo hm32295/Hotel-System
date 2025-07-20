@@ -9,7 +9,7 @@ import './PopularAds.css';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Favorite from '@mui/icons-material/Favorite';
 import { axiosInstance, FAVORITE_URL, ROOMS_USER_URL } from '../../../../services/Url';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Skeleton_Loader } from '../review/Skeleton';
 import img1 from '../../../../assets/images/adsPopular/1.png';
@@ -18,7 +18,12 @@ import img3 from '../../../../assets/images/adsPopular/3.png';
 import img4 from '../../../../assets/images/adsPopular/4.png';
 import img5 from '../../../../assets/images/adsPopular/5.png';
 import { AuthContext } from '../../../../context/context';
-import { toast } from 'react-toastify';
+
+interface Room {
+  _id: string;
+  roomNumber: string;
+  price: number;
+}
 
 function srcset(image: string, width: number, height: number, rows = 1, cols = 1) {
   return {
@@ -27,54 +32,55 @@ function srcset(image: string, width: number, height: number, rows = 1, cols = 1
   };
 }
 
+interface ItemData {
+  img: string;
+  title: string;
+}
+
 export default function PopularAds() {
   const { loginData } = useContext(AuthContext);
   const navigation = useNavigate();
   const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
-  const [rooms, setRooms] = useState([]);
-  const [loader, setLoader] = useState(false);
+  const [rooms, setRooms] = useState<Room[]>([]);
+  const [loader, setLoader] = useState<boolean>(false);
+  const [favorite, setFavorite] = useState<Room[]>([]);
 
   const theme = useTheme();
   const isXs = useMediaQuery(theme.breakpoints.down('sm'));
   const isSm = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   const isLg = useMediaQuery(theme.breakpoints.up('lg'));
-  const [favorite, setFavorite] = useState([])
+  const isSmall1024 = useMediaQuery('(max-width:1024px)');
 
-  const addFavorite = async (roomId: string, isChecked: boolean) => {
+  const addFavorite = async (room: Room, isChecked: boolean) => {
     try {
-      let response;
       if (isChecked) {
-        response = await axiosInstance.post(FAVORITE_URL.CREATE, { roomId });
-        toast.success(response.data.data.message || 'Room added to favorites successfully');
+        await axiosInstance.post(FAVORITE_URL.CREATE, { roomId: room._id });
+        setFavorite((prev) => [...prev, room]); 
+        navigation('/MasterUser/Favorites'); 
       } else {
-        response = await axiosInstance.delete(FAVORITE_URL.DELETE(roomId), { data: { roomId },});
-        toast.error(response.data.data.message || 'Room removed from favorites successfully');
-        
+        await axiosInstance.delete(FAVORITE_URL.DELETE(room._id)); 
+        setFavorite((prev) => prev.filter((favRoom) => favRoom._id !== room._id));
       }
       getFavorite();
     } catch (error) {
-      console.log("Favorite error:", error);
+      console.log('Favorite error:', error);
     }
   };
 
-  const getFavorite = async()=>{
+  const getFavorite = async () => {
     try {
-      
       const response = await axiosInstance(FAVORITE_URL.GET);
-      setFavorite(response?.data?.data?.favoriteRooms[0]?.rooms);
-      
+      setFavorite(response?.data?.data?.favoriteRooms[0]?.rooms || []);
     } catch (error) {
       console.log(error);
-      
     }
-    
-  }
+  };
+
   const getRooms = async () => {
     setLoader(true);
     try {
       const response = await axiosInstance(ROOMS_USER_URL.GET, { params: { page: 1, size: 5 } });
-      setRooms(response.data.data.rooms);
-      
+      setRooms(response.data.data.rooms || []);
     } catch (error) {
       console.log(error);
     } finally {
@@ -84,24 +90,32 @@ export default function PopularAds() {
 
   useEffect(() => {
     getRooms();
-    getFavorite()
+    getFavorite();
   }, []);
 
   const widthImages = () => {
-    if (isLg) {
-      return '1200px';
-    }
+    if (isLg) return '1200px';
     return '100%';
   };
 
   if (loader) return <Skeleton_Loader />;
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
-      <Box component="h2" sx={{ textAlign: 'center', width: '100%', textTransform: 'capitalize' }} mb={1}>
+    <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', marginTop: '20px' }}>
+      <Box
+        component="h2"
+        sx={{
+          textAlign: 'center',
+          width: '100%',
+          textTransform: 'capitalize',
+          color: 'rgba(21, 44, 91, 1)',
+        }}
+        mb={5}
+      >
         Most popular ads
       </Box>
       <ImageList
+        className="popular-ads"
         sx={{
           width: widthImages(),
           maxWidth: '1670px',
@@ -110,40 +124,32 @@ export default function PopularAds() {
           transform: 'translateZ(0)',
         }}
         rowHeight={200}
-        cols={4}
+        cols={isSmall1024 ? 2 : 4}
       >
-        {rooms.length ?(
-          rooms.map((room, index) => {
+        {rooms.length ? (
+          rooms.map((room: Room, index: number) => {
             let cols = 1;
             let rows = 1;
-            if (!index) {
-              rows = 2;
-              cols = 2;
-              if (isXs || isSm) {
-                cols = 4;
+
+            if (isSmall1024) {
+              cols = index === rooms.length - 1 ? 2 : 1;
+              rows = 1;
+            } else {
+              if (index === 0) {
+                cols = 2;
                 rows = 2;
               }
-            }
-            if ((index && isXs) || (index && isSm)) {
-              rows = 2;
-              cols = 4;
             }
 
             return (
               <ImageListItem key={room._id} cols={cols} rows={rows}>
                 <Box sx={{ position: 'relative', width: '100%', height: '100%' }}>
                   <img
-                    {...srcset(itemData[index].img, 250, 200, rows, cols)}
+                    {...srcset(itemData[index]?.img, 250, 200, rows, cols)}
                     alt={room?.roomNumber}
                     loading="lazy"
-                    style={{
-                      borderRadius: '1rem',
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                    }}
+                    style={{ borderRadius: '1rem', width: '100%', height: '100%', objectFit: 'cover' }}
                   />
-
                   <Box
                     sx={{
                       position: 'absolute',
@@ -160,31 +166,17 @@ export default function PopularAds() {
                       justifyContent: 'center',
                       borderRadius: '1rem',
                       zIndex: 1,
-                      '&:hover': {
-                        opacity: 1,
-                      },
+                      '&:hover': { opacity: 1 },
                     }}
                   >
                     <Box sx={{ mb: 2, fontSize: '1.2rem', fontWeight: 'bold', color: '#fff' }}>
-                      {itemData[index].title}
+                      {itemData[index]?.title}
                     </Box>
-
-                    <Box sx={{ display: 'flex', gap: 3 }}>
+                    <Box sx={{ display: 'flex', gap: 1 }}>
                       <Checkbox
-                        checked={favorite.some((roomFavorite) => roomFavorite._id === room._id)}
-                        onChange={(event) => {
-                          const isChecked = event.target.checked;
-
-                          addFavorite(room._id, isChecked);
-                        }}
+                        onChange={(e) => addFavorite(room, e.target.checked)}
+                        checked={favorite.some((favRoom) => favRoom._id === room._id)}
                         {...label}
-                        // {
-                        //   favorite.length ?(
-                        //     favorite.map((roomFavorite)=>{
-                              
-                        //     })
-                        //   ) : null
-                        // }
                         icon={<FavoriteIcon sx={{ fontSize: '2.5rem', color: '#fff' }} />}
                         checkedIcon={<Favorite sx={{ fontSize: '2.5rem', color: '#ff1744' }} />}
                       />
@@ -193,16 +185,13 @@ export default function PopularAds() {
                         sx={{
                           color: '#fff',
                           backgroundColor: 'transparent',
-                          '&:hover': {
-                            color: '#90caf9',
-                          },
+                          '&:hover': { color: '#90caf9' },
                         }}
                       >
                         <VisibilityIcon sx={{ fontSize: '2.5rem' }} />
                       </IconButton>
                     </Box>
                   </Box>
-
                   <ImageListItemBar
                     sx={{ background: 'transparent', borderRadius: '1rem' }}
                     position="top"
@@ -224,13 +213,14 @@ export default function PopularAds() {
                 </Box>
               </ImageListItem>
             );
-          })):<></>}
+          })
+        ) : 'Not  Found'}
       </ImageList>
     </Box>
   );
 }
 
-const itemData = [
+const itemData: ItemData[] = [
   { img: img1, title: 'London' },
   { img: img2, title: 'Paris' },
   { img: img3, title: 'Barcelona' },

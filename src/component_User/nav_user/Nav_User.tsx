@@ -79,8 +79,8 @@ const Nav_User = () => {
               fontFamily: 'Poppins, sans-serif',
             }}
           >
-            <span style={{ color: '#4e6ae3' }}>Stay</span>
-            <span style={{ color: '#152C5B' }}>cation.</span>
+            <span style={{ color: 'rgba(21, 44, 91, 1)',fontWeight:'700' }}>Stay</span>
+            <span style={{ color: '#152C5B',fontWeight:'600' }}>cation.</span>
           </Typography>
 
           <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2, alignItems: 'center' }}>

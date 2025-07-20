@@ -1,4 +1,5 @@
 import { Box } from "@mui/material"
+
 import TitleDetails from "./TitleDetails/TitleDetails"
 import Gallery from "./Gallery/Gallery"
 import DescriptionAndFacilities from "./DescriptionAndFacilities/DescriptionAndFacilities"
@@ -18,27 +19,47 @@ const Details = () => {
     const [data,setData] = useState(null);
     const{loginData} = useContext(AuthContext)
     useEffect(()=>{
-        setData(location.state)
-        
+        setData(location.state)     
     },[data])
     if(!data) return
   return (
     <Box sx={{padding:'1rem'}}>
-        <TitleDetails data={data}/>
         <Gallery data={data}/>
-        <Box sx={{display:'flex' ,gap:'1.5rem',mt:'60px',flexWrap:'wrap'}}>
+        {/* Added Colume in Here -Yousef-  if you want return here done  */}
+        <Box sx={{display:'flex' ,gap:'1.5rem',marginTop:'60px',flexWrap:'wrap',flexDirection:'column'}}>
             <DescriptionAndFacilities data={data}/>
             <ToBooking data={data} isLogged={loginData?.role}/>
           
         </Box>
         {loginData?.role === 'user'|| localStorage.getItem('token') ?(
+       <Box
+   sx={{
+    mt: '4rem',
+   
+    p: '8px',
+    display: 'flex',
+    flexWrap: 'wrap',
+    
+  
+    flexDirection: { xs: 'column', md: 'row' },
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    gap: '2rem',
+  }}
 
-            <Box sx={{mt:'2rem',border:' 1px solid #E5E5E5',p:'8px' , display:'flex',flexWrap:'wrap' ,alignItems:'center' ,justifyContent:'center',gap:'2rem'}}>
-                <Rate id={data?._id} />
-                <Box className='border-comment' sx={{width:'1px' , background:'#203FC7', height:'180px'}}></Box>
-                <Comment id={data?._id} />
-            </Box>
-        ):null}
+>
+  <Box sx={{ flex: '1 1 45%', minWidth: 0, width: { xs: '100%', md: '45%' } }}>
+    <Rate id={data?._id} />
+  </Box>
+  <Box
+    className='border-comment'
+    sx={{ width: '1px', background: '#203FC7', height: '180px' }}
+  />
+  <Box sx={{ flex: '1 1 45%', minWidth: 0, width: { xs: '100%', md: '45%' } }}>
+    <Comment id={data?._id} />
+  </Box>
+</Box>
+ ):null}
     </Box>
   )
 }

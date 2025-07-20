@@ -48,7 +48,7 @@ try {
   return (
     <Box component={'form'} sx={{m:"auto",width:'350px',display:'flex',gap:'2rem' ,flexDirection:'column',justifyContent:'center', flexWrap:'wrap'}} onSubmit={handleSubmit}>
       <CardElement style={{with:'100%'}} />
-      <Button sx={{boxShadow: "0px 8px 15px 0px #ccc" ,padding:'0',m:'auto',background:'#3252DF',color:'#fff',width:'300px'}} type="submit" disabled={loading || !stripe}>
+      <Button sx={{boxShadow: "0px 8px 15px 0px #ccc" ,padding:'0',m:'auto',background:'rgba(21, 44, 91, 1)',color:'#fff',width:'300px'}} type="submit" disabled={loading || !stripe}>
         {loading ? <Box sx={{height:"100%",width:'100%',display:'flex' ,gap:'.5rem', alignItems:'center',background:'#fff',padding:'0.5rem'}}  component={'span'}>Payment is in progress ... <Progress /></Box> :
         <Box sx={{padding:".5rem"}}>pay now</Box>}
       </Button>
