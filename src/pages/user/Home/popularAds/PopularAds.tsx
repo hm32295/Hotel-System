@@ -9,8 +9,7 @@ import './PopularAds.css';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Favorite from '@mui/icons-material/Favorite';
 import { axiosInstance, FAVORITE_URL, ROOMS_USER_URL } from '../../../../services/Url';
-
-import {   useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Skeleton_Loader } from '../review/Skeleton';
 import img1 from '../../../../assets/images/adsPopular/1.png';
@@ -18,6 +17,7 @@ import img2 from '../../../../assets/images/adsPopular/2.png';
 import img3 from '../../../../assets/images/adsPopular/3.png';
 import img4 from '../../../../assets/images/adsPopular/4.png';
 import img5 from '../../../../assets/images/adsPopular/5.png';
+import { toast } from 'react-toastify';
 
 
 function srcset(image: string, width: number, height: number, rows = 1, cols = 1) {
@@ -42,37 +42,45 @@ export default function PopularAds() {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [loader, setLoader] = useState<boolean>(false);
   const [favorite, setFavorite] = useState<Room[]>([]);
-
   const theme = useTheme();
   const isLg = useMediaQuery(theme.breakpoints.up('lg'));
   const isSmall1024 = useMediaQuery('(max-width:1024px)');
 
   const addFavorite = async (room: Room, isChecked: boolean) => {
+    
+    const roomId:string = room._id
+    
     try {
       if (isChecked) {
-        await axiosInstance.post(FAVORITE_URL.CREATE, { roomId: room._id });
-        setFavorite((prev) => [...prev, room]); 
-        navigation('/MasterUser/Favorites'); 
+        const response = await axiosInstance.post(FAVORITE_URL.CREATE, {roomId});
+        toast.success(response.data.message)
+        console.log(response);
+        
       } else {
-        await axiosInstance.delete(FAVORITE_URL.DELETE(room._id)); 
-        setFavorite((prev) => prev.filter((favRoom) => favRoom._id !== room._id));
+        
+        const response = await axiosInstance.delete(FAVORITE_URL.DELETE(roomId), {
+          data: { roomId }
+        });
+        toast.success(response.data.message)
       }
-      getFavorite();
-
+      
     } catch (error:any) {
+      if(error.response){
+
+        toast.error(error.response.data.message || 'room Id is required')
+      }
       console.log("Favorite error:", error);
 
+    }finally{
+      getFavorite();
     }
   };
 
   const getFavorite = async () => {
     try {
       const response = await axiosInstance(FAVORITE_URL.GET);
-
-      setFavorite(response?.data?.data?.favoriteRooms[0]?.rooms);
-      
+      setFavorite(response?.data?.data?.favoriteRooms[0]?.rooms);      
     } catch (error:any) {
-
       console.log(error);
     }
   };
@@ -178,10 +186,10 @@ export default function PopularAds() {
                     </Box>
                     <Box sx={{ display: 'flex', gap: 1 }}>
                       <Checkbox
-                        onChange={(e) => addFavorite(room, e.target.checked)}
+                        onChange={(e) => {addFavorite(room, e.target.checked)
+                        }}
                         checked={favorite.some((favRoom) => favRoom._id === room._id)}
                         {...label}
-                       
 
                         icon={<FavoriteIcon sx={{ fontSize: '2.5rem', color: '#fff' }} />}
                         checkedIcon={<Favorite sx={{ fontSize: '2.5rem', color: '#ff1744' }} />}
