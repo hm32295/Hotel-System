@@ -21,7 +21,6 @@ export default function Gallery({ data }) {
   const isSm = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   const isMd = useMediaQuery(theme.breakpoints.between('md', 'lg'));
 
-  // عدد الأعمدة للـImageList حسب العرض (فقط للتحكم في الارتفاع)
   const getCols = () => {
     if (isXs) return 2;
     if (isSm) return 4;
@@ -29,7 +28,6 @@ export default function Gallery({ data }) {
     return 4;
   };
 
-  // بيانات الصور ثابتة عشان الترتيب يفضل ثابت على كل الشاشات (<600 و >600)
   const itemData = [
     { img: image1, title: 'Breakfast', rows: 2, cols: 2 },
     { img: image2, title: 'Burger',    rows: 1, cols: 2 },
@@ -38,12 +36,12 @@ export default function Gallery({ data }) {
 
   const containerHeight = isXs ? 'auto' : 400;
 
-  const selectedImageStyle = {
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover',
-    display: 'block',
-  };
+  const selectedImageStyle: React.CSSProperties = {
+  width: "100%",
+  height: "100%",
+  objectFit: "cover",
+  display: "block",
+};
 
   return (
     <Box sx={{ width: '100%', height: containerHeight, overflow: isXs ? 'visible' : 'hidden' }}>
