@@ -5,15 +5,14 @@ import { useState } from 'react';
 import { Box, Button, Fade, IconButton, Modal, TextField, useColorScheme} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import Backdrop from '@mui/material/Backdrop';
-import { useNavigate } from 'react-router-dom';
-const Header = () => {
-    let  location=window.location.pathname
+const Header = ({funData}:{funData:any}) => {
+    const  location=window.location.pathname
     // Start With Add Facilites
   const [itemToUpdate, setItemToUpdate] = useState(null);
   const [openUpdate, setOpenUpdate] = useState(false);
   const [value, setValue] = useState('');
-//  Modal Edit 
-  const handleOpenUpdate = (row) => {
+//  Modal Edit  
+  const handleOpenUpdate = (row:any) => {
     setItemToUpdate(row);
     setValue(row.name);
     setOpenUpdate(true);
@@ -33,17 +32,19 @@ const Header = () => {
        
         await axiosInstance.post(`${FacilitesUrls.CREATE}`, { name: value });
          toast.success(`Added  successfully.`)
-        } catch (error) {
-        toast.error(error?.response?.data?.message || 'Sorry Check your data')
+        } catch (error:any) {
+          if(error.response){
+            toast.error(error?.response?.data?.message || 'Sorry Check your data')
+          }
         
-      }
+      }finally{funData()}
     }
     handleCloseUpdate();
   };
     // End With Add Facilites
  const { mode } = useColorScheme();
   const isDarkMode = mode === 'dark';
-let navigation=useNavigate()
+
   return (
     <div className="Header" >
          <Modal
@@ -99,18 +100,16 @@ let navigation=useNavigate()
               :location==='/MasterAdmin/Rooms'?<h3 >Rooms Table Details </h3>:null
 
               
-          }
-
-
+              }
             </div>
-             <div className="Header_Right">
-                {location==='/MasterAdmin/Facilities'?
-             <Button sx={{background:'#3252DF !important'}} onClick={handleOpenUpdate}>Add New Facility</Button>:location==='/MasterAdmin/Explore'?<Button>Add New Explore</Button>
-              :location==='/MasterAdmin/ListBooking'&&null
-              
 
+
+             <div className="Header_Right">
+                {
+                  <Button sx={{background:'#3252DF !important'}} onClick={handleOpenUpdate}>Add New Facility</Button>
+                  
               
-          }
+                }
                 
              </div>
        

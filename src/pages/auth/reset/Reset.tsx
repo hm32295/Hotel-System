@@ -39,8 +39,10 @@ export default  function Reset(){
       )
       navigation('/login');
       toast.success(response?.data?.message || 'Please Log in with new password')
-    } catch (error) {
+    } catch (error:any) {
+      if(error.response){
         toast.error(error?.response?.data?.message || 'check your data');
+      }
    
     }finally{
       setLoader(false)

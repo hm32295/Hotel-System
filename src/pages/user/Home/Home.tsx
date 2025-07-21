@@ -1,7 +1,4 @@
 
-
-import { Explore } from "@mui/icons-material"
-
 import Interface from "./CoMPO_Home/Interface_Home/Interface"
 import PopularAds from "./popularAds/PopularAds"
 import PopularChoice from "./CoMPO_Home/PopularChoice/PopularChoice"
@@ -13,7 +10,7 @@ import Nav_User from "../../../component_User/nav_user/Nav_User"
 
 const Home = ({isLogged}) => {
   
-  
+
   return (
     <Box sx={{display:'flex' , flexDirection:'column',gap:'1rem'}}>
  {(!isLogged || !localStorage.getItem('token')) ? (

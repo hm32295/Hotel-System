@@ -29,8 +29,10 @@ const Favourits = () => {
       const  response = await axiosInstance.get(FAVORITE_URL.GET);
       setdata_Kollow( response.data.data.favoriteRooms);
     
-  } catch (error) {
-    toast.error("Error in Showing Data");
+  } catch (error:any) {
+    if(error.response){
+      toast.error("Error in Showing Data");
+    }
   }finally{
     setLoader(false)
   }

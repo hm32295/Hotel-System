@@ -48,7 +48,7 @@ const getData = async ()=>{
           const response = await axiosInstance(listBooking.LIST_BOOKING);
           const totalData = response?.data?.data?.totalCount;
             fetchBookings(1,totalData)
-        } catch (error) {
+        } catch (error:any) {
           console.log(error);
           
         }
@@ -69,7 +69,7 @@ const getData = async ()=>{
           })) || [];
   
           setBookings(formattedData);
-        } catch (error) {
+        } catch (error:any) {
           console.error('Error fetching bookings:', error);
         } finally {
           setLoading(false);

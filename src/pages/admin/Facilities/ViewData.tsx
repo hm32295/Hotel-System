@@ -1,5 +1,5 @@
 import Typography from '@mui/material/Typography';
-import { Box, Button, Avatar } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import {
   Dialog, DialogTitle, DialogContent, DialogActions,
@@ -11,15 +11,10 @@ interface ViewDataProps {
   showData: boolean;
   data: {
     name: string;
-    price: string;
-    capacity: string;
-    discount: string;
-    image: {
-      props: {
-        src: string | string[];
-        alt: string;
-      };
-    };
+    id: string;
+    createdAt: string;
+    createdByUserName: string;
+    updatedAt: string;
   };
 }
 
@@ -34,13 +29,11 @@ const DetailRow = ({ label, value }: { label: string; value: string | number | b
 );
 
 export default function ViewData({ setShowData, showData, data }: ViewDataProps) {
+
+
   const handleCloseView = () => {
     setShowData(false);
   };
-
-  const imageSrc = Array.isArray(data.image.props.src)
-    ? data.image.props.src[0]
-    : data.image.props.src;
 
   return (
     <Dialog open={showData} onClose={handleCloseView} maxWidth="sm" fullWidth>
@@ -53,7 +46,7 @@ export default function ViewData({ setShowData, showData, data }: ViewDataProps)
           justifyContent: 'space-between',
           alignItems: 'center',
         }}>
-          <Typography variant="h6" sx={{ fontWeight: 600, color: '#333' }}>Room Details</Typography>
+          <Typography variant="h6" sx={{ fontWeight: 600, color: '#333' }}>Ads Details</Typography>
           <IconButton onClick={handleCloseView}>
             <CloseIcon />
           </IconButton>
@@ -67,18 +60,13 @@ export default function ViewData({ setShowData, showData, data }: ViewDataProps)
             border: '1px solid #e0e0e0',
           }}>
             <Box display="flex" flexDirection="column" alignItems="center" gap={3}>
-              {imageSrc && (
-                <Avatar
-                  src={imageSrc}
-                  alt={data.image.props.alt}
-                  sx={{ width: 100, height: 100, border: '2px solid #ccc' }}
-                />
-              )}
               <Box width="100%" display="flex" flexDirection="column" gap={3}>
-                <DetailRow label="Room Number" value={data.name} />
-                <DetailRow label="Capacity" value={data.capacity} />
-                <DetailRow label="Discount" value={data.discount} />
-                <DetailRow label="Price" value={data.price} />
+               
+            <Box display="flex" flexDirection="column" alignItems="center" gap={3}></Box>
+                <DetailRow label="Name" value={data.name} />
+                <DetailRow label="Created At" value={data.createdAt} />
+                <DetailRow label="Created ByUser Name" value={data.createdByUserName} />
+                <DetailRow label="Updated At" value={data.updatedAt} />
               </Box>
             </Box>
           </Paper>

@@ -1,4 +1,5 @@
-import { Box } from '@mui/material';
+
+import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
@@ -18,22 +19,39 @@ import { useState } from 'react';
 import Progress from '../Progress';
 import { toast } from 'react-toastify';
 
-export default function Comment({ id }) {
+interface CommentFormProps {
+  id: string;
+}
+
+interface CommentData {
+  comment: string;
+  roomId?: string;
+}
+
+export default function Comment({ id }: CommentFormProps) {
   const [loader, setLoader] = useState(false);
   const [italic, setItalic] = useState(false);
-  const [fontWeight, setFontWeight] = useState('normal');
-  const [anchorEl, setAnchorEl] = useState(null);
-  const { register, formState: { errors }, reset, handleSubmit } = useForm();
+  const [fontWeight, setFontWeight] = useState<'200' | 'normal' | 'bold'>('normal');
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  const setComment = async (data) => {
-    data = { ...data, roomId: id };
+  const {
+    register,
+    formState: { errors },
+    reset,
+    handleSubmit,
+  } = useForm<CommentData>();
+
+  const setComment = async (data: CommentData) => {
+    const payload = { ...data, roomId: id };
     setLoader(true);
     try {
-      const response = await axiosInstance.post(ROOM_COMMENT_URL.CREATE, data);
-      console.log(response);
+      const response = await axiosInstance.post(ROOM_COMMENT_URL.CREATE, payload);
+      toast.success(response?.data?.data?.message || 'Comment created successfully');
       reset();
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message || 'Sorry, comment not created');
+      }
     } finally {
       setLoader(false);
     }
@@ -41,23 +59,48 @@ export default function Comment({ id }) {
 
   return (
     <FormControl component="form" onSubmit={handleSubmit(setComment)} sx={{ overflow: 'hidden' }}>
-      <FormLabel sx={{ marginBottom: '3rem' }}>Your comment</FormLabel>
-        
+
+      <FormLabel sx={{ marginBottom: '2rem' }}>Your comment</FormLabel>
+
       <Textarea
         placeholder=""
         minRows={3}
         {...register('comment', { required: 'required' })}
         endDecorator={
-          <Box sx={{ display: 'flex', gap: 'var(--Textarea-paddingBlock)', pt: 'var(--Textarea-paddingBlock)', borderTop: '1px solid', borderColor: 'divider', flex: 'auto' }}>
-            <IconButton variant="plain" color="neutral" onClick={(e) => setAnchorEl(e.currentTarget)}>
+
+          <Box
+            sx={{
+              display: 'flex',
+              gap: 'var(--Textarea-paddingBlock)',
+              pt: 'var(--Textarea-paddingBlock)',
+              borderTop: '1px solid',
+              borderColor: 'divider',
+              flex: 'auto',
+            }}
+          >
+            <IconButton
+              variant="plain"
+              color="neutral"
+              onClick={(event) => setAnchorEl(event.currentTarget)}
+            >
+
               <FormatBold />
-              <KeyboardArrowDown fontSize="md" />
+              <KeyboardArrowDown fontSize="small" />
             </IconButton>
             <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)} size="sm" placement="bottom-start" sx={{ '--ListItemDecorator-size': '24px' }}>
               {['200', 'normal', 'bold'].map((weight) => (
-                <MenuItem key={weight} selected={fontWeight === weight} onClick={() => { setFontWeight(weight); setAnchorEl(null); }} sx={{ fontWeight: weight }}>
+
+                <MenuItem
+                  key={weight}
+                  selected={fontWeight === weight}
+                  onClick={() => {
+                    setFontWeight(weight as '200' | 'normal' | 'bold');
+                    setAnchorEl(null);
+                  }}
+                  sx={{ fontWeight: weight }}
+                >
                   <ListItemDecorator>
-                    {fontWeight === weight && <Check fontSize="sm" />}
+                    {fontWeight === weight && <Check fontSize="small" />}
                   </ListItemDecorator>
                   {weight === '200' ? 'lighter' : weight}
                 </MenuItem>
@@ -66,8 +109,20 @@ export default function Comment({ id }) {
             <IconButton variant={italic ? 'soft' : 'plain'} color={italic ? 'primary' : 'neutral'} aria-pressed={italic} onClick={() => setItalic(b => !b)}>
               <FormatItalic />
             </IconButton>
-            <Button type="submit" disabled={loader} sx={{ background: 'rgba(21, 44, 91, 1)', color: '#fff', padding: '.6rem .9rem', textTransform: 'uppercase', ml: 'auto' }}>
-              {loader ? <Progress /> : 'send Comment'}
+
+            <Button
+              type="submit"
+              disabled={loader}
+              sx={{
+                background: '#3252DF',
+                color: '#fff',
+                padding: '.6rem .9rem',
+                textTransform: 'uppercase',
+                ml: 'auto',
+              }}
+            >
+              {loader ? <Progress /> : 'send'}
+
             </Button>
           </Box>
         }
@@ -76,7 +131,12 @@ export default function Comment({ id }) {
           italic ? { fontStyle: 'italic' } : { fontStyle: 'initial' },
         ]}
       />
-      {errors.comment && <Typography sx={{ color: 'red', textTransform: 'capitalize' }}>{errors.comment.message}</Typography>}
+
+      {errors.comment && (
+        <Typography sx={{ color: 'red', textTransform: 'capitalize' }}>
+          {errors.comment.message}
+        </Typography>
+      )}
     </FormControl>
   );
 }

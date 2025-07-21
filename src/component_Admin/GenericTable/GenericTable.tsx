@@ -1,4 +1,4 @@
-import{ useEffect, useMemo, useState, type ChangeEvent, type ReactNode } from 'react';
+import{  useMemo, useState, type ChangeEvent, type ReactNode } from 'react';
 import './GenericTable.css';
 import {
   Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination,
@@ -29,7 +29,6 @@ export default function GenericTable<T extends { id: string | number }>({
   rows,
   headCells,
   totalData,
-  loader,
   title,
   renderActions,
 }: GenericTableProps<T>) {

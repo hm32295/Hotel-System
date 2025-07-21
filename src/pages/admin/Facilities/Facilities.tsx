@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import GenericTable from "../../../component_Admin/GenericTable/GenericTable";
 import { axiosInstance, FacilitesUrls } from "../../../services/Url";
 import AutoDeleteIcon from '@mui/icons-material/AutoDelete';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import Fade from '@mui/material/Fade';
-import Button from '@mui/material/Button';
+import Button from '@mui/material/Button'; 
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import CloseIcon from '@mui/icons-material/Close';
@@ -21,6 +21,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Header from "../../../component_Admin/header_Admin/Header";
 import { Skeleton_Loader } from "../../../component_Admin/loader/Skeleton";
+import ViewData from "./ViewData";
 
 
 
@@ -68,7 +69,7 @@ const Facilities = () => {
   const [openDelete, setOpenDelete] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<any>(null);
   const [facilities,setFacilities]=useState(0);
-
+  const [viewData,setViewData] = useState(false)
 
 
     const getData = async ()=>{
@@ -77,7 +78,7 @@ const Facilities = () => {
             const response = await axiosInstance(FacilitesUrls.GET_ALL,{params:{page:1,size:1}});
             const totalData = response?.data?.data?.totalCount || 100;
              await fetchFacilities(1,totalData)
-          } catch (error) {
+          } catch (error:any) {
             console.log(error);
             
           }
@@ -102,7 +103,7 @@ const Facilities = () => {
           setRows(facilitiesData);
         
           
-        } catch (error) {
+        } catch (error:any) {
           console.log(error);
         } 
       };
@@ -130,7 +131,7 @@ const Facilities = () => {
         await axiosInstance.put(FacilitesUrls.UPDATE(itemToUpdate.id), { name: value });
         toast.success(`Updated ${itemToUpdate.name} successfully.`);
         getData();
-      } catch (error) {
+      } catch (error:any) {
         console.error("Update Error:", error);
       }finally{
         setLoading(true)
@@ -178,6 +179,7 @@ const handleMenuClose = () => {
 
   return (
     <>
+    
       <Modal
         open={openUpdate}
         onClose={handleCloseUpdate}
@@ -223,8 +225,8 @@ const handleMenuClose = () => {
         onConfirm={handleConfirmDelete}
         name={itemToDelete ? itemToDelete.name : ''}
       />
-<div style={{display:'none'}}>
-  <Header />
+<div >
+  <Header funData={getData}/>
 </div>
 
    {!loading ? (
@@ -238,6 +240,7 @@ const handleMenuClose = () => {
           rows={rows}
           renderActions={(row) => (
             <>
+            <ViewData data={row} setShowData={setViewData} showData={viewData}/>
               <IconButton
                 aria-controls="action-menu"
                 aria-haspopup="true"
@@ -256,7 +259,8 @@ const handleMenuClose = () => {
               >
                 <MenuItem
                   onClick={() => {
-                    handleOpenView(selectedRow);
+                  setViewData(true)
+                   
                     handleMenuClose();
                   }}
                 >

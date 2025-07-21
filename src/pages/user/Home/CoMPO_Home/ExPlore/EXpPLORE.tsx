@@ -17,84 +17,112 @@ import { Skeleton_Loader } from '../../review/Skeleton';
 import { Box, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-const EXpPLORE = () => {
+type FacilityType = {
+  _id: string;
+  name: string;
+};
+
+type CreatedByType = {
+  _id: string;
+  userName: string;
+};
+
+type RoomType = {
+  _id: string;
+  roomNumber: string;
+  images: string[];
+  price: number;
+  capacity: number;
+  discount: number;
+  facilities: FacilityType[];
+  createdBy: CreatedByType;
+  createdAt: string;
+  updatedAt: string;
+};
+
+type RoomResponseType = {
+  data: {
+    rooms: RoomType[];
+    totalCount: number;
+  };
+};
+
+type BookingDataType = {
+  startDate?: string;
+  endDate?: string;
+  capacity?: number;
+};
+
+const Explore = () => {
   const defaultImages = [img1, img2, img3, img4, img5];
-  const navigation = useNavigate()
-  const fallbackImg = useRef(
+  const navigate = useNavigate();
+  const fallbackImg = useRef<string>(
     defaultImages[Math.floor(Math.random() * defaultImages.length)]
   );
 
-  const [loader , setLoader] =useState(false)
-  const [currentPage, setCurrentPage] = useState(1); 
-  const [totalCount, setTotalCount] = useState(0); 
-  const { BookingData ,loginData} = useContext(AuthContext);
-  let [data_Mohada, setdata_Mohada] = useState([]);
-  let [data_Kollow, setdata_Kollow] = useState([]);
-  const size = 8; 
+  const [loader, setLoader] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalCount, setTotalCount] = useState<number>(0);
 
-  const FUN_GET_DATA_DETAILS = async (page, size) => {
-    setLoader(true)
+  const { BookingData, loginData } = useContext(AuthContext) as {
+    BookingData: BookingDataType;
+    loginData: { role?: string };
+  };
+
+  const [roomData, setRoomData] = useState<RoomType[]>([]);
+  const size = 8;
+
+  const fetchRooms = async (page: number) => {
+    setLoader(true);
     try {
-      if (BookingData?.startDate && BookingData?.endDate) {
-        const res = await axiosInstance.get(
-          `${PORTAL_URLS.AVAILABLE_ROOMS}/available?page=${page}&size=${size}`,
-          {
-            params: {
-              startDate: BookingData.startDate,
-              endDate: BookingData.endDate,
-              capacity: BookingData.capacity,
-            },
-          }
-        );
-        setdata_Mohada(res.data);
-        setTotalCount(res.data.totalCount);
-      } else {
-        try {
-          const res = await axiosInstance.get(
-            `${PORTAL_URLS.AVAILABLE_ROOMS}/available?page=${page}&size=${size}`
-          );
-          setdata_Kollow(res.data);
-          setTotalCount(res.data.totalCount);
-        } catch (error) {
-          toast.error("Error in Showing Data");
-        }
-      }
+      const params: any = {
+        page,
+        size,
+        ...(BookingData?.startDate && {
+          startDate: BookingData.startDate,
+          endDate: BookingData.endDate,
+          capacity: BookingData.capacity,
+        }),
+      };
+
+      const endpoint =
+        BookingData?.startDate && BookingData?.endDate
+          ? `${PORTAL_URLS.AVAILABLE_ROOMS}/available`
+          : `${PORTAL_URLS.AVAILABLE_ROOMS}/available`;
+
+      const response = await axiosInstance.get<RoomResponseType>(endpoint, { params });
+      setRoomData(response.data.data.rooms);
+      setTotalCount(response.data.data.totalCount);
     } catch (error) {
-      toast.error("Error");
-    }finally{
-      setLoader(false)
+      toast.error('Error fetching rooms');
+    } finally {
+      setLoader(false);
     }
   };
 
   useEffect(() => {
-    FUN_GET_DATA_DETAILS(1, 8);
+    fetchRooms(1);
   }, [BookingData]);
 
-  const roomsToDisplay = data_Mohada?.data?.rooms || data_Kollow?.data?.rooms || [];
   const totalPages = Math.ceil(totalCount / size);
-  if(loader) return <Skeleton_Loader />
+
+  if (loader) return <Skeleton_Loader />;
+
   return (
     <div className="explore-container">
-      <h2>Explore ALL Rooms</h2>
-      {roomsToDisplay.length > 0 ? (
+      <h2>Explore All Rooms</h2>
+      {roomData.length > 0 ? (
         <div className="rooms-grid">
-          {roomsToDisplay.map((room, idx) => ( 
-            
+          {roomData.map((room, idx) => (
             <div key={room._id} className="room-card">
               <div className="room-image-container">
-                {room.images && room.images.length > 0 ? (
-                  <img
-                    src={room.images?.[0] || defaultImages[idx % defaultImages.length]}
-                    alt={`Room ${room.roomNumber}`}
-                    className="room-image"
-                  />
-                ) : (
-                  <img
-                    src={fallbackImg.current}
-                    alt="Room placeholder"
-                    className="room-image"
-                  />
-                )}
+                <img
+                  src={
+                    room.images?.[0] || defaultImages[idx % defaultImages.length] || fallbackImg.current
+                  }
+                  alt={`Room ${room.roomNumber}`}
+                  className="room-image"
+                />
                 <div className="price-badge">${room.price}</div>
                 {room.discount > 0 && (
                   <div className="discount-badge">-{room.discount}%</div>
@@ -114,12 +142,12 @@ const EXpPLORE = () => {
                   </div>
                 </div>
 
-                {room.facilities && room.facilities.length > 0 && (
+                {room.facilities?.length > 0 && (
                   <div className="facilities-container">
                     <div className="facilities-title">Facilities:</div>
                     <div className="facilities-list">
-                      {room.facilities.map((facility, index) => (
-                        <span key={index} className="facility-tag">
+                      {room.facilities.map((facility) => (
+                        <span key={facility._id} className="facility-tag">
                           {facility.name}
                         </span>
                       ))}
@@ -129,59 +157,46 @@ const EXpPLORE = () => {
 
                 <div className="room-meta">
                   <div className="meta-item">
-                    <PeopleIcon
-                      className="room-detail-icon"
-                      style={{ display: 'inline', marginRight: '4px' }}
-                    />
+                    <PeopleIcon className="room-detail-icon" />
                     <span className="meta-label">Created by:</span> {room.createdBy.userName}
                   </div>
                   <div className="meta-item">
-                    <CalendarTodayIcon
-                      className="room-detail-icon"
-                      style={{ display: 'inline', marginRight: '4px' }}
-                    />
+                    <CalendarTodayIcon className="room-detail-icon" />
                     {new Date(room.createdAt).toLocaleDateString()}
                   </div>
                   <div className="meta-item">
-                    <PersonIcon
-                      className="room-detail-icon"
-                      style={{ display: 'inline', marginRight: '4px' }}
-                    />
+                    <PersonIcon className="room-detail-icon" />
                     <span className="meta-label">Updated:</span>{' '}
                     {new Date(room.updatedAt).toLocaleDateString()}
                   </div>
                 </div>
               </div>
-              {loginData?.role || localStorage.getItem('token') ?(
 
-                  <Box sx={{display:'flex',justifyContent:'center',padding:'.5rem'}}>
-                    <Button onClick={()=>{navigation('/MasterUser/Details',{state:room})}}>Details</Button>
-
-                  </Box>
-              ):null}
+              {(loginData?.role || localStorage.getItem('token')) && (
+                <Box sx={{ display: 'flex', justifyContent: 'center', padding: '.5rem' }}>
+                  <Button
+                    onClick={() => navigate('/MasterUser/Details', { state: room })}
+                  >
+                    Details
+                  </Button>
+                </Box>
+              )}
             </div>
           ))}
-
-          
         </div>
       ) : (
         <div className="no-rooms-message">
           <p>No rooms available at the moment</p>
         </div>
       )}
-      <Stack
-        spacing={2}
-        direction="row"
-        justifyContent="center"
-        alignItems="center"
-        sx={{ height: '20vh' }}
-      >
+
+      <Stack spacing={2} direction="row" justifyContent="center" alignItems="center" sx={{ height: '20vh' }}>
         <Pagination
           count={totalPages}
           page={currentPage}
           onChange={(event, value) => {
             setCurrentPage(value);
-            FUN_GET_DATA_DETAILS(value, size); 
+            fetchRooms(value);
           }}
           variant="outlined"
           color="primary"
@@ -191,4 +206,4 @@ const EXpPLORE = () => {
   );
 };
 
-export default EXpPLORE;
+export default Explore;
