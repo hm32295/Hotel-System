@@ -59,6 +59,9 @@ export default function ToBooking({ data, isLogged }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  let handleLogin=()=>{
+    navigate('/Login')
+  }
 
   return (
     <Box
@@ -78,30 +81,49 @@ export default function ToBooking({ data, isLogged }) {
     >
       <div>
     
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        slots={{ backdrop: Backdrop }}
-        slotProps={{
-          backdrop: {
-            timeout: 500,
-          },
-        }}
-      >
-        <Fade in={open}>
-          <Box sx={style}>
-            <Typography id="transition-modal-title" variant="h6" component="h2">
-              Text in a modal
-            </Typography>
-            <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-            </Typography>
-          </Box>
-        </Fade>
-      </Modal>
+   <Modal
+  aria-labelledby="transition-modal-title"
+  aria-describedby="transition-modal-description"
+  open={open}
+  onClose={handleClose}
+  closeAfterTransition
+  slots={{ backdrop: Backdrop }}
+  slotProps={{
+    backdrop: {
+      timeout: 500,
+    },
+  }}
+>
+  <Fade in={open}>
+    <Box sx={style}>
+      {/* Message prompting login */}
+      <Typography variant="body1" sx={{ mb: 2, fontSize: '1rem' }}>
+        Please log in to your account to continue.
+      </Typography>
+
+      {/* Action buttons */}
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
+        <Button size="small" onClick={handleClose}>
+          Cancel
+        </Button>
+        <Button
+          size="small"
+          onClick={handleLogin}
+          sx={{
+            backgroundColor: 'rgba(21, 44, 91, 1)',
+            color: '#fff',
+            '&:hover': {
+              backgroundColor: 'rgba(21, 44, 91, 0.8)',
+            },
+          }}
+        >
+          Login
+        </Button>
+      </Box>
+    </Box>
+  </Fade>
+</Modal>
+
     </div>
       
       <Box sx={{ textAlign: 'center' }}>
