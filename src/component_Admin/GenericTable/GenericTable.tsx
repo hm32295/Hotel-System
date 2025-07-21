@@ -1,4 +1,4 @@
-import React from 'react';
+import{  useMemo, useState, type ChangeEvent, type ReactNode } from 'react';
 import './GenericTable.css';
 import {
   Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination,
@@ -13,26 +13,30 @@ export interface HeadCell<T> {
   label: string;
   numeric: boolean;
   disablePadding: boolean;
+  renderCell?: (value: T[keyof T], row: T) => ReactNode;
 }
 
 interface GenericTableProps<T> {
   rows: T[];
   headCells: HeadCell<T>[];
   title?: string;
-  renderActions?: (row: T) => React.ReactNode;
+  totalData?: number
+  loader?:boolean
+  renderActions?: (row: T) => ReactNode;
 }
 
-export default function GenericTable<T extends { id: number }>({
+export default function GenericTable<T extends { id: string | number }>({
   rows,
   headCells,
-  title = "Table",
+  totalData,
+  title,
   renderActions,
 }: GenericTableProps<T>) {
-  const [order, setOrder] = React.useState<Order>('asc');
-  const [orderBy, setOrderBy] = React.useState<keyof T>(headCells[0].id);
-  const [selected, setSelected] = React.useState<readonly number[]>([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  
+  const [order, setOrder] = useState<Order>('asc');
+  const [orderBy, setOrderBy] = useState<keyof T>(headCells[0]?.id);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const handleRequestSort = (property: keyof T) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -40,24 +44,12 @@ export default function GenericTable<T extends { id: number }>({
     setOrderBy(property);
   };
 
-  const handleClick = (id: number) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected: readonly number[] = [];
-
-    if (selectedIndex === -1) {
-      newSelected = selected.concat(id);
-    } else {
-      newSelected = selected.filter((selectedId) => selectedId !== id);
-    }
-
-    setSelected(newSelected);
-  };
-
-  const handleChangePage = (_event: unknown, newPage: number) => {
+  const handleChangePage = (_event: unknown, newPage: number ) => {
     setPage(newPage);
+  
   };
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
@@ -68,27 +60,27 @@ export default function GenericTable<T extends { id: number }>({
     return 0;
   };
 
-  const visibleRows = React.useMemo(() => {
+  const visibleRows = useMemo(() => {
     return rows
       .slice()
       .sort((a, b) => (order === 'desc' ? comparator(a, b) : -comparator(a, b)))
       .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
   }, [rows, order, orderBy, page, rowsPerPage]);
 
+
   return (
-    <Box sx={{ width: '100%' }} className='GenericTable'>
+    <Box sx={{ width: '100%',marginTop:'30px'}} className='GenericTable' >
       <Paper sx={{ width: '100%', mb: 2 }}>
         <Toolbar>
           <Typography variant="h6" sx={{ flex: 1 }}>
-            {title}
+           {title}
           </Typography>
         </Toolbar>
 
-        <TableContainer  sx={{paddingBottom:'1.5rem'}}>
+        <TableContainer sx={{ paddingBottom: '1.5rem' }}>
           <Table>
             <TableHead>
               <TableRow>
-                
                 {headCells.map((headCell) => (
                   <TableCell
                     key={String(headCell.id)}
@@ -112,13 +104,10 @@ export default function GenericTable<T extends { id: number }>({
             <TableBody>
               {visibleRows.length > 0 ? (
                 visibleRows.map((row) => {
-                  const isItemSelected = selected.includes(row.id);
                   return (
                     <TableRow
                       hover
-                      onClick={() => handleClick(row.id)}
-                      key={row.id}
-                      selected={isItemSelected}
+                      key={String(row.id)}
                       sx={{ cursor: 'pointer' }}
                     >
                       {headCells.map((headCell) => (
@@ -126,7 +115,9 @@ export default function GenericTable<T extends { id: number }>({
                           key={String(headCell.id)}
                           align={headCell.numeric ? 'right' : 'left'}
                         >
-                          {row[headCell.id]}
+                          {headCell.renderCell
+                            ? headCell.renderCell(row[headCell.id], row)
+                            : String(row[headCell.id])}
                         </TableCell>
                       ))}
 
@@ -138,9 +129,9 @@ export default function GenericTable<T extends { id: number }>({
                 })
               ) : (
                 <TableRow>
-                  <TableCell colSpan={headCells.length + 2} align="center">
-                    <NoData />
-                  </TableCell>
+                  
+                    <TableCell colSpan={headCells.length + 1} align="center"><NoData /> </TableCell>
+                 
                 </TableRow>
               )}
             </TableBody>
@@ -150,7 +141,7 @@ export default function GenericTable<T extends { id: number }>({
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={totalData || rows.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -160,6 +151,7 @@ export default function GenericTable<T extends { id: number }>({
     </Box>
   );
 }
+
 
 // used in any component
 // import MoreVertIcon from '@mui/icons-material/MoreVert';

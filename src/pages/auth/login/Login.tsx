@@ -7,43 +7,50 @@ import '@fontsource/roboto/700.css';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Box, Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField, Typography } from '@mui/material';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import {useForm} from 'react-hook-form';
 import { Link } from '@mui/material';
 import { EMAIL_VALIDATION } from '../../../services/Validation';
-import { ADMIN_URL, axiosInstance, USERS_URL } from '../../../services/Url';
+import { ADMIN_URL, axiosInstance } from '../../../services/Url';
 import type { resetPassword } from '../../../services/interface';
+import Progress from '../../../component_Admin/loader/Progress';
+import { AuthContext } from '../../../context/context';
+import { toast } from 'react-toastify';
 export default  function Login(){
-
+  const [loader, setLoader] = useState(false)
   const navigation = useNavigate();
   const {register, formState:{errors}, handleSubmit,reset} =  useForm<resetPassword>();
+  const { saveLoginData } = useContext(AuthContext);
   const sendData = async(data:resetPassword)=>{
-   
+   setLoader(true)
    
     try {
       const response= await axiosInstance.post(ADMIN_URL.LOGIN,data) 
       localStorage.setItem('token', response?.data?.data?.token)
       localStorage.setItem('role',  response?.data?.data?.user?.role)
       
-      
+      saveLoginData();
       reset(
        { email: "",
         password:'',
         }
       )
       if(response?.data?.data?.user?.role === 'admin'){
-
         navigation('/MasterAdmin')
       }else if(response?.data?.data?.user?.role === 'user'){
         navigation('/MasterUser')
 
       }
-    } catch (error) {
-        console.log(error?.response?.data?.message);
+      
+      toast.success(response?.data?.message || 'Welcome ' + response?.data?.user?.userName)
+    } catch (error:any) {
+      if(error.response){
+        toast.error(error?.response?.data?.message || 'check your data')
+      }
         
     }finally{
-      // console.log('success');
+      setLoader(false)
       
     }
     
@@ -81,7 +88,6 @@ export default  function Login(){
 
             <Box>
                 <TextField
-                    // id="outlined-multiline-flexible"
                     label="Email"
                     multiline
                     maxRows={4}
@@ -128,8 +134,12 @@ export default  function Login(){
         
 
          
+        <Link sx={{textDecoration:'none' , color:'#3252DF'}} to='/Forget' component={RouterLink}>Forget Password</Link>
 
-        <Button type='submit' sx={{background:"#3252DF", color:"#fff"}} variant="contained">send</Button>
+         <Button type='submit' disabled={loader} sx={{background:"#3252DF", color:"#fff"}} variant="contained">
+                  {loader ?<Progress /> : 'send' }   
+          </Button>
+                              
         </Box>
         <Box className="img">
 

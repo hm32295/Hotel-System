@@ -15,19 +15,20 @@ import { Link } from '@mui/material';
 import { EMAIL_VALIDATION } from '../../../services/Validation';
 import { ADMIN_URL, axiosInstance, USERS_URL } from '../../../services/Url';
 import type { resetPassword } from '../../../services/interface';
+import Progress from '../../../component_Admin/loader/Progress';
+import { toast } from 'react-toastify';
 export default  function Reset(){
-
+  const [loader, setLoader] = useState(false)
   const navigation = useNavigate();
   const {register, formState:{errors}, handleSubmit, watch ,reset} =  useForm<resetPassword>();
   const sendData = async(data:resetPassword)=>{
     const loginData = 'admin';
-   
+   setLoader(true)
     try {
       let response;
       if(loginData === 'admin'){
         response = await axiosInstance.post(ADMIN_URL.RESET_PASSWORD,data);
-      }else if(loginData === 'portal'){
-
+      }else if(loginData === 'user'){
         response = await axiosInstance.post(USERS_URL.RESET_PASSWORD,data);
       }
       reset(
@@ -36,20 +37,19 @@ export default  function Reset(){
         password:'',
         confirmPassword: ''}
       )
-      navigation('/login')
-    } catch (error) {
-        console.log(error);
-        
+      navigation('/login');
+      toast.success(response?.data?.message || 'Please Log in with new password')
+    } catch (error:any) {
+      if(error.response){
+        toast.error(error?.response?.data?.message || 'check your data');
+      }
+   
     }finally{
-      // console.log('success');
+      setLoader(false)
       
     }
     
   }
-
-
-
-  /// Handel Show Password And Hide
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -179,7 +179,10 @@ export default  function Reset(){
             </Box>
         
 
-        <Button type='submit' sx={{background:"#3252DF", color:"#fff"}} variant="contained">send</Button>
+          <Button type='submit' disabled={loader} sx={{background:"#3252DF", color:"#fff"}} variant="contained">
+                {loader ?<Progress /> : 'send' }  
+            
+          </Button>
         </Box>
         <Box className="img">
 

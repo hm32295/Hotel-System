@@ -4,3 +4,8 @@ export interface resetPassword{
     password:string
     confirmPassword :string
 }
+export interface changePassword{
+    newPassword: string
+    oldPassword:string
+    confirmPassword :string
+}

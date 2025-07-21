@@ -1,0 +1,70 @@
+.vacation-booking {
+  background: linear-gradient(to bottom right, #ebf8ff, #ffffff, #cffafe);
+  overflow: hidden;
+  padding: 4rem 0;
+}
+
+.booking-card {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.custom-label {
+  display: block;
+  margin-bottom: 4px;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.capacity-control {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}
+
+.capacity-text {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.btn-explore {
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s;
+  background-color:  rgba(21, 44, 91, 1) !important;
+  color: #fff;
+  font-weight: 600;
+  font-size: 17px !important;
+}
+
+.btn-explore:hover {
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0);
+  transform: scale(1.05);
+}
+.TYTLE_Interface{
+  color: rgba(21, 44, 91, 1) !important;
+  font-weight: 700;
+}
+.interface_p{
+  color: rgba(176, 176, 176, 1)!important;
+  font-weight: 500;
+}
+.BTN-Changes{
+  background-color: rgba(21, 44, 91, 1) !important ;
+  color: #fff !important;
+}
+.dAnGer_decrement{
+background-color: rgba(231, 76, 60, 1) !important;
+color: #fff;
+}
+.SucceSS-Increment{
+  background-color: rgba(26, 188, 156, 1) !important;
+  color: #fff;
+
+}
+.capacity-text{
+  color: #000;
+  font-weight: 600;
+}
+
+

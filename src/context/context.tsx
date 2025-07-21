@@ -1,12 +1,21 @@
 // context.tsx
-import { createContext, useEffect, useState, ReactNode } from "react";
+import { createContext, useEffect, useState } from "react";
+import type { ReactNode } from "react";
 import { jwtDecode } from "jwt-decode";
+
+interface BookingDataType {
+  startDate: string;
+  endDate: string;
+  capacity: number;
+}
 
 interface AuthContextType {
   loginData: any;
   isAuthLoading: boolean;
   saveLoginData: () => void;
   logout: () => void;
+  BookingData: BookingDataType;
+  setBookingData: React.Dispatch<React.SetStateAction<BookingDataType>>;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -42,8 +51,23 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     saveLoginData();
   }, []);
 
+  const [BookingData, setBookingData] = useState<BookingDataType>({
+    startDate: "",
+    endDate: "",
+    capacity: 1,
+  });
+
   return (
-    <AuthContext.Provider value={{ loginData, isAuthLoading, saveLoginData, logout }}>
+    <AuthContext.Provider
+      value={{
+        loginData,
+        isAuthLoading,
+        saveLoginData,
+        logout,
+        BookingData,
+        setBookingData,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
