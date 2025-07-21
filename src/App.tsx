@@ -1,7 +1,13 @@
 
 import { createHashRouter, RouterProvider } from 'react-router-dom';
 import 'react-pro-sidebar/dist/css/styles.css';
+
+
+// بدل السطر ده:
 import 'antd/dist/antd.css';
+// حط مكانه:
+
+
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { SnackbarProvider } from 'notistack';
