@@ -39,14 +39,11 @@ const Details = () => {
     p: '8px',
     display: 'flex',
     flexWrap: 'wrap',
-    
-  
     flexDirection: { xs: 'column', md: 'row' },
     alignItems: 'flex-start',
     justifyContent: 'center',
     gap: '2rem',
   }}
-
 >
   <Box sx={{ flex: '1 1 45%', minWidth: 0, width: { xs: '100%', md: '45%' } }}>
     <Rate id={data?._id} />

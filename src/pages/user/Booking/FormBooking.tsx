@@ -79,7 +79,7 @@ export default function FormBooking({ booking }: { booking: Booking }) {
           boxShadow: "0px 8px 15px 0px #ccc",
           padding: 0,
           m: "auto",
-          background: "#3252DF",
+          background: "rgba(21, 44, 91, 1)",
           color: "#fff",
           width: "300px",
         }}

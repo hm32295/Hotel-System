@@ -10,7 +10,7 @@ const stripePromise = loadStripe('pk_test_51OTjURBQWp069pqTmqhKZHNNd3kMf9TTynJtL
 
 interface Booking {
   _id: string;
-  // أضف أي خصائص أخرى حسب الحاجة
+  
 }
 
 export default function Payment() {
@@ -31,21 +31,79 @@ export default function Payment() {
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
-      <Box sx={{ mb: '2rem', display: 'flex', gap: '1rem', alignItems: 'center', justifyContent: 'center', color: '#fff' }}>
-        <Box component={'span'} sx={{ background: '#1ABC9C', borderRadius: '50%', height: '30px', width: '30px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <CheckIcon />
-        </Box>
-        <Box component={'span'} sx={{ background: '#1ABC9C', borderRadius: '50%', height: '30px', width: '30px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <CheckIcon />
-        </Box>
-        <Box component={'span'} sx={{
-          background: '#E5E5E5', borderRadius: '50%', height: '30px', width: '30px',
-          display: 'flex', justifyContent: 'center', color: '#898989', alignItems: 'center',
-          border: '1px solid #E5E5E5'
+         <Box sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginBottom: '40px',
+          position: 'relative'
         }}>
-          3
+          {/* Step 1 */}
+          <Box sx={{
+            width: '40px',
+            height: '40px',
+            borderRadius: '50%',
+            backgroundColor: '#1ABC9C',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#FFFFFF',
+            position: 'relative',
+            zIndex: 2
+          }}>
+            <CheckIcon sx={{ fontSize: '20px' }} />
+          </Box>
+          
+          {/* Line 1 */}
+          <Box sx={{
+            width: '80px',
+            height: '2px',
+            backgroundColor: '#E5E5E5',
+            position: 'relative'
+          }} />
+          
+          {/* Step 2 */}
+      <Box sx={{
+            width: '40px',
+            height: '40px',
+            borderRadius: '50%',
+            backgroundColor: '#1ABC9C',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#FFFFFF',
+            position: 'relative',
+            zIndex: 2
+          }}>
+            <CheckIcon sx={{ fontSize: '20px' }} />
+          </Box>
+          
+          {/* Line 2 */}
+          <Box sx={{
+            width: '80px',
+            height: '2px',
+            backgroundColor: '#E5E5E5',
+            position: 'relative'
+          }} />
+          
+          {/* Step 3 */}
+          <Box sx={{
+            width: '40px',
+            height: '40px',
+            borderRadius: '50%',
+            backgroundColor: '#E5E5E5',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#898989',
+            fontSize: '16px',
+            fontWeight: '500',
+            position: 'relative',
+            zIndex: 2
+          }}>
+            3
+          </Box>
         </Box>
-      </Box>
 
       <Box>
         {booking && (
