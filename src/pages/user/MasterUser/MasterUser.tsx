@@ -4,11 +4,15 @@ import Nav_User from "../../../component_User/nav_user/Nav_User";
 import { Container, Box } from "@mui/material";
 import ScrollToTop from "../../../services/ScrollToTop";
 
-const MasterUser = () => {
+const MasterUser = ({isLogged}) => {
   return (
     <>
-
-    <Nav_User/>
+ {(isLogged || localStorage.getItem('token')) ? (
+  <>
+ <Nav_User/>
+  </>
+) : null}
+   
          <ScrollToTop />
 
       <Box sx={{ backgroundColor: '#f9f9f9', minHeight: '100vh' }}>

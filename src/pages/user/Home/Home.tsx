@@ -9,13 +9,18 @@ import AdsDiscounts from "./CoMPO_Home/AdsDiscounts/AdsDiscounts"
 import Ads from "./ads/Ads"
 import Review from "./review/Review"
 import { Box } from "@mui/material"
+import Nav_User from "../../../component_User/nav_user/Nav_User"
 
-const Home = () => {
+const Home = ({isLogged}) => {
   
   
   return (
     <Box sx={{display:'flex' , flexDirection:'column',gap:'1rem'}}>
- 
+ {(!isLogged || !localStorage.getItem('token')) ? (
+  <>
+ <Nav_User/>
+  </>
+) : null}
 
 
      
@@ -23,8 +28,14 @@ const Home = () => {
         <PopularAds />
         <PopularChoice/>
         <AdsDiscounts/>
-        <Ads/>
-        <Review/>
+       {(isLogged || localStorage.getItem('token')) ? (
+  <>
+    <Ads />
+    <Review />
+  </>
+) : null}
+
+      
 
 
   
