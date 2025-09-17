@@ -19,7 +19,6 @@ import img4 from '../../../../assets/images/adsPopular/4.png';
 import img5 from '../../../../assets/images/adsPopular/5.png';
 import { toast } from 'react-toastify';
 
-
 function srcset(image: string, width: number, height: number, rows = 1, cols = 1) {
   return {
     src: `${image}?w=${width * cols}&h=${height * rows}&fit=crop&auto=format`,
@@ -36,6 +35,7 @@ interface Room {
   roomNumber: string;
   price: number;
 }
+
 export default function PopularAds() {
   const navigation = useNavigate();
   const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
@@ -47,31 +47,23 @@ export default function PopularAds() {
   const isSmall1024 = useMediaQuery('(max-width:1024px)');
 
   const addFavorite = async (room: Room, isChecked: boolean) => {
-    
-    const roomId:string = room._id
-    
+    const roomId: string = room._id;
     try {
       if (isChecked) {
-        const response = await axiosInstance.post(FAVORITE_URL.CREATE, {roomId});
-        toast.success(response.data.message)
-        console.log(response);
-        
+        const response = await axiosInstance.post(FAVORITE_URL.CREATE, { roomId });
+        toast.success(response.data.message);
       } else {
-        
         const response = await axiosInstance.delete(FAVORITE_URL.DELETE(roomId), {
-          data: { roomId }
+          data: { roomId },
         });
-        toast.success(response.data.message)
+        toast.success(response.data.message);
       }
-      
-    } catch (error:any) {
-      if(error.response){
-
-        toast.error(error.response.data.message || 'room Id is required')
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message || 'room Id is required');
       }
-      console.log("Favorite error:", error);
-
-    }finally{
+      console.log('Favorite error:', error);
+    } finally {
       getFavorite();
     }
   };
@@ -79,9 +71,10 @@ export default function PopularAds() {
   const getFavorite = async () => {
     try {
       const response = await axiosInstance(FAVORITE_URL.GET);
-      setFavorite(response?.data?.data?.favoriteRooms[0]?.rooms);      
-    } catch (error:any) {
+      setFavorite(response?.data?.data?.favoriteRooms?.[0]?.rooms || []);
+    } catch (error: any) {
       console.log(error);
+      setFavorite([]); // fallback لو حصل error
     }
   };
 
@@ -89,10 +82,8 @@ export default function PopularAds() {
     setLoader(true);
     try {
       const response = await axiosInstance(ROOMS_USER_URL.GET, { params: { page: 1, size: 5 } });
-
       setRooms(response.data.data.rooms);
-      
-    } catch (error:any) {
+    } catch (error: any) {
       console.log(error);
     } finally {
       setLoader(false);
@@ -131,15 +122,14 @@ export default function PopularAds() {
           width: widthImages(),
           maxWidth: '1670px',
           padding: '1rem',
-          height:  'auto',
+          height: 'auto',
           transform: 'translateZ(0)',
         }}
         rowHeight={200}
         cols={isSmall1024 ? 2 : 4}
       >
-        {rooms.length ?(
-          rooms.map((room:any, index:any) => {
-
+        {rooms.length ? (
+          rooms.map((room: any, index: any) => {
             let cols = 1;
             let rows = 1;
 
@@ -186,11 +176,11 @@ export default function PopularAds() {
                     </Box>
                     <Box sx={{ display: 'flex', gap: 1 }}>
                       <Checkbox
-                        onChange={(e) => {addFavorite(room, e.target.checked)
+                        onChange={(e) => {
+                          addFavorite(room, e.target.checked);
                         }}
-                        checked={favorite.some((favRoom) => favRoom._id === room._id)}
+                        checked={Array.isArray(favorite) && favorite.some((favRoom) => favRoom._id === room._id)}
                         {...label}
-
                         icon={<FavoriteIcon sx={{ fontSize: '2.5rem', color: '#fff' }} />}
                         checkedIcon={<Favorite sx={{ fontSize: '2.5rem', color: '#ff1744' }} />}
                       />
@@ -228,7 +218,9 @@ export default function PopularAds() {
               </ImageListItem>
             );
           })
-        ) : 'Not  Found'}
+        ) : (
+          'Not  Found'
+        )}
       </ImageList>
     </Box>
   );
