@@ -1,0 +1,50 @@
+
+.ads .swiper {
+    width: 90%;
+    height: 450px;
+}
+/* .review_Box */
+
+.ads .swiper-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 18px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #000;
+}
+
+.ads .swiper-slide {
+    background-color: #fff;
+    height: 100%;
+}
+
+.ads .swiper-slide img{
+    /* background-color: #fff; */
+    border-bottom-right-radius: 2rem;
+    height: 100%;
+    object-fit: cover;
+}
+@media (max-width : 767px) {
+    .ads .swiper {
+        height: 550px;;
+    }
+  
+    .ads .swiper .review_Box {
+        flex-direction: column;
+        text-align: center;
+    }
+    .ads .swiper-slide img{
+        height: 200px;
+        margin-top: 1rem;
+        border-radius: 50%;
+        width: 200px ;
+        object-fit: cover;
+        object-position: center;
+    }
+    .ads .swiper-slide .description{
+        font-size: 1.6rem;
+        line-height: 1.3;
+    }
+}

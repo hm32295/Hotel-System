@@ -1,0 +1,9 @@
+@media (max-width: 790px) {
+    
+    .border-comment{
+        display: none;
+    }
+    .TitleDetails .title .village{
+        font-size: 2rem;
+    }
+}
